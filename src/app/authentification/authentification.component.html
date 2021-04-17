@@ -1,0 +1,26 @@
+
+<div class="container pt-3">
+    <div>
+     <div class="row justify-content-lg-center">
+     <div class="col-lg-12 col-md-6">
+     <div class="card border-info">
+     <div class="card-header"><h1 color="red">Authentification</h1></div>
+     <div class="card-body">
+     <div class="row">
+     <div class="col-md-12 text-center">
+     <img src="https://placeimg.com/128/128/nature">
+     </div>
+     <div class="col-lg-12 col-md-6 text-center">
+    <form #authform="ngForm">
+     <input type="text" ngModel class="form-control" placeholder="Login" name="login" id="login" required autofocus>
+     <input type="password" ngModel minlength="6" class="form-control " placeholder="Password" name="password" id="password" required>
+     <button class="btn btn-lg btn-primary btn-block mb-1" (click)="(authform)" >Login</button>
+    </form>
+     </div>
+     </div>
+    
+     </div>
+     </div>
+     </div>
+     </div>
+     </div></div>

@@ -1,0 +1,59 @@
+
+<div class="container">
+  <h1>Inscription</h1>
+  <form  #userForm="ngForm"  (ngSubmit)="addUser(userForm.value)">
+    <label for="nomUser">Nom</label>
+      <input ngModel required type="text" class="form-control" id="nomUser" name="nomUser">
+
+      <label for="emailUser">Email</label>
+      <input ngModel required type="text" class="form-control" id="emailUser" name="emailUser">
+    
+      <label for="Telephone">Telephone</label>
+      <input ngModel type="number" class="form-control" id="Telephone" name="Telephone">
+    
+      <label for="posteUser">poste</label>
+      <input ngModel required type="text" class="form-control" id="posteUser" name="posteUser">
+    
+      <label for="login">login</label>
+      <input ngModel type="text" class="form-control" id="login" name="login">
+
+      <label for="password">password</label>
+      <input ngModel type="password" class="form-control" id="password" name="password">
+      <button class="btn btn-primary" >
+        S'inscrire
+  </button> 
+
+  </form>
+
+</div>
+
+
+
+<!-- <div class="container" >
+    <form #addForm="ngForm"  (ngSubmit)="addUser(addForm.value)">
+      <label for="nomUser">Nom</label>
+      <input ngModel required type="text" class="form-control" id="nomUser" name="nomUser">
+    
+      <label for="emailUser">Email</label>
+      <input ngModel required type="text" class="form-control" id="emailUser" name="emailUser">
+    
+      <label for="Telephone">Telephone</label>
+      <input ngModel type="number" class="form-control" id="Telephone" name="Telephone">
+    
+      <label for="posteUser">poste</label>
+      <input ngModel required type="text" class="form-control" id="posteUser" name="posteUser">
+    
+      <label for="login">login</label>
+      <input ngModel type="text" class="form-control" id="login" name="login">
+
+      <label for="password">password</label>
+      <input ngModel type="text" class="form-control" id="password" name="password"> -->
+  
+      <!-- <button class="btn btn-primary" (click)="addPersonne(addForm.value)"> -->
+      <!--   <button [disabled]="addForm.invalid" class="btn btn-primary">
+            S'inscrit
+      </button> 
+    </form>
+    </div>
+
+     -->
