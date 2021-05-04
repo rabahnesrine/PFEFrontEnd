@@ -5,29 +5,34 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { InscriptionComponent } from './inscription/inscription.component';
 
-import { AuthentificationComponent } from './authentification/authentification.component';
-import {HttpClientModule} from "@angular/common/http";
-import { GereUserComponent } from './gere-user/gere-user.component';
+import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
+import { AuthServService } from './Services/auth-serv.service';
+import { UserServService } from './Services/user-serv.service';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { AuthenticationGuard } from './guard/authentication.guard';
+import { NotificationModule } from './notification.module';
+import { NotificationService } from './Services/notification.service';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { UserComponent } from './user/user.component';
 @NgModule({
   declarations: [
     AppComponent,
-    InscriptionComponent,
-
-    AuthentificationComponent,
-
-    GereUserComponent
+    UserComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NotificationModule
   
   ],
-  providers: [],
+  providers: [NotificationService, AuthenticationGuard, AuthServService,UserServService,{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

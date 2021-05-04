@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Utilisateur } from '../models/utilisateur';
 import { UserServService } from '../Services/user-serv.service';
 
 @Component({
-  selector: 'app-gere-user',
-  templateUrl: './gere-user.component.html',
-  styleUrls: ['./gere-user.component.css']
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.css']
 })
-export class GereUserComponent implements OnInit {
+export class UserComponent implements OnInit {
   public host:string="http://localhost:8080/users";
 
 public user:any;
@@ -19,7 +18,7 @@ public pages:Array<number>;
 public currentKeyword:string="";
 
 
-users:Utilisateur[]=[];
+//users:Utilisateur[]=[];
 
   constructor(private httpclient:HttpClient, private userServ: UserServService) { }
 
@@ -28,7 +27,7 @@ users:Utilisateur[]=[];
   }
 
 
-
+/*
 onGetUsers(){
   this.userServ.getUsers(this.currentPage,this.size)
   .subscribe(data=>{

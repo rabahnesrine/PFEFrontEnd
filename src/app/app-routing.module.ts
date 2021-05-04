@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthentificationComponent } from './authentification/authentification.component';
-import { GereUserComponent } from './gere-user/gere-user.component';
-import { InscriptionComponent } from './inscription/inscription.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { UserComponent } from './user/user.component';
 
 
 const routes: Routes = [
-  {path:"inscription",component:InscriptionComponent},
-  {path:"gereUser",component:GereUserComponent},
-  {path:"authentification",component:AuthentificationComponent},
-  {path:"", redirectTo:"/users", pathMatch:'full'}
+  {path:'login',component:LoginComponent},
+  {path:'register',component:RegisterComponent},
+  {path:'user/management',component:UserComponent},
+ {path:'', redirectTo:'/login', pathMatch:'full'}
 ];
 
 @NgModule({
