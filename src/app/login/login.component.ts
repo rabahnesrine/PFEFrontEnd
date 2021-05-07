@@ -10,11 +10,12 @@ import { NotificationService } from '../Services/notification.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
+  templateUrl:'./login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit, OnDestroy {
-public showLoading : boolean;
+public showLoading : boolean ;
 private subscriptions: Subscription[]=[];
 
 
@@ -30,12 +31,13 @@ if(this.authServ.isLoggedIn()){
 
 public onLogin(user:User):void{
   this.showLoading=true;
-  console.log(user);
+  console.log(user );
   this.subscriptions.push(
     this.authServ.login(user).subscribe(
       (response:HttpResponse<User>)=>{
+        console.log(response);
         const token =response.headers.get(HeaderType.JWT_TOKEN);
-      //  console.log(token);
+     //  console.log(token);
         this.authServ.saveToken(token);
         this.authServ.addUserToLocalCache(response.body); 
   this.router.navigateByUrl('/user/management')

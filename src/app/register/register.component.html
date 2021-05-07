@@ -1,1 +1,75 @@
-<p>register works!</p>
+<br>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card-group mb-0">
+                <div class="card p-4">
+                    <div class="card-body">
+                        <h1>Register</h1>
+                        <p class="text-muted">Sign In to your account</p>
+
+
+                        <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value)">
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="nomUser" placeholder="Username" ngModel #usernameInput="ngModel" required>
+                            </div>
+
+                            <span class="help-block" style="color:red;" *ngIf="usernameInput.invalid && usernameInput.touched">Please enter a username</span>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-envelope" ></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="emailUser" placeholder="emailUser"
+                                ngModel #emailUserInput="ngModel" required>
+                            </div>
+                            <span class="help-block" style="color:red;" *ngIf="emailUserInput.invalid && emailUserInput.touched">Please enter a Email.</span>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="telephone" placeholder="telephone"
+                                ngModel #telephoneInput="ngModel" required>
+                            </div>
+                            <span class="help-block" style="color:red;" *ngIf="telephoneInput.invalid && telephoneInput.touched">Please enter a telephone number.</span>
+                         
+
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="professionUser" placeholder="professionUser"
+                                ngModel #professionInput="ngModel" required>
+                            </div>
+                            <span class="help-block" style="color:red;" *ngIf="professionInput.invalid && professionInput.touched">Please enter a password.</span>
+
+                           
+                            <div class="d-flex justify-content-center mt-3 login_container">
+                                <button type="submit" [disabled]="registerForm.invalid || showLoading" name="button" class="btn btn-primary px-4">
+                                    <i *ngIf="showLoading" class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;
+                                    <span *ngIf="showLoading">loading...</span>
+                                    <span *ngIf="!showLoading">Register</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="mt-4">
+
+                        <div class="d-flex justify-content-center links">
+                            Already have an account?
+                            <a routerLink="/login" class="ml-2" style="color:#2C3E50;"> Log In </a>
+                        </div>
+                </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { UserServService } from '../Services/user-serv.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { UserServService } from '../Services/user-serv.service';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  public host:string="http://localhost:8080/users";
+ private titleSubject= new BehaviorSubject<string>('Users');    //actual subject
+ public titleAction$=this.titleSubject.asObservable(); //action listener
 
 public user:any;
 public size:number=5;
@@ -18,14 +20,15 @@ public pages:Array<number>;
 public currentKeyword:string="";
 
 
-//users:Utilisateur[]=[];
 
   constructor(private httpclient:HttpClient, private userServ: UserServService) { }
 
   ngOnInit(): void {
    // this.getlistUser();
   }
-
+public changeTitle(title:string):void{
+this.titleSubject.next(title);
+}
 
 /*
 onGetUsers(){

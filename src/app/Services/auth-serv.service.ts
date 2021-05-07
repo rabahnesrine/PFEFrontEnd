@@ -6,8 +6,6 @@ import { User } from '../models/User';
 import { JwtHelperService } from "@auth0/angular-jwt";
 
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +17,7 @@ export class AuthServService {
 private jwtHelper =new JwtHelperService();
 public username; 
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) {}
 
 
 
