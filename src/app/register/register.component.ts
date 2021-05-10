@@ -26,7 +26,7 @@ private subscriptions: Subscription[]=[];
     if(this.authServ.isLoggedIn()){
       this.router.navigateByUrl('/user/management');
 
-    }else{ this.router.navigateByUrl('/login');}
+    }
   }
 
 
@@ -39,7 +39,7 @@ private subscriptions: Subscription[]=[];
         (response:User)=>{
           console.log(response);
            this.showLoading=false;
-           this.sendNotification(NotificationType.SUCCESS,`A new account was created for  ${response.nomUser} Please check your email for password to log in .`);
+           this.sendNotification(NotificationType.SUCCESS,`A new account was created for  ${response.username} Please check your email for password to log in .`);
 
   },(errorResponse:HttpErrorResponse)=>{
   console.log(errorResponse);

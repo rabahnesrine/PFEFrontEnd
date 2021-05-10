@@ -1,10 +1,11 @@
-import { HttpClient, HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {environment} from '../../environments/environment'
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/User';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { CustomHttpResponse } from '../models/custom-http-response';
+import { AuthServService } from './auth-serv.service';
 
 
 @Injectable({
@@ -12,16 +13,34 @@ import { CustomHttpResponse } from '../models/custom-http-response';
 })
 export class UserServService {
   private host=environment.apiUrl;
+  users:User[]=[];
 
 
 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient,private authServ:AuthServService) { }
+
+
+
+  getAllUsers():Observable<User[]>{
+    if (this.authServ.getToken== null) {
+      this.authServ.loadToken();
+    
+return this.http.get<User[]>(this.host + '/user/list',  { headers : new HttpHeaders( { 'Authorization' : `Bearer ${this.authServ.getToken()}` })});
+
+}}
 
 
   public getUsers():Observable<User[] |HttpErrorResponse>{
     return this.http.get<User[]>(`${this.host}/user/list`);
   }
 
+
+ /* public getImg(username: string):Observable<User[] |HttpErrorResponse>{
+    return this.http.get<User[]>(`${this.host}/user/image/profile/${username}`);
+  }
+*/
+
+ 
   public addUser(formData: FormData):Observable<User|HttpErrorResponse>{
     return this.http.post<User>(`${this.host}/user/add`,formData);
   }
@@ -59,12 +78,14 @@ public getUsersFromLocalCache():User[]{
 public createUserFormData(loggedInUsername:string, user:User ,profileImage:File): FormData{  
   const formData= new FormData();
   formData.append('currentNomUser',loggedInUsername);
-  formData.append('nomuser',user.nomUser);
-  formData.append('emailUser',user.emailUser);
+  formData.append('username',user.username);
+  formData.append('email',user.email);
   formData.append('isActive',JSON.stringify(user.isActive));
   formData.append('isNotLocked',JSON.stringify(user.isNotLocked));
   formData.append('telephone',user.telephone);
-  formData.append('roles',user.roles);
+  formData.append('role',user.role);
+  formData.append('professionUser',user.professionUser);
+
   formData.append('profileImage',profileImage);
 
 return formData;

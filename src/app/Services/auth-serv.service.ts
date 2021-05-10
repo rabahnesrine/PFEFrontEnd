@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {environment} from '../../environments/environment'
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -25,6 +25,8 @@ public username;
   public login(user: User):Observable<HttpResponse<User>> {
     return this.http.post<User>(`${this.host}/user/login`,user ,{observe: 'response' });
   }
+
+ 
 
   public register(user: User):Observable<User> {
     return this.http.post<User>

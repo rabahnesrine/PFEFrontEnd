@@ -29,8 +29,7 @@ import { UserComponent } from './user/user.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NotificationModule
-  
+    NotificationModule  
   ],
   providers: [NotificationService, AuthenticationGuard, AuthServService,UserServService,{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}],
   bootstrap: [AppComponent]

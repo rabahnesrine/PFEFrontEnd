@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private  authServ: AuthServService) {}
 
-  intercept(httpRequest: HttpRequest<any>, httpHandler: HttpHandler): Observable<HttpEvent<any>> {
+ intercept(httpRequest: HttpRequest<any>, httpHandler: HttpHandler): Observable<HttpEvent<any>> {
     if(httpRequest.url.includes(`${this.authServ.host}/user/login`)) {
       return httpHandler.handle(httpRequest);
     }
@@ -24,9 +24,12 @@ export class AuthInterceptor implements HttpInterceptor {
     return httpHandler.handle(httpRequest);
     
 }
+
+
 this.authServ.loadToken(); //when the token is loaded we can access to this token  
 const token=this.authServ.getToken();
-const request=httpRequest.clone({ setHeaders:{ Authorization :`Bearer ${token}`}});
+console.log(token);
+const request=httpRequest.clone({ setHeaders:{Authorization :`Bearer ${token}`}});
 return httpHandler.handle(request);
-}
-}
+}} 
+
