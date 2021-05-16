@@ -25,7 +25,6 @@ export class AuthInterceptor implements HttpInterceptor {
     
 }
 
-
 this.authServ.loadToken(); //when the token is loaded we can access to this token  
 const token=this.authServ.getToken();
 console.log(token);

@@ -1,7 +1,7 @@
 export class User{
 
-    public userId:number;
-    public  identifiant:string;
+    public Id:number;
+    public  userId:string;
     public  username:string;
     public email:string;
     public   telephone:string;
@@ -17,10 +17,16 @@ export class User{
 
 
     constructor(){
+        this.Id=0;
+        this.userId='';
         this.username='';
         this.email='';
         this.telephone='';
         this.professionUser='';
+        this.joinDate=null;
+        this.lastLoginDate=null;
+        this.lastLoginDateDisplay=null;
+        this.profileImageUrl=';'
         this.isActive=false;
         this.isNotLocked=false;
         this.role='';

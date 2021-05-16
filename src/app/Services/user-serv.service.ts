@@ -21,14 +21,7 @@ export class UserServService {
 
 
 
-  getAllUsers():Observable<User[]>{
-    if (this.authServ.getToken== null) {
-      this.authServ.loadToken();
-    
-return this.http.get<User[]>(this.host + '/user/list',  { headers : new HttpHeaders( { 'Authorization' : `Bearer ${this.authServ.getToken()}` })});
-
-}}
-
+ 
 
   public getUsers():Observable<User[] |HttpErrorResponse>{
     return this.http.get<User[]>(`${this.host}/user/list`);
@@ -46,7 +39,7 @@ return this.http.get<User[]>(this.host + '/user/list',  { headers : new HttpHead
   }
 
   public updateUser(formData: FormData):Observable<User|HttpErrorResponse>{
-    return this.http.post<User>(`${this.host}/user/add`,formData);
+       return  this.http.post<User>(`${this.host}/user/update`,formData);
   }
 
   public resetPassword(email:string):Observable<CustomHttpResponse|HttpErrorResponse>{
