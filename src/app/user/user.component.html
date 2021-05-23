@@ -18,23 +18,28 @@
                     <i class="fa fa-users"></i>
                     Users
                 </a>
-                <a class="nav-item nav-link  ml-3" (click)="changeTitle('reset-password')" data-toggle="tab" href="#reset-password">
+
+                <a class="nav-item nav-link  ml-3" (click)="changeTitle('projet')" data-toggle="tab" href="#projet">
+                    <i class="fa fa-cogs"></i>
+                   Projets
+                </a>
+
+                <a class="nav-item nav-link  ml-3" (click)="changeTitle('reset-password')" data-toggle="tab"
+                    href="#reset-password">
                     <i class="fa fa-cogs"></i>
                     Settings
                 </a>
-                
 
-                <a class="nav-item nav-link  ml-3" (click)="changeTitle('register')" data-toggle="tab" href="#register">
-                    <i class="fa fa-cogs"></i>
-                    register
-                </a>
 
-                <a class="nav-item nav-link move-right mr-3" (click)="changeTitle('profile')" data-toggle="tab" href="#profile">
-                    Welcome,
+              
+
+                <a class="nav-item nav-link move-right mr-3" (click)="changeTitle('profile')" data-toggle="tab"
+                    href="#profile">
+                    Welcome, {{user.username}}
                     <i class="fa fa-user"></i>
                 </a>
 
-               
+
             </div>
         </div>
 
@@ -42,7 +47,7 @@
     </nav>
 
 
-    <div class="tab-content mt-3" >
+    <div class="tab-content mt-3" id="myTabContent">
         <div id="users" class="tab-pane fade in active">
             <div class=" mb-3 float-right">
                 <div class="btn-group mr-2">
@@ -68,7 +73,7 @@
                 </div>
 
 
-                <table  class="table table-hover">
+                <table class="table table-hover">
                     <thead class="table-borderless">
                         <tr class="text-center">
                             <th class="text-center">Photo</th>
@@ -99,15 +104,16 @@
 
 
                             <td>
-                                <span *ngIf="user.isActive" class="badge badge-success">Active</span>
-                                <span  *ngIf="!user.isActive" class="badge badge-danger">Inactive</span>
+                                <span *ngIf="user.isActive"  style="background: green;" class="badge badge-success">Active</span>
+                                <span *ngIf="!user.isActive"  style="background: red;" class="badge badge-danger">Inactive</span>
 
                             </td>
                             <td class="">
                                 <div class="btn-group">
                                     <button class="btn btn-outline-info" (click)="onEditUser(user)">
                                         <i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-outline-danger" (click)="onDeleteUser(user.id)"> <i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-outline-danger" (click)="onDeleteUser(user.id)"> <i
+                                            class="fas fa-trash"></i></button>
                                 </div>
 
                             </td>
@@ -120,345 +126,590 @@
         </div>
 
 
-    <button [hidden]="true" type="button" id="openUserInfo" data-toggle="modal" data-target="#viewUserModal">
-    </button>
-    <button [hidden]="true" type="button" id="openUserEdit" data-toggle="modal" data-target="#editUserModal">
-    </button>
+        <button [hidden]="true" type="button" id="openUserInfo" data-toggle="modal" data-target="#viewUserModal">
+        </button>
+        <button [hidden]="true" type="button" id="openUserEdit" data-toggle="modal" data-target="#editUserModal">
+        </button>
 
-    <!--change password -->
+        <!--change password -->
 
-<div class="tab-pane fade" id="reset-password">
-    <form #resetPasswordForm="ngForm" (ngSubmit)="onResetPassword(resetPasswordForm)">
-        <fieldset>
-            <legend> User Password Management</legend>
-<div class="form-group">
-    <label for="exampleInputEmail1"> Email address</label>
-    <input type="email" name="reset-password-email" required ngModel class="form-control" placeholder="Enter email (example@email.com)">
-    <small class="form-text text-muted"> We'll never share your email with anyone else.</small>
+        <div class="tab-pane fade" id="reset-password">
+            <form #resetPasswordForm="ngForm" (ngSubmit)="onResetPassword(resetPasswordForm)">
+                <fieldset>
+                    <legend> User Password Management</legend>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1"> Email address</label>
+                        <input type="email" name="reset-password-email" required ngModel class="form-control"
+                            placeholder="Enter email (example@email.com)">
+                        <small class="form-text text-muted"> We'll never share your email with anyone else.</small>
 
-</div>
-<button type="submit" [disabled]="false" class="btn btn-primary">
-    <i *ngIf="refreshing" class="fas fa-spinner fa-spin" ></i> &nbsp;&nbsp;
-    <span *ngIf="refreshing">Loading....</span>
-    <span *ngIf="!refreshing" >Reset Password</span>
-</button>
-        </fieldset>
-    </form>
-</div>
-
-
-<div class="tab-pane fade" id="register">
-   <app-register></app-register>
-   <p>just test pour la navigation </p>
-</div>
-
-</div>
-
-
-
-
-    <!-- detail user   -->
-
-
-    <div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby=""
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 *ngIf="selectedUser" class="modal-title text-center" id="exampleModalLongTitle">{{selectedUser.username}} </h4>
-                    <button class="btn-close" type="button" id="openUserInfo" aria-label="Close"
-                        data-dismiss="modal"><span aria-hidden="true"></span>
+                    </div>
+                    <button type="submit" [disabled]="false" class="btn btn-primary">
+                        <i *ngIf="refreshing" class="fas fa-spinner fa-spin"></i> &nbsp;&nbsp;
+                        <span *ngIf="refreshing">Loading....</span>
+                        <span *ngIf="!refreshing">Reset Password</span>
                     </button>
-                </div>
-                <div class="modal-body" *ngIf="selectedUser!==undefined">
-                    <div>
-
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12 col-sm-auto ">
-                                        <div class="mx-auto" style="width: 120px;">
-                                            <div class="d-flex justify-content-center align-items-center rounded">
-                                                <img class="rounded" height="120" width="120"
-                                                    src="{{selectedUser.profileImageUrl}}"
-                                                    alt="{{selectedUser.username}}">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col d-flex flex-column flex-sm-row justify-content-between ">
-                                        <div class="text-left text-sm-left  mb-sm-0">
-                                            <h5 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser.username}}</h5>
-                                            <!--                                             <p class="mb-1">{{selectedUser.telephone}}</p>
- -->
-                                            <div class=""> Status:
-                                                <span *ngIf="selectedUser.isActive"
-                                                    class="badge badge-success">Active</span>
-                                                <span *ngIf="!selectedUser.isActive"
-                                                    class="badge badge-danger">Inactive</span>
-
-                                            </div>
-                                            <div *ngIf="selectedUser.lastLoginDateDisplay" class="text-muted">
-                                                <small>Last
-                                                    login:
-                                                    {{selectedUser.lastLoginDateDisplay | date:'medium' }}</small>
-                                            </div>
-                                        </div>
-
-                                        <div class="text-center text-sm-right">
-                                            <div class="text-muted"><small>Joined {{selectedUser.joinDate|date:'medium'
-                                                    }}</small></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"></li>
-                                <li class="list-group-item">
-                                    <i class="fa fa-id-badge float-right"></i> {{selectedUser.userId}}
-                                </li>
-                                <li class="list-group-item">
-                                    <i class="fa fa-id-badge float-right"></i> {{selectedUser.professionUser}}
-                                </li>
-                                <li class="list-group-item">
-                                    <i class="fa fa-phone float-right"></i> {{selectedUser.telephone}}
-                                </li>
-
-                                <li class="list-group-item">
-                                    <i class="fa fa-envelope float-right"></i> {{selectedUser.email}}
-                                </li>
-
-                                <li class="list-group-item">
-                                    <i class="fa fa-shield-alt float-right"></i> {{selectedUser.role.substring(5)}}
-                                </li>
-                                <li *ngIf="selectedUser.lastLoginDateDisplay" class="list-group-item">
-                                    <i class="fa fa-sign-in-alt float-right"></i> {{selectedUser.lastLoginDateDisplay |
-                                    date:'medium'}}
-                                </li>
-
-                                <li class="list-group-item">
-                                    <span *ngIf="!selectedUser.isNotLocked"> Account locked
-                                        <i class="fa fa-lock float-right" style="color : red;"></i>
-                                    </span>
-
-                                    <span *ngIf="selectedUser.isNotLocked">
-                                        <i class="fa fa-unlock float-right" style="color : green;"></i>Account Unlocked
-                                    </span>
-                                </li>
-
-                            </ul>
-                        </div>
-
-
-                    </div>
-                    <div class="modal-footer">
-
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            id="new-user-close">Close</button>
-                    </div>
-                </div>
-
-
-            </div>
-
-
+                </fieldset>
+            </form>
         </div>
 
 
+        <div class="tab-pane fade" id="projet">
+            <app-projet> </app-projet>
+       
+        </div>
+
+
+
+        <!-- profile user   -->
+
+        <div class="tab-pane fade" id="profile">
+            <div class="container ">
+
+                <div class="row flex-lg-nowrap ">
+
+
+                    <div class="col">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="e-profile">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-auto mb-3">
+                                                    <div class="mx-auto" style="width: 120px;">
+                                                        <div
+                                                            class="d-flex justify-content-center align-items-center rounded">
+                                                            <img class="rounded" height="135" width="135"
+                                                                src="{{user.profileImageUrl}}" alt="">
+                                                        </div>
+
+
+                                                        <div *ngIf="fileStatus.status==='progress'" class="progress mt-1">
+                                                            <div class="progress-bar bg-info" role="progressbar"
+                                                            [style.width.%]="fileStatus.percentage"
+                                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                                {{fileStatus.percentage}}%
+                                                               </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+
+
+                                                <div
+                                                    class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                                    <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{user.username}}
+                                                        </h4>
+                                                        <p class="mb-0"> ID :{{user.userId}}</p>
+
+                                                        <div *ngIf="user.lastLoginDateDisplay !==null"
+                                                            class="text-muted"><small>Last Login: {{
+                                                                user.lastLoginDateDisplay | date: 'medium'}}</small>
+                                                        </div>
+
+                                                        <div class="mt-2">
+                                                            <button (click)="updateProfileImage()"   class="btn btn-primary" type="button">
+                                                                <i class="fa fa-fw fa-camera"></i>
+                                                                <span>Change Photo</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center text-sm-right">
+                                                        <div class="text-muted"><small>Joined :{{ user.joinDate | date:
+                                                                'mediumDate'}} </small></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="tab-content pt-3">
+                                                <div class="tab-pane active">
+                                                    <form #profileUserForm="ngForm"
+                                                        (ngSubmit)="onUpdateCurrentUser(profileUserForm.value)"
+                                                        class="form" novalidate="">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row ">
+
+                                                                    <div class="col ">
+                                                                        <div class="form-group">
+                                                                            <label>&nbsp;&nbsp; Username</label>
+                                                                             <input class="form-control " type="text"
+                                                                                name="username" required
+                                                                                [(ngModel)]="user.username">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+                                                                            <label>&nbsp;&nbsp; Profession</label>
+                                                                            <input class="form-control" type="text"
+                                                                                name="professionUser" required
+                                                                                [(ngModel)]="user.professionUser">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+                                                                            <label>&nbsp;&nbsp; Telephone</label>
+                                                                            <input class="form-control" type="text"
+                                                                                name="telephone" required
+                                                                                [(ngModel)]="user.telephone">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+                                                                            <label>&nbsp;&nbsp; Email</label>
+                                                                            <input class="form-control" type="text"
+                                                                                name="email" required
+                                                                                [(ngModel)]="user.email">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col mb-3">
+                                                                        <div class="form-group">
+                                                                            <label> &nbsp;&nbsp; Role</label>
+
+
+                                                                            <select name="role" required
+                                                                                [(ngModel)]="user.role"
+                                                                                class="form-control">
+                                                                                <option value="ROLE_MEMBER">MEMBER</option>
+                                                                                <option value="ROLE_CHEF">CHEF 
+                                                                                </option>
+                                                                                <option value="ROLE_SCRUM_MASTER">SCRUM_MASTER
+                                                                                </option>
+                                                                                <option value="ROLE_ADMIN">ADMIN
+                                                                                </option>
+                                                                            </select>
+
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12 col-sm-5 offset-sm-1 mb-3">
+                                                                <div class="mb-2"><b>Account Settings</b></div>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="custom-controls-stacked px-2">
+                                                                            <div class="custom-control custom-checkbox">
+                                                                                <input name="isActive" type="checkbox"
+                                                                                    [(ngModel)]="user.isActive"
+                                                                                    class="custom-control-label">
+
+                                                                                <label
+                                                                                    class="custom-control-label">Active</label>
+
+                                                                            </div>
+                                                                            <div class="custom-control custom-checkbox">
+
+                                                                                <input name="isNotLocked"
+                                                                                    type="checkbox"
+                                                                                    [(ngModel)]="user.isNotLocked"
+                                                                                    class="custom-control-input">
+
+                                                                                <label
+                                                                                    class="custom-control-label">Unlocked</label>
+
+
+                                                                            </div>
+
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                   
+                                                          
+                                                <div class="row">
+                                                    <div class="col d-flex justify-content-end">
+                                                        <button type="submit" [disabled]="false" class="btn btn-primary">
+                                                            <i *ngIf="refreshing" class="fas fa-spinner fa-spin"></i> &nbsp;&nbsp;
+                                                            <span *ngIf="refreshing">Loading....</span>
+                                                            <span *ngIf="!refreshing">Save Changes </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-3">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="px-xl-3">
+                                        <button (click)="onLogOut()" class="btn btn-block btn-secondary">
+                                            <span>Logout</span>
+                                            <i class="fa fa-sign-in-alt ml-1"></i>
+
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title font-weight-bold">Permissions From Role</h6>
+                                    <h6 *ngFor="let authority of user.authorities" class="card-text"> {{authority}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
-    <!-- add user   -->
+</div>
 
 
 
 
-    <div class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title text-center">New User </h4>
-                    <button class="btn-close" type="button" id="openUserInfo" aria-label="Close"
-                        data-dismiss="modal"><span aria-hidden="true"></span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div>
+<!-- detail user   -->
 
-                        <form #newUserForm="ngForm" (ngSubmit)="onAddNewUser(newUserForm)">
-                            <div class="form-group">
-                                <label for="username"> Username</label>
-                                <input type="text" name="username" required ngModel class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="email"> Email</label>
-                                <input type="text" name="email" required ngModel class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="telephone"> Telephone</label>
-                                <input type="text" name="telephone" required ngModel class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="professionUser"> Profession</label>
-                                <input type="text" name="professionUser" required ngModel class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="authority">Role</label>
-                                <select name="role" required ngModel="ROLE_USER" class="form-control">
-                                    <option value="ROLE_USER">USER</option>
-                                    <option value="ROLE_MANAGER">MANAGER</option>
 
-                                    <option value="ROLE_ADMIN">ADMIN</option>
-                                </select>
+<div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby=""
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 *ngIf="selectedUser" class="modal-title text-center" id="exampleModalLongTitle">
+                    {{selectedUser.username}} </h4>
+                <button class="btn-close" type="button" id="openUserInfo" aria-label="Close" data-dismiss="modal"><span
+                        aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body" *ngIf="selectedUser!==undefined">
+                <div>
 
-                            </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-auto ">
+                                    <div class="mx-auto" style="width: 120px;">
+                                        <div class="d-flex justify-content-center align-items-center rounded">
+                                            <img class="rounded" height="120" width="120"
+                                                src="{{selectedUser.profileImageUrl}}" alt="{{selectedUser.username}}">
 
-                            <div class="input-group mb-2">
-                                <div class="input-groupe-prepend">
-                                    <span class="input-group-text">Profile Picture</span>
-
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="custom-file">
-                                    <input type="file" name="profileImage"
-                                        (change)="onProfileImageChange($event.target.files[0].name,$event.target.files[0])"
-                                        class="custom-file-input">
-                                    <label class="custom-file-label"><span [hidden]="! fileName"> {{fileName}}</span>
-                                        <span [hidden]="fileName"> Choose File</span>
-                                    </label>
-                                </div>
+                                <div class="col d-flex flex-column flex-sm-row justify-content-between ">
+                                    <div class="text-left text-sm-left  mb-sm-0">
+                                        <h5 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser.username}}</h5>
+                                        <!--                                             <p class="mb-1">{{selectedUser.telephone}}</p>
+ -->
+                                        <div class=""> Status:
+                                            <span *ngIf="selectedUser.isActive"
+                                                class="badge badge-success">Active</span>
+                                            <span *ngIf="!selectedUser.isActive"
+                                                class="badge badge-danger">Inactive</span>
 
+                                        </div>
+                                        <div *ngIf="selectedUser.lastLoginDateDisplay" class="text-muted">
+                                            <small>Last
+                                                login:
+                                                {{selectedUser.lastLoginDateDisplay | date:'medium' }}</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center text-sm-right">
+                                        <div class="text-muted"><small>Joined {{selectedUser.joinDate|date:'medium'
+                                                }}</small></div>
+                                    </div>
+                                </div>
                             </div>
-                            <fieldset class="form-group">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" name="isActive" ngModel class="form-check-input">Active
-                                    </label>
-                                </div>
+                        </div>
 
-                                <div class="form-check disabled">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" name="isNotLocked" ngModel
-                                            class="form-check-input">Unlocked
-                                    </label>
-                                </div>
-                            </fieldset>
-                            <button type="submit" style="display: none;" id="new-user-save"></button>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"></li>
+                            <li class="list-group-item">
+                                <i class="fa fa-id-badge float-right"></i> {{selectedUser.userId}}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fa fa-id-badge float-right"></i> {{selectedUser.professionUser}}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fa fa-phone float-right"></i> {{selectedUser.telephone}}
+                            </li>
 
-                        </form>
+                            <li class="list-group-item">
+                                <i class="fa fa-envelope float-right"></i> {{selectedUser.email}}
+                            </li>
 
+                            <li class="list-group-item">
+                                <i class="fa fa-shield-alt float-right"></i> {{selectedUser.role.substring(5)}}
+                            </li>
+                            <li *ngIf="selectedUser.lastLoginDateDisplay" class="list-group-item">
+                                <i class="fa fa-sign-in-alt float-right"></i> {{selectedUser.lastLoginDateDisplay |
+                                date:'medium'}}
+                            </li>
+
+                            <li class="list-group-item">
+                                <span *ngIf="!selectedUser.isNotLocked"> Account locked
+                                    <i class="fa fa-lock float-right" style="color : red;"></i>
+                                </span>
+
+                                <span *ngIf="selectedUser.isNotLocked">
+                                    <i class="fa fa-unlock float-right" style="color : green;"></i>Account Unlocked
+                                </span>
+                            </li>
+
+                        </ul>
                     </div>
+
+
                 </div>
                 <div class="modal-footer">
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
                         id="new-user-close">Close</button>
-                    <button type="button" (click)="saveNewUser()" [disabled]="newUserForm.invalid"
-                        class="btn btn-primary"> Save changes </button>
                 </div>
             </div>
+
+
         </div>
+
 
     </div>
 
 
+</div>
+
+<!-- add user   -->
 
 
-    <!-- edit User -->
 
-    <div class="modal draggable fade bd-example-modal-lg" id="editUserModal" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-center">Edit {{editUser.username }}</h5>
-                    <button class="btn-close" type="button" id="openUserInfo" aria-label="Close"
-                        data-dismiss="modal"><span aria-hidden="true"></span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="">
 
-                        <form #editUserForm="ngForm">
-                            <div class="form-group">
-                                <label for="username"> Username</label>
-                                <input type="text"  name="username" required [(ngModel)]="editUser.username"
-                                    class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="email"> Email</label>
-                                <input type="text"   name="email" required [(ngModel)]="editUser.email"
-                                    class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="telephone"> Telephone</label>
-                                <input type="text"  name="telephone" required [(ngModel)]="editUser.telephone"
-                                    class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="professionUser"> Profession</label>
-                                <input type="text" name="professionUser" required [(ngModel)]="editUser.professionUser"
-                                    class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="authority">Role</label>
-                                <select name="role"  required [(ngModel)]="editUser.role" class="form-control">
-                                    <option value="ROLE_USER">USER</option>
-                                    <option value="ROLE_MANAGER">MANAGER</option>
+<div class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">New User </h4>
+                <button class="btn-close" type="button" id="openUserInfo" aria-label="Close" data-dismiss="modal"><span
+                        aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
 
-                                    <option value="ROLE_ADMIN">ADMIN</option>
-                                </select>
+                    <form #newUserForm="ngForm" (ngSubmit)="onAddNewUser(newUserForm)">
+                        <div class="form-group">
+                            <label for="username"> Username</label>
+                            <input type="text" name="username" required ngModel class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email"> Email</label>
+                            <input type="text" name="email" required ngModel class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="telephone"> Telephone</label>
+                            <input type="text" name="telephone" required ngModel class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="professionUser"> Profession</label>
+                            <input type="text" name="professionUser" required ngModel class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="authority">Role</label>
+                            <select name="role" required ngModel="ROLE_MEMBER" class="form-control">
 
-                            </div>
+                                <option value="ROLE_MEMBER">MEMBER</option>
+                                <option value="ROLE_CHEF">CHEF 
+                                </option>
+                                <option value="ROLE_SCRUM_MASTER">SCRUM_MASTER
+                                </option>
+                                <option value="ROLE_ADMIN">ADMIN
+                                </option>
 
-                            <div class="input-group mb-2">
-                                <div class="input-groupe-prepend">
-                                    <span class="input-group-text">Profile Picture</span>
+                            </select>
 
-                                </div>
-                                <div class="custom-file">
-                                    <input type="file" name="profileImage"
-                                        (change)="onProfileImageChange($event.target.files[0].name,$event.target.files[0])"
-                                        class="custom-file-input">
-                                    <label class="custom-file-label"><span [hidden]="! fileName"> {{fileName}}</span>
-                                        <span [hidden]="fileName"> Choose File</span>
-                                    </label>
-                                </div>
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <div class="input-groupe-prepend">
+                                <span class="input-group-text">Profile Picture</span>
 
                             </div>
-                            <fieldset class="form-group">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" name="isActive" [(ngModel)]="editUser.isActive"
-                                            class="form-check-input">Active
-                                    </label>
-                                </div>
+                            <div class="custom-file">
+                                <input type="file" name="profileImage"
+                                    (change)="onProfileImageChange($event.target.files[0].name,$event.target.files[0])"
+                                    class="custom-file-input">
+                                <label class="custom-file-label"><span [hidden]="! fileName"> {{fileName}}</span>
+                                    <span [hidden]="fileName"> Choose File</span>
+                                </label>
+                            </div>
 
-                                <div class="form-check disabled">
-                                    <label class="form-check-label">
-                                        <input type="checkbox"  name="isNotLocked" [(ngModel)]="editUser.isNotLocked"
-                                            class="form-check-input">Unlocked
-                                    </label>
-                                </div>
-                            </fieldset>
+                        </div>
+                        <fieldset class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="isActive" ngModel class="form-check-input">Active
+                                </label>
+                            </div>
 
-                        </form>
+                            <div class="form-check disabled">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="isNotLocked" ngModel class="form-check-input">Unlocked
+                                </label>
+                            </div>
+                        </fieldset>
+                        <button type="submit" style="display: none;" id="new-user-save"></button>
 
-                    </div>
-                </div>
-                <div class="modal-footer">
+                    </form>
 
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                        id="edit-user-close">Close</button>
-                    <button type="button" (click)="onUpdateUser()" [disabled]="editUserForm.invalid"
-                        class="btn btn-primary"> Save changes </button>
                 </div>
             </div>
-        </div>
+            <div class="modal-footer">
 
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-user-close">Close</button>
+                <button type="button" (click)="saveNewUser()" [disabled]="newUserForm.invalid" class="btn btn-primary">
+                    Save changes </button>
+            </div>
+        </div>
     </div>
 
+</div>
 
+
+
+
+<!-- edit User -->
+
+<div class="modal draggable fade bd-example-modal-lg" id="editUserModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Edit {{editUser.username }}</h5>
+                <button class="btn-close" type="button" id="openUserInfo" aria-label="Close" data-dismiss="modal"><span
+                        aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+
+                    <form #editUserForm="ngForm">
+                        <div class="form-group">
+                            <label for="username"> Username</label>
+                            <input type="text" name="username" required [(ngModel)]="editUser.username"
+                                class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email"> Email</label>
+                            <input type="text" name="email" required [(ngModel)]="editUser.email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="telephone"> Telephone</label>
+                            <input type="text" name="telephone" required [(ngModel)]="editUser.telephone"
+                                class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="professionUser"> Profession</label>
+                            <input type="text" name="professionUser" required [(ngModel)]="editUser.professionUser"
+                                class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="authority">Role</label>
+                            <select name="role" required [(ngModel)]="editUser.role" class="form-control">
+                                <option value="ROLE_MEMBER">MEMBER</option>
+                                <option value="ROLE_CHEF">CHEF 
+                                </option>
+                                <option value="ROLE_SCRUM_MASTER">SCRUM_MASTER
+                                </option>
+                                <option value="ROLE_ADMIN">ADMIN
+                                </option>
+                            </select>
+
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <div class="input-groupe-prepend">
+                                <span class="input-group-text">Profile Picture</span>
+
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" name="profileImage"
+                                    (change)="onProfileImageChange($event.target.files[0].name,$event.target.files[0])"
+                                    class="custom-file-input">
+                                <label class="custom-file-label"><span [hidden]="! fileName"> {{fileName}}</span>
+                                    <span [hidden]="fileName"> Choose File</span>
+                                </label>
+                            </div>
+
+                        </div>
+                        <fieldset class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="isActive" [(ngModel)]="editUser.isActive"
+                                        class="form-check-input">Active
+                                </label>
+                            </div>
+
+                            <div class="form-check disabled">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="isNotLocked" [(ngModel)]="editUser.isNotLocked"
+                                        class="form-check-input">Unlocked
+                                </label>
+                            </div>
+                        </fieldset>
+
+                    </form>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="edit-user-close">Close</button>
+                <button type="button" (click)="onUpdateUser()" [disabled]="editUserForm.invalid"
+                    class="btn btn-primary"> Save changes </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--Profile image change form-->
+<form enctype="multipart/form-data" style="display:none;">
+<input type="file"
+(change)="onProfileImageChange($event.target.files[0].name ,$event.target.files[0]); onUpdateProfileImage()"
+name="profile-image-input" id="profile-image-input" placeholder="file" ngModel accept="*"/>
+
+</form>
 
 
 

@@ -16,12 +16,14 @@ import { NotificationService } from './Services/notification.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user.component';
+import { ProjetComponent } from './projet/projet.component';
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProjetComponent
   ],
   imports: [
     BrowserModule,

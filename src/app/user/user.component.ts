@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { NotificationType } from '../enum/notification-type.enum';
@@ -8,6 +8,8 @@ import { NotificationService } from '../Services/notification.service';
 import { UserServService } from '../Services/user-serv.service';
 import {NgForm} from '@angular/forms';
 import { CustomHttpResponse } from '../models/custom-http-response';
+import { Router } from '@angular/router';
+import { FileUploadStatus } from '../models/file-upload.status';
 
 @Component({
   selector: 'app-user',
@@ -20,6 +22,7 @@ export class UserComponent implements OnInit {
 // @ViewChild('refreshButton') refreshButton: ElementRef<HTMLElement>;
 // public el: HTMLElement;
 public users: User[]; 
+public user: User; //user actual 
 public refreshing: boolean;
 private subscriptions :Subscription[]=[];
 public selectedUser :User;
@@ -27,7 +30,7 @@ public fileName:string;
 public profileImage:File;
 public editUser= new User() ;
 public currentUsername:string;
-
+public fileStatus= new FileUploadStatus();
 
 allUsers:any;
 
@@ -39,13 +42,14 @@ public currentKeyword:string="";
 
 
 
-  constructor( private userServ: UserServService,private authServ:AuthServService, private notificationService: NotificationService) { 
+  constructor(private router:Router, private userServ: UserServService,private authServ:AuthServService, private notificationService: NotificationService) { 
 
   }
 
  
   ngOnInit(): void {
-  this.getUsers(true);
+  this.getUsers(false);
+  this.user= this.authServ.getUserFromLocalCache(); // recupere user actuel 
   console.log(this.authServ.currentUserlogged());
 //this.getAllUsers() ;
 }
@@ -109,12 +113,15 @@ if(results.length === 0 || !searchTerm){
 
 
 public onUpdateUser():void{
+  console.log(this.user.username,this.user.role)
   const formDataa=this.userServ.createUserFormData(this.currentUsername,this.editUser, this.profileImage);
- console.log("test current"+this.currentUsername);
-  console.log(formDataa);
-  console.log("user edit "+this.editUser.username)
+ //console.log("test current"+this.currentUsername);
+ // console.log(formDataa);
+ // console.log("user edit "+this.editUser.username)
+ if(this.user.role== "ROLE_ADMIN"||this.user.role== "ROLE_SCRUM_MASTER"){
+   
   this.subscriptions.push(
-     this.userServ.updateUser(formDataa).subscribe(
+     this.userServ.updateProfile(formDataa).subscribe(
        (response:User)=>{
     console.log("response"+ response);
     this.clickButton('edit-user-close');
@@ -131,9 +138,102 @@ public onUpdateUser():void{
 
         }
         )
+        );}else {
+          this.sendNotification(NotificationType.ERROR, "you don't have permission");
+            this.clickButton('edit-user-close');
+             this.getUsers(false); 
+        }    
+      
+       
+
+}
+public onUpdateProfileImage():void{
+  const formData=new FormData();
+  formData.append('username', this.user.username);
+  formData.append('profileImage', this.profileImage);
+  this.subscriptions.push(
+    this.userServ.updateProfileImage(formData).subscribe(
+      (event:HttpEvent<any>)=>{
+  console.log(event);
+  this.reportUploadProgress(event);
+ //   this.sendNotification(NotificationType.SUCCESS,`Profile image updated successfully . `);
+
+ },
+ (errorResponse:HttpErrorResponse)=>{
+         this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+         this.fileStatus.status='done';
+
+       }
+       )
+       );
+}
+ private  reportUploadProgress(event: HttpEvent<any>):void {
+    switch(event.type){
+      case HttpEventType.UploadProgress: 
+      this.fileStatus.percentage=Math.round(100* event.loaded/event.total);
+      this.fileStatus.status='progress';
+      break;
+      case HttpEventType.Response: 
+      if(event.status ==200){
+        this.user.profileImageUrl=`${event.body.profileImageUrl}?time=${new Date().getTime()}` ;
+        this.sendNotification(NotificationType.SUCCESS,`${event.body.username}\'s image updated successfully . `);
+        this.fileStatus.status='done';
+break;
+      }else {
+        this.sendNotification(NotificationType.ERROR,`unable to upload image .Please try again . `);
+      break;}
+
+      default: `Finished all processes`;
+
+    }
+}
+
+
+
+public updateProfileImage():void{
+  this.clickButton('profile-image-input');
+
+}
+
+
+
+public onUpdateCurrentUser(user:User):void{
+  this.refreshing=true;
+  this.currentUsername = this.authServ.getUserFromLocalCache().username;
+  const formDataa=this.userServ.createUserFormData(this.currentUsername,user, this.profileImage);
+ 
+  this.subscriptions.push(
+     this.userServ.updateUser(formDataa).subscribe(
+       (response:User)=>{
+    console.log("response"+ response);
+  this.authServ.addUserToLocalCache(response);
+    this.getUsers(false); // false pour n'est pas affiche le message pop
+     this.fileName= null;
+     this.profileImage= null;
+     this.sendNotification(NotificationType.SUCCESS,`${response.username} updated successfully . `);
+
+  },
+  (errorResponse:HttpErrorResponse)=>{
+    console.log(errorResponse);
+          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+          this.profileImage= null;
+
+        }
+        )
         );
 
 }
+
+public onLogOut(): void{
+  this.authServ.logOut();
+  this.router.navigateByUrl('/login');
+  this.sendNotification(NotificationType.SUCCESS,`you've been successfully logged out ` );
+
+
+}
+
+
+
 
 
 public onEditUser(editUser:User):void{
@@ -156,7 +256,7 @@ public onEditUser(editUser:User):void{
         this.refreshing=false;
       },
       (error:HttpErrorResponse)=>{
-        this.sendNotification(NotificationType.WARNING, "No user found for email : "+ emailAddress);
+        this.sendNotification(NotificationType.WARNING, error.error.message);
         this.refreshing=false;
       },
       ()=> emailForm.reset()

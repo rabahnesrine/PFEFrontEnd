@@ -1,0 +1,501 @@
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="mb-4">
+                <div class="small mb-3">Search</div>
+                <div class="input-group">
+                    <input placeholder="Search Projects..." type="search" class="form-control "
+                    ngModel #searchProjet="ngModel" name="searchProject" 
+                            (ngModelChange)="searchProjets(searchProjet.value)" 
+                           >
+
+                </div>
+            </div>
+
+
+            <div class="mb-4">
+                <div class="small mb-3">Favorites</div>
+                <ul class="nav flex-column nav-pills">
+                    <li class="nav-item"><a href="#" class="nav-link"><i
+                                class="fa fa-fw fa-calendar-o mr-2"></i>Calendar</a></li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <div class="small mb-3">Projects</div>
+                <ul class="nav flex-column nav-pills">
+
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProjetModal">
+                            <i class="fa fa-fw fa-plus mr-2"></i>Add New Project
+                        </button>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="mb-4">
+                <div class="small mb-3">My Liste Projects</div>
+                <ul class="nav flex-column nav-pills">
+
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProjetModal">
+                            <i  class="fa fa-bars" aria-hidden="true"></i>My  Projects
+                        </button>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="mb-4">
+                <div class="small mb-3">People</div>
+                <ul class="nav flex-column nav-pills">
+                    <li class="nav-item">
+                        <a href="#" class="d-flex nav-link">
+                            <div class="media">
+                                <div class="mr-3 align-self-center media-left media-middle">
+                                    <div class="avatar-image avatar-image--loaded">
+                                        <div class="avatar avatar--md avatar-image__image">
+                                            <div class="avatar__content"><img
+                                                    src="https://bootdey.com/img/Content/avatar/avatar1.png"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <div class="mt-0">Harvey Blick</div><span class="small">Pennsylvania, SD</span>
+                                </div>
+                            </div><i class="fa fa-fw fa-circle text-success ml-auto align-self-center ml-2"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="d-flex nav-link">
+                            <div class="media">
+                                <div class="mr-3 align-self-center media-left media-middle">
+                                    <div class="avatar-image avatar-image--loaded">
+                                        <div class="avatar avatar--md avatar-image__image">
+                                            <div class="avatar__content"><img
+                                                    src="https://bootdey.com/img/Content/avatar/avatar2.png"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <div class="mt-0">Hobart Hintz</div><span class="small">North Carolina, CT</span>
+                                </div>
+                            </div><i class="fa fa-fw fa-circle text-warning ml-auto align-self-center ml-2"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="d-flex nav-link">
+                            <div class="media">
+                                <div class="mr-3 align-self-center media-left media-middle">
+                                    <div class="avatar-image avatar-image--loaded">
+                                        <div class="avatar avatar--md avatar-image__image">
+                                            <div class="avatar__content"><img
+                                                    src="https://bootdey.com/img/Content/avatar/avatar3.png"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <div class="mt-0">Elmore Cummerata</div><span class="small">Michigan, NC</span>
+                                </div>
+                            </div><i class="fa fa-fw fa-circle text-danger ml-auto align-self-center ml-2"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link"><i class="fa fa-fw fa-plus mr-2"></i>Add New
+                            People</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="d-flex flex-column flex-md-row mb-3 mb-md-0">
+                <nav class="mr-auto d-flex align-items-center" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="active breadcrumb-item" aria-current="page"><a href="/"><i
+                                    class="fa fa-home"></i></a></li>
+                        <li class="active breadcrumb-item" aria-current="page">Projects List</li>
+                    </ol>
+                </nav>
+                <div role="toolbar" class="btn-toolbar">
+                    <div role="group" class="mr-auto mr-md-2 btn-group">
+
+                        <button type="button" id="refreshProjButton" (click)="getProjets(true)" class="btn btn-success">
+                            <i *ngIf="refreshProjet" class="fa fa-sync fa-spin"></i> <i *ngIf="! refreshProjet"
+                                class="fa fa-sync"></i>
+
+                        </button>
+
+
+
+                    </div>
+
+                    <div role="group" class="btn-group">
+                        <button class="align-self-center btn btn-primary" data-toggle="modal"
+                            data-target="#addProjetModal"><i class="fa-fw fa fa-plus"></i></button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 Card_custom-card--border_5wJKy card">
+                <div class="table-responsive-xl">
+                    <table class="mb-0 table table-hover">
+                        <thead>
+                            <tr>
+
+                                <th class="align-middle bt-0">Project</th>
+                                <th class="align-middle bt-0">Status</th>
+                                <th class="align-middle bt-0">Tasks Completed</th>
+                                <th class="align-middle bt-0">Created by</th>
+                                <th class="align-middle bt-0 text-right">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody *ngFor="let projet of projets">
+                            <tr *ngIf="projet">
+
+
+
+                                <td (click)="onSelectProjet(projet)" class="align-middle">
+                                    <div><a href="/apps/tasks/list">{{projet.nameProjet}}</a></div><span>
+                                        Creation Date: {{projet.dateCreation}} <br> Due Date: {{projet.dateEcheance}}
+                                    </span>
+                                </td>
+
+
+                                <td (click)="onSelectProjet(projet)" class="align-middle"><span
+                                        style="background: gray;" class="badge badge-success badge-pill">
+                                        {{projet.etatProjet.substring(5)}}</span>
+
+
+                                </td>
+                                <td (click)="onSelectProjet(projet)" class="align-middle">
+                                    <div class="mb-2 progress" style="height: 5px;">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="25"
+                                            aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                    </div>
+                                    <div>Tasks Completed:<span class="text-inverse">36/94</span></div>
+                                </td>
+                                <td (click)="onSelectProjet(projet)" class="align-middle">
+                                    <div class="avatar-image avatar-image--loaded">
+                                        <div class="avatar avatar--md avatar-image__image">
+                                            <div class="avatar__content"><img src="{{projet.creePar.profileImageUrl}}">
+                                            </div>
+                                            {{projet.creePar.username}}
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td  class="align-middle text-right">
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-info"  (click)="onEditProjet(projet)">
+                                            <i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-outline-danger" (click)="onDeleteProjet(projet.idProjet)" > <i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <button [hidden]="true" type="button" id="openProjetInfo" data-toggle="modal" data-target="#viewProjetModal">
+    </button>
+    <button [hidden]="true" type="button" id="openProjetEdit" data-toggle="modal" data-target="#editProjetModal">
+    </button>
+
+
+
+    <!-- edit Projet -->
+
+<div class="modal draggable fade bd-example-modal-lg" id="editProjetModal" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title text-center">Edit {{editProjet.nameProjet }}</h5>
+            <button class="btn-close" type="button" id="openProjetInfo" aria-label="Close" data-dismiss="modal"><span
+                    aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="">
+
+                <form #editProjetForm="ngForm">
+                    <div class="form-group">
+                        <label for="nameProjet"> name Project</label>
+                        <input type="text" name="nameProjet" required [(ngModel)]="editProjet.nameProjet"
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="creePar"> Created By </label>
+                        <input type="text" name="creePar" required [(ngModel)]="editProjet.creePar.username" class="form-control">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="dateEch">dateEcheance</label>
+                        <input type="date" name="dateEcheance" required [(ngModel)]="dateEcheance"
+                            class="form-control">
+                    </div>
+
+                                    
+                    <div class="form-group">
+                        <label for="status"> etat Projet</label>
+                        <select name="etatProjet" required [(ngModel)]="editProjet.etatProjet" class="form-control">
+
+                            <option value="ETAT_ACTIVE"> ACTIVE</option>
+                            <option value="ETAT_SUSPENDED">SUSPENDED
+                            </option>
+                            <option value="ETAT_WAITING">WAITING 
+                            </option>
+                            <option value="ETAT_PAUSED">PAUSED
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                              
+                
+                </form>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="edit-projet-close">Close</button>
+            <button type="button" (click)="onUpdateProjet()" [disabled]="editProjetForm.invalid"
+                class="btn btn-primary"> Save changes </button>
+        </div>
+        
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+
+    <!-- detail Projet  -->
+
+
+    <div class="modal fade bd-example-modal-lg" id="viewProjetModal" tabindex="-1" role="dialog" aria-labelledby=""
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 *ngIf="selectedProjet" class="modal-title text-center" id="exampleModalLongTitle">
+                        <i class="fas fa-money-check"> Project :  {{selectedProjet.nameProjet}} </i> </h4>
+                    <button class="btn-close" type="button" id="openProjetInfo" aria-label="Close"
+                        data-dismiss="modal"><span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngIf="selectedProjet!==undefined">
+                    <div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-sm-auto ">
+                                        <div class="mx-auto" style="width: 120px;">
+                                            <div class="d-flex justify-content-center align-items-center rounded">
+                                                <img class="rounded" height="120" width="120"
+                                                    src="{{selectedProjet.creePar.profileImageUrl}}"
+                                                    alt="{{selectedProjet.creePar.username}}">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex flex-column flex-sm-row justify-content-between ">
+                                        <div class="text-left text-sm-left  mb-sm-0">
+                                          
+                                            <h5 class="pt-sm-2 pb-1 mb-0 text-nowrap"><i class="fas fa-user-shield"> Created by:
+                                                {{selectedProjet.creePar.username}}</i>
+                                               </h5>
+                                            <!--                                             <p class="mb-1">{{selectedUser.telephone}}</p>
+-->
+                                            <div class="">
+                                                <i class="fa fa-shield-alt float-right">{{selectedProjet.creePar.role.substring(5)}}</i> 
+
+                                            </div>
+
+                                          
+                                                <div class="text-muted"><small>
+                                                        <div class=""> Contact: </div>
+                                                        {{selectedProjet.creePar.email}}
+                                                    </small></div>
+
+
+                                            </div>
+
+                                            <div class="text-center text-sm-right">
+
+                                                <div *ngIf="selectedProjet.dateCreation" class="text-muted">
+                                                    <small> Creation Date :
+                                                    </small>
+                                                </div>
+                                                <div *ngIf="selectedProjet.dateCreation" class="text-muted">
+                                                    <small>
+                                                        {{selectedProjet.dateCreation | date:'medium' }}</small>
+                                                </div>
+
+                                                <div class="text-muted"><small>Due Date
+                                                    </small></div>
+                                                <div *ngIf="selectedProjet.dateEcheance" class="text-muted"><small>
+                                                        {{selectedProjet.dateEcheance|date:'medium'
+                                                        }}</small></div>
+                                                        <div class="text-muted"><small>Last Updated Date
+                                                        </small></div>
+                                                    <div *ngIf="selectedProjet.dateModification" class="text-muted"><small>
+                                                            {{selectedProjet.dateModification|date:'medium'
+                                                            }}</small></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"></li>
+                                   
+                                    <li class="list-group-item">
+                                        <i class="fas fa-file-signature"> Project Name :  {{selectedProjet.nameProjet}}</i> 
+                                    </li>
+
+
+
+                                    <li class="list-group-item">
+                                        <i class="fas fa-info-circle">  Status :  {{selectedProjet.etatProjet.substring(5)}}
+                                        </i>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-edit">Last Updated :  {{selectedProjet.dateModification|date:'medium'}}</i>
+                                     
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-user-tie">Client : </i>
+                                       name client 
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-users"> Participants : </i>
+                                     
+                                    </li>
+
+
+
+                                </ul>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                id="new-projet-close">Close</button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- add Projet  -->
+
+
+
+
+        <div class="modal draggable fade bd-example-modal-lg" id="addProjetModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center">New Projet </h4>
+                        <button class="btn-close" type="button" id="openProjetInfo" aria-label="Close"
+                            data-dismiss="modal"><span aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+
+                            <form #newProjetForm="ngForm" (ngSubmit)="onAddNewProjet(newProjetForm.value) ">
+                                <div class="form-group">
+                                    <label for="name"> name Projet</label>
+                                    <input type="text" name="nameProjet" required [(ngModel)]="nameProjet"
+                                        class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="dateEch">dateEcheance</label>
+                                    <input type="date" name="dateEcheance" required [(ngModel)]="dateEcheance"
+                                        class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="status"> etat Projet</label>
+                                    <select name="etatProjet" required ngModel="ETAT_PAUSED" class="form-control">
+
+                                        <option value="ETAT_ACTIVE"> ACTIVE</option>
+                                        <option value="ETAT_SUSPENDED">SUSPENDED
+                                        </option>
+                                        <option value="ETAT_WAITING">WAITING 
+                                        </option>
+                                        <option value="ETAT_PAUSED">PAUSED
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+
+
+
+                                <div class="form-group">
+                                    <label for=" creePar">cree Par</label>
+                                    <h5> {{ userActuel.username}}</h5>
+
+
+                                    <input [hidden]="true" type="text" name="creePar" required [(ngModel)]="userActuel"
+                                        class="form-control">
+                                </div>
+
+
+
+                                <button type="submit" style="display: none;" id="new-projet-save"></button>
+
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-projet-close">Close</button>
+                        <button type="button" (click)="saveNewProjet()" [disabled]="newProjetForm.invalid"
+                            class="btn btn-primary">
+                            Save changes </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+    </div>

@@ -3,7 +3,6 @@ import {environment} from '../../environments/environment'
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/User';
-import { JwtHelperService } from "@auth0/angular-jwt";
 import { CustomHttpResponse } from '../models/custom-http-response';
 import { AuthServService } from './auth-serv.service';
 
@@ -42,11 +41,16 @@ export class UserServService {
        return  this.http.post<User>(`${this.host}/user/update`,formData);
   }
 
+
+  public updateProfile(formData: FormData):Observable<User|HttpErrorResponse>{
+    return  this.http.post<User>(`${this.host}/user/update`,formData);
+}
+
   public resetPassword(email:string):Observable<CustomHttpResponse|HttpErrorResponse>{
     return this.http.get<CustomHttpResponse>(`${this.host}/user/resetPassword/${email}`);
   }
 
-  public updateProfileImage(formData: FormData):Observable<HttpEvent<User>|HttpErrorResponse>{
+  public updateProfileImage(formData: FormData):Observable<HttpEvent<User>>{
     return this.http.post<User>(`${this.host}/user/updateProfileImage`,formData,
      {reportProgress:true,
       observe:'events'});
