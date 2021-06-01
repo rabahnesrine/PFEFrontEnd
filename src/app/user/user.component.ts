@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { NotificationType } from '../enum/notification-type.enum';
 import { User } from '../models/User';
@@ -10,17 +10,17 @@ import {NgForm} from '@angular/forms';
 import { CustomHttpResponse } from '../models/custom-http-response';
 import { Router } from '@angular/router';
 import { FileUploadStatus } from '../models/file-upload.status';
+import { Role } from '../enum/role.enum';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html',
+  templateUrl:'./user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit,OnDestroy {
  private titleSubject= new BehaviorSubject<string>('Users');    //actual subject
  public titleAction$=this.titleSubject.asObservable(); //action listener
-// @ViewChild('refreshButton') refreshButton: ElementRef<HTMLElement>;
-// public el: HTMLElement;
+
 public users: User[]; 
 public user: User; //user actual 
 public refreshing: boolean;
@@ -33,7 +33,7 @@ public currentUsername:string;
 public fileStatus= new FileUploadStatus();
 
 allUsers:any;
-
+//projection 
 public size:number=5;
 public currentPage:number=0;
 public totalPages:number;
@@ -45,6 +45,7 @@ public currentKeyword:string="";
   constructor(private router:Router, private userServ: UserServService,private authServ:AuthServService, private notificationService: NotificationService) { 
 
   }
+  
 
  
   ngOnInit(): void {
@@ -268,9 +269,9 @@ public onEditUser(editUser:User):void{
 
 
 
-public onDeleteUser(id:number):void{
+public onDeleteUser(username:string):void{
   this.subscriptions.push(
-    this.userServ.deleteUser(id).subscribe(
+    this.userServ.deleteUser(username).subscribe(
       (response: CustomHttpResponse)=>{
         this.sendNotification(NotificationType.SUCCESS, "success deleting");
         
@@ -299,17 +300,7 @@ private  sendNotification(notificationType: NotificationType, message: string):v
   
 
 
- /* public  getAllUsers() {
-      
-      this.userServ.getAllUsers().subscribe( data => {
-        this.allUsers=data;
-        console.log(this.authServ.getToken());
 
-        console.log(data);
-      }, err => {
-        console.log(  err);
-      });
-    }*/
 
 
 public onSelectUser(selectedUser:User):void{
@@ -354,42 +345,26 @@ private clickButton(buttonId:string):void{
   document.getElementById(buttonId).click();
 }
 
-
-
-/*
-onGetUsers(){
-  this.userServ.getUsers(this.currentPage,this.size)
-  .subscribe(data=>{
-  this.totalPages=data["page"].totalPages;
-this.pages=new Array<number>(this.totalPages);
-this.user=data;},err=>{
-      console.log(err);
-  })
+//get role 
+private getUserRole():string{
+  return this.authServ.getUserFromLocalCache().role;
 }
 
-onPageUser(i){
-  this.currentPage=i;
- //this.ChercherUsers();
-  this.onGetUsers(); // pour charger les users de nouveau
- // this.onChercher({keyword:this.currentKeyword});
+public get isAdmin():boolean{
+  return this.getUserRole()=== Role.ADMIN;
+}
 
+public get isScrumMaster():boolean{
+  return this.isAdmin ||this.getUserRole()=== Role.SCRUM_MASTER;
+}
+
+public get isAdminOrScrumMaster():boolean{
+  return this.isAdmin ||this.isScrumMaster;
 }
 
 
-getlistUser(){
-  this.userServ.findlist()
-  .subscribe((reponse)=>{this.users=reponse
-  },err=>console.log(err))
-
+ngOnDestroy():void{
+  this.subscriptions.forEach(sub=>sub.unsubscribe());
 }
 
-
-
-
- /*  onGetUsers(){
-    this.httpclient.get("http://localhost:8080/users").subscribe( (data)=>{
-      this.users=data},(err)=>{console.log("err");})
-
-  }
- */
 }

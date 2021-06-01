@@ -19,26 +19,25 @@
                     Users
                 </a>
 
-                <a class="nav-item nav-link  ml-3" (click)="changeTitle('projet')" data-toggle="tab" href="#projet">
+                <a [hidden]="!isAdminOrScrumMaster" class="nav-item nav-link  ml-3" (click)="changeTitle('projet')" data-toggle="tab" href="#projet">
                     <i class="fa fa-cogs"></i>
                    Projets
                 </a>
 
-                <a class="nav-item nav-link  ml-3" (click)="changeTitle('reset-password')" data-toggle="tab"
+                <a [hidden]="!isAdmin" class="nav-item nav-link  ml-3" (click)="changeTitle('reset-password')" data-toggle="tab"
                     href="#reset-password">
                     <i class="fa fa-cogs"></i>
                     Settings
                 </a>
 
 
-              
+
 
                 <a class="nav-item nav-link move-right mr-3" (click)="changeTitle('profile')" data-toggle="tab"
                     href="#profile">
                     Welcome, {{user.username}}
                     <i class="fa fa-user"></i>
                 </a>
-
 
             </div>
         </div>
@@ -55,21 +54,22 @@
                         <input ngModel #searchInput="ngModel" name="searchTerm" class="form-control mr-sm-2"
                             (ngModelChange)="searchUsers(searchInput.value)" type="search"
                             placeholder="Search users ...">
+
+                            <button [hidden]="!isAdminOrScrumMaster" type="button" class="btn btn-info" data-toggle="modal" data-target="#addUserModal">
+                                <i class="fa fa-plus"></i>
+                                New User
+                            </button>
+        
+                            <div class="btn-group">
+                                <button type="button" id="refreshButton" (click)="getUsers(true)" class="btn btn-info">
+                                    <i *ngIf="refreshing" class="fa fa-sync fa-spin"></i> <i *ngIf="! refreshing"
+                                        class="fa fa-sync"></i>
+        
+                                </button>
+                            </div>
                     </form>
 
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addUserModal">
-                        <i class="fa fa-plus"></i>
-                        New User
-                    </button>
-
-                    <div class="btn-group">
-                        <button type="button" id="refreshButton" (click)="getUsers(true)" class="btn btn-info">
-                            <i *ngIf="refreshing" class="fa fa-sync fa-spin"></i> <i *ngIf="! refreshing"
-                                class="fa fa-sync"></i>
-
-                        </button>
-                    </div>
-
+                   
                 </div>
 
 
@@ -112,7 +112,7 @@
                                 <div class="btn-group">
                                     <button class="btn btn-outline-info" (click)="onEditUser(user)">
                                         <i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-outline-danger" (click)="onDeleteUser(user.id)"> <i
+                                    <button [hidden]="!isAdminOrScrumMaster" class="btn btn-outline-danger" (click)="onDeleteUser(user.username)"> <i
                                             class="fas fa-trash"></i></button>
                                 </div>
 
@@ -133,7 +133,7 @@
 
         <!--change password -->
 
-        <div class="tab-pane fade" id="reset-password">
+        <div [hidden]="!isAdmin" class="tab-pane fade" id="reset-password">
             <form #resetPasswordForm="ngForm" (ngSubmit)="onResetPassword(resetPasswordForm)">
                 <fieldset>
                     <legend> User Password Management</legend>
@@ -153,7 +153,7 @@
             </form>
         </div>
 
-
+<!--projet-->
         <div class="tab-pane fade" id="projet">
             <app-projet> </app-projet>
        
@@ -219,8 +219,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="text-center text-sm-right">
-                                                        <div class="text-muted"><small>Joined :{{ user.joinDate | date:
-                                                                'mediumDate'}} </small></div>
+                                                        <div class="text-muted"><small>Joined :{{ user.joinDate |date:'mediumDate'}} </small></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -284,10 +283,10 @@
                                                                 <div class="row">
                                                                     <div class="col mb-3">
                                                                         <div class="form-group">
-                                                                            <label> &nbsp;&nbsp; Role</label>
+                                                                            <label> &nbsp;&nbsp; Role</label>  <small [hidden]="isAdmin">(read only)</small>
 
 
-                                                                            <select name="role" required
+                                                                            <select name="role" required [disabled]="!isAdmin"
                                                                                 [(ngModel)]="user.role"
                                                                                 class="form-control">
                                                                                 <option value="ROLE_MEMBER">MEMBER</option>
@@ -407,7 +406,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 *ngIf="selectedUser" class="modal-title text-center" id="exampleModalLongTitle">
-                    {{selectedUser.username}} </h4>
+                    <i class="fas fa-id-card-alt"> {{selectedUser.username}}</i>  </h4>
                 <button class="btn-close" type="button" id="openUserInfo" aria-label="Close" data-dismiss="modal"><span
                         aria-hidden="true"></span>
                 </button>
@@ -512,14 +511,12 @@
 <!-- add user   -->
 
 
-
-
-<div class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
+<div [hidden]="!isAdminOrScrumMaster" class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title text-center">New User </h4>
+                <h4 class="modal-title text-center"><i class="fas fa-user-plus"> New User</i> </h4>
                 <button class="btn-close" type="button" id="openUserInfo" aria-label="Close" data-dismiss="modal"><span
                         aria-hidden="true"></span>
                 </button>
@@ -568,7 +565,7 @@
                             <div class="custom-file">
                                 <input type="file" name="profileImage"
                                     (change)="onProfileImageChange($event.target.files[0].name,$event.target.files[0])"
-                                    class="custom-file-input">
+                                    class="custom-file-input"  accept="image/*">
                                 <label class="custom-file-label"><span [hidden]="! fileName"> {{fileName}}</span>
                                     <span [hidden]="fileName"> Choose File</span>
                                 </label>
@@ -615,7 +612,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-center">Edit {{editUser.username }}</h5>
+                <h5 class="modal-title text-center"><i class="fas fa-user-edit"> Edit {{editUser.username }}</i> <small [hidden]="isAdminOrScrumMaster">(read only)</small></h5>
                 <button class="btn-close" type="button" id="openUserInfo" aria-label="Close" data-dismiss="modal"><span
                         aria-hidden="true"></span>
                 </button>
@@ -626,26 +623,26 @@
                     <form #editUserForm="ngForm">
                         <div class="form-group">
                             <label for="username"> Username</label>
-                            <input type="text" name="username" required [(ngModel)]="editUser.username"
+                            <input type="text" name="username" required [disabled]="!isAdminOrScrumMaster" [(ngModel)]="editUser.username"
                                 class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="email"> Email</label>
-                            <input type="text" name="email" required [(ngModel)]="editUser.email" class="form-control">
+                            <input type="text" name="email" required [disabled]="!isAdminOrScrumMaster" [(ngModel)]="editUser.email" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="telephone"> Telephone</label>
-                            <input type="text" name="telephone" required [(ngModel)]="editUser.telephone"
+                            <input type="text" name="telephone" required [disabled]="!isAdminOrScrumMaster" [(ngModel)]="editUser.telephone"
                                 class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="professionUser"> Profession</label>
-                            <input type="text" name="professionUser" required [(ngModel)]="editUser.professionUser"
+                            <input type="text" name="professionUser" required [disabled]="!isAdminOrScrumMaster" [(ngModel)]="editUser.professionUser"
                                 class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="authority">Role</label>
-                            <select name="role" required [(ngModel)]="editUser.role" class="form-control">
+                            <select name="role" required [disabled]="!isAdminOrScrumMaster" [(ngModel)]="editUser.role" class="form-control">
                                 <option value="ROLE_MEMBER">MEMBER</option>
                                 <option value="ROLE_CHEF">CHEF 
                                 </option>
@@ -663,9 +660,9 @@
 
                             </div>
                             <div class="custom-file">
-                                <input type="file" name="profileImage"
+                                <input type="file" name="profileImage" [disabled]="!isAdminOrScrumMaster"
                                     (change)="onProfileImageChange($event.target.files[0].name,$event.target.files[0])"
-                                    class="custom-file-input">
+                                    class="custom-file-input"  accept="image/*">
                                 <label class="custom-file-label"><span [hidden]="! fileName"> {{fileName}}</span>
                                     <span [hidden]="fileName"> Choose File</span>
                                 </label>
@@ -675,15 +672,15 @@
                         <fieldset class="form-group">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input type="checkbox" name="isActive" [(ngModel)]="editUser.isActive"
-                                        class="form-check-input">Active
+                                    <input type="checkbox" name="isActive" [disabled]="!isAdminOrScrumMaster" [(ngModel)]="editUser.isActive"
+                                        class="form-check-input">Active <small [hidden]="isAdminOrScrumMaster">(read only)</small>
                                 </label>
                             </div>
 
                             <div class="form-check disabled">
                                 <label class="form-check-label">
-                                    <input type="checkbox" name="isNotLocked" [(ngModel)]="editUser.isNotLocked"
-                                        class="form-check-input">Unlocked
+                                    <input type="checkbox" name="isNotLocked" [disabled]="!isAdminOrScrumMaster" [(ngModel)]="editUser.isNotLocked"
+                                        class="form-check-input">Unlocked <small [hidden]="isAdminOrScrumMaster">(read only)</small>
                                 </label>
                             </div>
                         </fieldset>
@@ -707,7 +704,7 @@
 <form enctype="multipart/form-data" style="display:none;">
 <input type="file"
 (change)="onProfileImageChange($event.target.files[0].name ,$event.target.files[0]); onUpdateProfileImage()"
-name="profile-image-input" id="profile-image-input" placeholder="file" ngModel accept="*"/>
+name="profile-image-input" id="profile-image-input" placeholder="file" ngModel accept="image/*"/>
 
 </form>
 

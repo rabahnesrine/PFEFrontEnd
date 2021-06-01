@@ -10,22 +10,24 @@ import { Router } from '@angular/router';
 import { UserServService } from '../Services/user-serv.service';
 import { AuthServService } from '../Services/auth-serv.service';
 import { CustomHttpResponse } from '../models/custom-http-response';
+import { Role } from '../enum/role.enum';
 
 
 @Component({
   selector: 'app-projet',
-  templateUrl: './projet.component.html',
+  templateUrl:'./projet.component.html',
   styleUrls: ['./projet.component.css']
 })
 export class ProjetComponent implements OnInit {
   public projets: Projet[];
+  public myProjets:Projet [];
   public userActuel: User;
-  public nameProjet: string ='';
+  public nameProjet: string = '';
   public dateEcheance: Date = null;
   public refreshProjet: boolean;
   public selectedProjet: Projet;
   public selectProjetDelete: Projet;
-  public editProjet = new Projet() ;
+  public editProjet = new Projet();
 
 
 
@@ -37,7 +39,6 @@ export class ProjetComponent implements OnInit {
 
     this.userActuel = this.authServ.getUserFromLocalCache(); // recupere user actuel 
     console.log("create projet by" + this.authServ.currentUserlogged());
-
   }
 
 
@@ -48,7 +49,6 @@ export class ProjetComponent implements OnInit {
 
   public getProjets(showNotification: boolean): void {
     this.refreshProjet = true;
-    // this.subscriptions.push(
     this.projetServ.getProjets().subscribe(
       (response: Projet[]) => {
 
@@ -56,6 +56,9 @@ export class ProjetComponent implements OnInit {
         this.projetServ.addProjetsToLocalCache(response);
         this.projets = response;
         this.refreshProjet = false;
+
+        this.getMyProjets()
+
         if (showNotification) {
           this.sendNotification(NotificationType.SUCCESS, `${response.length} projet(s) loaded successfully . `);
         }
@@ -65,12 +68,24 @@ export class ProjetComponent implements OnInit {
         this.refreshProjet = false;
       }
     )
-    //  );
-    //click button refresh automatically
-    //this.el= this.refreshButton.nativeElement;
-    //this.el.click();
+    
     document.getElementById("refreshProjButton").click();
   }
+
+
+
+
+
+  public getMyProjets(): void {
+    this.refreshProjet = true;
+    this.myProjets = this.projets.filter(p => p.creePar.id==this.userActuel.id);
+  // console.log(this.projets.find(p => p.creePar.username=="med"));
+console.log(this.myProjets);
+    
+  }
+
+
+
 
 
 
@@ -85,70 +100,72 @@ export class ProjetComponent implements OnInit {
 
 
 
-  public onAddNewProjet(projetForm: Projet): void { 
+  public onAddNewProjet(projetForm: Projet): void {
     this.userActuel = this.authServ.getUserFromLocalCache();
     console.log(this.userActuel)
     console.log(projetForm);
-    if(this.userActuel.role== "ROLE_ADMIN"||this.userActuel.role== "ROLE_SCRUM_MASTER"){
-     
-    this.projetServ.addProjet(projetForm).subscribe((response: Projet) => {
-      this.clickButton('new-projet-close');
-      this.getProjets(false); // false pour n'est pas affiche le message pop
-      console.log("added fonction ")
-      this.nameProjet = '';
-      this.dateEcheance = null;
-      this.sendNotification(NotificationType.SUCCESS, `${response.nameProjet} added successfully . `);
+    if (this.userActuel.role == "ROLE_ADMIN" || this.userActuel.role == "ROLE_SCRUM_MASTER") {
 
-    },
-      (errorResponse: HttpErrorResponse) => {
-        console.log(errorResponse);
-        this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+      this.projetServ.addProjet(projetForm).subscribe((response: Projet) => {
+        this.clickButton('new-projet-close');
+        this.getProjets(false); // false pour n'est pas affiche le message pop
+        console.log("added fonction ")
+        this.nameProjet = '';
+        this.dateEcheance = null;
+        this.sendNotification(NotificationType.SUCCESS, `${response.nameProjet} added successfully . `);
 
-      }
-    )}else{this.sendNotification(NotificationType.ERROR, "you don't have permission ");
-    this.getProjets(false);
+      },
+        (errorResponse: HttpErrorResponse) => {
+          console.log(errorResponse);
+          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+
+        }
+      )
+    } else {
+      this.sendNotification(NotificationType.ERROR, "you don't have permission ");
+      this.getProjets(false);
 
     }
-   
+
   }
 
 
-  public onEditProjet(editProjet:Projet):void{
-    this.editProjet=editProjet;
-    console.log("edit  "+ editProjet.nameProjet);
-   // this.currentUsername= editUser.username;
+  public onEditProjet(editProjet: Projet): void {
+    this.editProjet = editProjet;
+    console.log("edit  " + editProjet.nameProjet);
+    // this.currentUsername= editUser.username;
     this.clickButton('openProjetEdit');
   }
-  
 
-  public onUpdateProjet():void{
-  
-   if( this.userActuel.role == "ROLE_ADMIN"||this.editProjet.creePar.id == this.userActuel.id){
-     
-       this.projetServ.updateProjet(this.editProjet.idProjet,this.editProjet).subscribe(
-         (response:Projet)=>{
-      console.log("response"+ response);
-      console.log( response);
 
+  public onUpdateProjet(): void {
+
+    if (this.userActuel.role == "ROLE_ADMIN" || this.editProjet.creePar.id == this.userActuel.id) {
+
+      this.projetServ.updateProjet(this.editProjet.idProjet, this.editProjet).subscribe(
+        (response: Projet) => {
+          console.log("response" + response);
+          console.log(response);
+
+          this.clickButton('edit-projet-close');
+          this.getProjets(false); // false pour n'est pas affiche le message pop
+          this.sendNotification(NotificationType.SUCCESS, `${response.nameProjet} updated successfully . `);
+
+        },
+        (errorResponse: HttpErrorResponse) => {
+          console.log(errorResponse);
+          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+
+        }
+      )
+    } else {
+      this.sendNotification(NotificationType.ERROR, "you don't have permission");
       this.clickButton('edit-projet-close');
-       this.getProjets(false); // false pour n'est pas affiche le message pop
-       this.sendNotification(NotificationType.SUCCESS,`${response.nameProjet} updated successfully . `);
-  
-    },
-    (errorResponse:HttpErrorResponse)=>{
-      console.log(errorResponse);
-            this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
-  
-          }
-          )
-         }else {
-            this.sendNotification(NotificationType.ERROR, "you don't have permission");
-              this.clickButton('edit-projet-close');
-               this.getProjets(false); 
-          }    
-        
-         
-  
+      this.getProjets(false);
+    }
+
+
+
   }
 
 
@@ -195,7 +212,7 @@ export class ProjetComponent implements OnInit {
 
   }
 
-  
+
 
   public onDeleteProjet(id: number): void {
     console.log(this.projets.find(p => p.idProjet == id)
@@ -214,34 +231,34 @@ export class ProjetComponent implements OnInit {
     else { console.log("non "); }
 
 
-      if( this.userActuel.role == "ROLE_ADMIN"||this.selectProjetDelete.creePar.id == this.userActuel.id ) {
-        this.projetServ.deleteProjet(id).subscribe(
-          (response: CustomHttpResponse) => {
-            console.log(response);
-            this.sendNotification(NotificationType.SUCCESS, "success deleting");
+    if (this.userActuel.role == "ROLE_ADMIN" || this.selectProjetDelete.creePar.id == this.userActuel.id) {
+      this.projetServ.deleteProjet(id).subscribe(
+        (response: CustomHttpResponse) => {
+          console.log(response);
+          this.sendNotification(NotificationType.SUCCESS, "success deleting");
 
-            this.getProjets(false);
-          }, (errorResponse: HttpErrorResponse) => {
-            console.log(errorResponse);
-            this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+          this.getProjets(false);
+        }, (errorResponse: HttpErrorResponse) => {
+          console.log(errorResponse);
+          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
 
-          }
+        }
 
-        )
-      } else {
-        this.sendNotification(NotificationType.ERROR, "you don't have permission this is not yours ");
-        this.getProjets(false);
-      }
-    
-         
-
-
-
-
-
-
+      )
+    } else {
+      this.sendNotification(NotificationType.ERROR, "you don't have permission this is not your project  ");
+      this.getProjets(false);
     }
-  
+
+
+
+
+
+
+
+
+  }
+
 
 
   private clickButton(buttonId: string): void {
@@ -264,6 +281,27 @@ export class ProjetComponent implements OnInit {
       this.notificationService.notify(notificationType, 'An error occured . Please try again.')
     }
   }
+
+
+
+
+//get role 
+private getUserRole():string{
+  return this.authServ.getUserFromLocalCache().role;
+}
+
+public get isAdmin():boolean{
+  return this.getUserRole()=== Role.ADMIN;
+}
+
+public get isScrumMaster():boolean{
+  return this.isAdmin ||this.getUserRole()=== Role.SCRUM_MASTER;
+}
+
+public get isAdminOrScrumMaster():boolean{
+  return this.isAdmin ||this.isScrumMaster;
+}
+
 
 
 }

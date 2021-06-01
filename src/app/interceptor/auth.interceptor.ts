@@ -20,10 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if(httpRequest.url.includes(`${this.authServ.host}/user/register`)) {
       return httpHandler.handle(httpRequest);
   }
-  if(httpRequest.url.includes(`${this.authServ.host}/user/resetpassword`)) {
-    return httpHandler.handle(httpRequest);
-    
-}
+
 
 this.authServ.loadToken(); //when the token is loaded we can access to this token  
 const token=this.authServ.getToken();
