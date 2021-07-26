@@ -97,6 +97,7 @@ public searchUsers(searchTerm:string ):void{
     if(user.username.toLowerCase().indexOf(searchTerm.toLowerCase())!== -1 ||
     user.userId.toLowerCase().indexOf(searchTerm.toLowerCase())!== -1 ||
     user.email.toLowerCase().indexOf(searchTerm.toLowerCase())!==-1 ||
+    user.isActive.toString().indexOf(searchTerm.toLowerCase())!==-1 ||
     user.professionUser.toLowerCase().indexOf(searchTerm.toLowerCase())!==-1 ) {
         results.push(user); 
         console.log(results);
@@ -114,7 +115,7 @@ if(results.length === 0 || !searchTerm){
 
 
 public onUpdateUser():void{
-  console.log(this.user.username,this.user.role)
+  console.log(this.user.username,this.user.role,this.editUser.role);
   const formDataa=this.userServ.createUserFormData(this.currentUsername,this.editUser, this.profileImage);
  //console.log("test current"+this.currentUsername);
  // console.log(formDataa);

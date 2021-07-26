@@ -24,6 +24,7 @@ private subscriptions: Subscription[]=[];
   ngOnInit(): void {
 if(this.authServ.isLoggedIn()){
   this.router.navigateByUrl('/user/management');
+
 }else {
   this.router.navigateByUrl('/login');
 }}
@@ -41,6 +42,7 @@ public onLogin(user:User):void{
         this.authServ.saveToken(token);
         this.authServ.addUserToLocalCache(response.body); 
   this.router.navigateByUrl('/user/management')
+
   this.showLoading=false;
 },(errorResponse:HttpErrorResponse)=>{
 console.log(errorResponse);

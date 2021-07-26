@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthServService } from './auth-serv.service';
-import { UserServService } from './user-serv.service';
+
 import { Projet } from '../models/Projet';
 import { HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {environment} from '../../environments/environment'
-import { NgForm } from '@angular/forms';
 import { CustomHttpResponse } from '../models/custom-http-response';
 
 
@@ -15,7 +13,7 @@ import { CustomHttpResponse } from '../models/custom-http-response';
 export class ProjetServService {
   private host=environment.apiUrl;
 
-  constructor(private http : HttpClient,private authServ:AuthServService,private userServ:UserServService) { }
+  constructor(private http : HttpClient) { }
 
   public getProjets():Observable<Projet[]|HttpErrorResponse>{
     return this.http.get<Projet[]> (`${this.host}/projet/allProjets`);

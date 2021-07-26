@@ -22,6 +22,7 @@
     "@auth0/angular-jwt": "^5.0.2",
     "angular-notifier": "^9.0.1",
     "bootstrap": "^3.4.1",
+    "file-saver": "^2.0.5",
     "jquery": "^3.6.0",
     "jwthelper": "0.0.4",
     "node-angular-http-client": "^1.1.7",
@@ -29,7 +30,7 @@
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
-  "devDependencies": {
+   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1002.0",
     "@angular/cli": "~10.2.0",
     "@angular/compiler-cli": "~10.2.0",

@@ -17,13 +17,20 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user.component';
 import { ProjetComponent } from './projet/projet.component';
+import { SprintComponent } from './sprint/sprint.component';
+import { ProfileComponent } from './profile/profile.component';
+import { TasksComponent } from './tasks/tasks.component';
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
     LoginComponent,
     RegisterComponent,
-    ProjetComponent
+    ProjetComponent,
+    SprintComponent,
+    ProfileComponent,
+    TasksComponent,
+    
   ],
   imports: [
     BrowserModule,

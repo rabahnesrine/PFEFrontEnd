@@ -1,0 +1,631 @@
+<div class="container">
+
+    <div class="tab-content mt-3" id="myTabContent">
+        <div id="users" class="tab-pane fade in active">
+            <div class=" mb-3 float-right">
+                <div class="btn-group mr-2">
+                    <form class="form-inline my-2 my-lg-0 justify-content-center">
+                     
+                            <input placeholder="Search Sprints..." type="search" class="form-control " ngModel
+                        #searchSprint="ngModel" name="searchSprint"
+                        (ngModelChange)="searchSprints(searchSprint.value)">
+
+
+                            <button [hidden]="!isAdminOrScrumMaster" type="button" class="btn btn-warning" data-toggle="modal" data-target="#addSprintModal">
+                                <i class="fa fa-plus"></i>
+                                New Sprints
+                            </button>
+        
+                    
+
+                            <div class="btn-group">
+                                <button type="button" id="refreshsprintButton" (click)="getSprints(true)"   class="btn btn-warning">
+                                    <i *ngIf="refreshSprint" class="fa fa-sync fa-spin"></i> <i *ngIf="! refreshSprint"
+                                        class="fa fa-sync"></i>
+        
+                                </button>
+                            </div>
+                    </form>
+
+                   
+                </div>
+            </div></div></div>
+
+    <!--For Admin list Sprint-->
+
+    <div class="row" [hidden]="!isAdmin" >
+        <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprints " >
+            <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
+                <div class="text-center">
+                <h5 class="m-0" (click)="onSelectSprint(sprint)" >{{sprint.nomSprint}}</h5>
+
+                </div>
+                <div class="card-body row">
+                    <div class="col-6 text-center">
+                        <a href="" (click)="onSelectSprint(sprint)" ><img src={{sprint.chefAffecter.profileImageUrl}} alt="" class="img-fluid rounded-circle w-60"></a>
+                        <h5>{{sprint.chefAffecter.username}}</h5>
+
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0" >
+                        <h5>Project: </h5>
+                        <p class="m-0" (click)="onSelectSprint(sprint)"  >{{sprint.projet.nameProjet}}</p>
+                    </div>
+                </div>
+                
+                <div class="card-body text-center">
+                    <div class="float-right btn-group btn-group-sm">
+                        <a class="table-link text-danger " (click)="detailSprints(sprint)">
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-tasks fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a  class="table-link  text-warning"  (click)="onSelectSprint(sprint)" >
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a class="table-link  text-info" (click)="onEditSprint(sprint)" >
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a  class="table-link danger"  (click)="onDeleteSprint(sprint.idSprint)">
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </div>
+                   
+
+
+                    
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+    <!--For ScrumMaster list Sprint-->
+
+    <div class="row" [hidden]="!isScrumMasterOnly">
+        <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   mySprints " > <!--mySprints-->
+            <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
+                <div class="text-center">
+                <h5 class="m-0" (click)="onSelectSprint(sprint)" >{{sprint.nomSprint}}</h5>
+
+                </div>
+                <div class="card-body row">
+                    <div class="col-6 text-center">
+                        <a href="" (click)="onSelectSprint(sprint)" ><img src={{sprint.chefAffecter.profileImageUrl}} alt="" class="img-fluid rounded-circle w-60"></a>
+                        <h5> {{sprint.chefAffecter.username}}</h5>
+
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0" >
+                        <h5>Project: </h5>
+                        <p class="m-0" (click)="onSelectSprint(sprint)"  >{{sprint.projet.nameProjet}}</p>
+                    </div>
+                </div>
+                
+                <div class="card-body text-center">
+                    <div class="float-right btn-group btn-group-sm">
+                        <a class="table-link text-danger "  (click)="detailSprints(sprint)">
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-tasks fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a  class="table-link  text-warning"  (click)="onSelectSprint(sprint)" >
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a class="table-link  text-info" (click)="onEditSprint(sprint)" >
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a  class="table-link danger"  (click)="onDeleteSprint(sprint.idSprint)">
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </div>
+                   
+
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--For chef list Sprint-->
+    <div class="row" [hidden]="!isChefOnly">
+        <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprintsChef " > <!--mySprints-->
+            <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
+                <div class="text-center">
+                <h5 class="m-0" (click)="onSelectSprint(sprint)" >{{sprint.nomSprint}}</h5>
+
+                </div>
+                <div class="card-body row">
+                    <div class="col-6 text-center">
+                        <a href="" (click)="onSelectSprint(sprint)" ><img src={{sprint.chefAffecter.profileImageUrl}} alt="" class="img-fluid rounded-circle w-60"></a>
+                        <h5> {{sprint.chefAffecter.username}}</h5>
+
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0" >
+                        <h5>Project: </h5>
+                        <p class="m-0" (click)="onSelectSprint(sprint)"  >{{sprint.projet.nameProjet}}</p>
+                    </div>
+                </div>
+                
+                <div class="card-body text-center">
+                    <div class="float-right btn-group btn-group-sm">
+                        <a  class="table-link text-danger "  (click)="detailSprints(sprint)">
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-tasks fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a  class="table-link  text-warning"  (click)="onSelectSprint(sprint)" >
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a class="table-link  text-info" (click)="onEditSprint(sprint)" >
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <a  class="table-link danger"  (click)="onDeleteSprint(sprint.idSprint)">
+                            <span class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </div>
+                   
+
+
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+ <!--For member list Sprint-->
+ <div class="row" >
+    <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprintsMember " > 
+        <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
+            <div class="text-center">
+            <h5 class="m-0" (click)="onSelectSprint(sprint)" >{{sprint.nomSprint}}</h5>
+
+            </div>
+            <div class="card-body row">
+                <div class="col-6 text-center">
+                    <a href="" (click)="onSelectSprint(sprint)" ><img src={{sprint.chefAffecter.profileImageUrl}} alt="" class="img-fluid rounded-circle w-60"></a>
+                    <h5> {{sprint.chefAffecter.username}}</h5>
+
+                </div>
+                <div class="col-6 card-title align-self-center mb-0" >
+                    <h5>Project: </h5>
+                    <p class="m-0" (click)="onSelectSprint(sprint)"  >{{sprint.projet.nameProjet}}</p>
+                </div>
+            </div>
+            
+            <div class="card-body text-center">
+                <div class="float-right btn-group btn-group-sm">
+                    <a  class="table-link text-danger "  (click)="detailSprints(sprint)">
+                        <span class="fa-stack">
+                            <i class="fa fa-square fa-stack-2x"></i>
+                            <i class="fa fa-tasks fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                    <a  class="table-link  text-warning"  (click)="onSelectSprint(sprint)" >
+                        <span class="fa-stack">
+                            <i class="fa fa-square fa-stack-2x"></i>
+                            <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                    <a class="table-link  text-info" (click)="onEditSprint(sprint)" >
+                        <span class="fa-stack">
+                            <i class="fa fa-square fa-stack-2x"></i>
+                            <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                    <a  class="table-link danger"  (click)="onDeleteSprint(sprint.idSprint)">
+                        <span class="fa-stack">
+                            <i class="fa fa-square fa-stack-2x"></i>
+                            <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </div>
+               
+
+
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+
+    <button [hidden]="true" type="button" id="openSprintEdit" data-toggle="modal" data-target="#editSprintModal">
+    </button>
+    <button [hidden]="true" type="button" id="openSprintInfo" data-toggle="modal" data-target="#viewSprintModal">
+    </button>
+
+    <!-- edit Sprint -->
+
+    <div class="modal draggable fade bd-example-modal-lg" id="editSprintModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center"><i class="fas fa-edit">Edit: {{editSprint.nomSprint }} </i>
+                        <small [hidden]="isAdminOrScrumMasterOrChef">(read only)</small></h5>
+                    <button class="btn-close" type="button" id="openSprintInfo" aria-label="Close"
+                        data-dismiss="modal"><span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="">
+
+                        <form #editSprintForm="ngForm">
+                           
+                            <div class="form-group">
+                                <label for="nomSprint"> Sprint Name</label>
+                                <input type="text" name="nomSprint" required [(ngModel)]="editSprint.nomSprint" [disabled]="!isAdminOrScrumMaster" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="desc"> Description</label>
+                                <input type="text" name="description" required [(ngModel)]="editSprint.description" [disabled]="!isAdminOrScrumMaster"
+                                    class="form-control">
+                            </div>
+        
+                            <div class="form-group">
+                                <label for="dateEch"> Due Date </label>
+                                <input type="date" name="dateFin" required [(ngModel)]="editSprint.dateFin"[disabled]="!isAdminOrScrumMaster"
+                                    class="form-control">
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <label for="toChef">Chef: {{editSprint.chefAffecter.username}} </label>
+                                <select name="chefAffecter" required [(ngModel)]="editSprint.chefAffecter"[disabled]="!isAdminOrScrumMaster" class="form-control">
+        
+                                    <option *ngFor="let chef of chefs" [ngValue]=chef>{{chef.username}}</option>
+                                    
+                                </select>
+        
+                            </div>
+                            <div class="form-group">
+                                <label for="myprojet" >Projet: {{editSprint.projet.nameProjet}}</label>
+                                <select name="projet"  required [(ngModel)]="editSprint.projet" [disabled]="!isAdminOrScrumMaster" class="form-control">
+        
+                                    <option *ngFor="let p of myProjects"  [ngValue]=p>  {{ p.nameProjet }}
+                                    </option>
+                                   
+                                   
+        
+                                </select>
+        
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <label for="status"> etat Sprint</label>
+                                <select name="etatSprint" required [(ngModel)]="editSprint.etatSprint" [disabled]="!isAdminOrScrumMasterOrChef"  class="form-control">
+        
+                                    <option value="ETAT_ACTIVE"> ACTIVE</option>
+                                    <option value="ETAT_SUSPENDED">SUSPENDED
+                                    </option>
+                                    <option value="ETAT_WAITING">WAITING
+                                    </option>
+                                    <option value="ETAT_PAUSED">PAUSED
+                                    </option>
+        
+                                </select>
+        
+                            </div>
+        
+                     
+                            <div class="form-group">
+                                <label for="sprintCreePar"> Created By </label>
+                                <input type="text" name="sprintCreePar" required [disabled]="!isAdminOrScrumMaster" [(ngModel)]="editSprint.sprintCreePar.username"
+                                    class="form-control">
+                            </div>
+          
+                                  
+                        </form>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        id="edit-sprint-close">Close</button>
+                    <button type="button" (click)="onUpdateSprint()" [disabled]="editSprintForm.invalid"
+                        class="btn btn-primary"> Save changes
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+     
+
+    
+<!-- add  sprint  -->
+
+
+<div  [hidden]="!isAdminOrScrumMaster"class="modal draggable fade bd-example-modal-lg" id="addSprintModal" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title text-center"><i class="fas fa-tasks"> New Sprint</i> </h4>
+            <button class="btn-close" type="button" id="openSprintInfo" aria-label="Close" data-dismiss="modal"><span
+                    aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div>
+
+                <form #newSprintForm="ngForm" (ngSubmit)="onAddNewSprint(newSprintForm.value)">
+                    <div class="form-group">
+                        <label for="nomSprint"> Sprint Name</label>
+                        <input type="text" name="nomSprint" required ngModel class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="desc"> Description</label>
+                        <input type="text" name="description" required [(ngModel)]="description"
+                            class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateEch"> Due Date </label>
+                        <input type="date" name="dateFin" required [(ngModel)]="dateFin"
+                            class="form-control">
+                    </div>
+
+
+                   <!--  <div class="form-group">
+                        <p>projet</p>
+                    <ul>
+                        <li *ngFor="let p of myProjects">{{ p.nameProjet }}</li>
+                    </ul>
+                </div> -->
+
+                    <div class="form-group">
+                        <label for="toChef">Chef </label>
+                        <select name="chefAffecter" required [(ngModel)]="chefAffecter" class="form-control">
+
+                            <option *ngFor="let chef of chefs" [ngValue]=chef>{{chef.username}}</option>
+                            
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="myprojet">Projet</label>
+                        <select name="projet"  required [(ngModel)]="projetActuel" class="form-control">
+
+                            <option *ngFor="let p of myProjects"  [ngValue]=p>  {{ p.nameProjet }}
+                            </option>
+                           
+                           
+
+                        </select>
+
+                    </div>
+             <div class="form-group">
+                        <label for="status"> etat Sprint</label>
+                        <select name="etatSprint" required ngModel="ETAT_PAUSED" class="form-control">
+
+                            <option value="ETAT_ACTIVE"> ACTIVE</option>
+                            <option value="ETAT_SUSPENDED">SUSPENDED
+                            </option>
+                            <option value="ETAT_WAITING">WAITING
+                            </option>
+                            <option value="ETAT_PAUSED">PAUSED
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for=" sprintCreePar">Created by</label>
+                        <h5> {{ userActuel.username}}</h5>
+
+                        <input [hidden]="true" type="text" name="sprintCreePar" required [(ngModel)]="userActuel"
+                            class="form-control">
+                    </div>
+                   
+                    <button type="submit" style="display: none;" id="new-sprint-save"></button>
+
+                </form>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-sprint-close">Close</button>
+            <button type="button" (click)="saveNewSprint()" [disabled]="newSprintForm.invalid" class="btn btn-primary">
+                Save changes </button>
+        </div>
+    </div>
+</div>
+
+</div>
+
+    
+<!-- detail Sprint  -->
+
+
+<div class="modal fade bd-example-modal-lg" id="viewSprintModal" tabindex="-1" role="dialog" aria-labelledby=""
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 *ngIf="selectedSprint" class="modal-title text-center" id="exampleModalLongTitle">
+                <i class="fas fa-money-check"> Sprint : {{selectedSprint.nomSprint}} </i>
+            </h4>
+            <button class="btn-close" type="button" id="openSprintInfo" aria-label="Close"
+                data-dismiss="modal"><span aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="modal-body" *ngIf="selectedSprint!==undefined">
+            <div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-auto ">
+                                <div class="mx-auto" style="width: 60px;">
+                                    <div class="d-flex justify-content-center align-items-center rounded">
+
+                                        <img class="rounded" height="60" width="60"class="rounded-circle shadow p-1 bg-white"
+                                            src="{{selectedSprint.sprintCreePar.profileImageUrl}}"
+                                            alt="{{selectedSprint.sprintCreePar.username}}">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col d-flex flex-column flex-sm-row justify-content-between ">
+                                <div class="text-left text-sm-left  mb-sm-0">
+
+                                    <h5 class="pt-sm-2 pb-1 mb-0 text-nowrap"><i class="fas fa-user-shield">
+                                            Created
+                                            by:
+                                            {{selectedSprint.sprintCreePar.username}}</i>
+                                    </h5>
+                                   
+                                    <div class="">
+                                        <i
+                                            class="fa fa-shield-alt float-right">
+                                            {{selectedSprint.sprintCreePar.role.substring(5)}}</i>
+
+                                    </div>
+
+
+                                    <div class="text-muted"><small>
+                                            <div class=""> Contact: </div>
+                                            {{selectedSprint.sprintCreePar.email}}
+                                        </small></div>
+
+
+                                </div>
+
+                                <div class="text-center text-sm-right">
+
+                                    <div *ngIf="selectedSprint.dateCreation" class="text-muted">
+                                        <small> Creation Date :
+                                        </small>
+                                    </div>
+                                    <div *ngIf="selectedSprint.dateCreation" class="text-muted">
+                                        <small>
+                                            {{selectedSprint.dateCreation | date:'medium'
+                                            }}</small>
+                                    </div>
+
+                                    <div class="text-muted"><small>Due Date
+                                        </small></div>
+                                    <div *ngIf="selectedSprint.dateFin" class="text-muted"><small>
+                                            {{selectedSprint.dateFin|date:'medium'
+                                            }}</small></div>
+                                    <div *ngIf="selectedSprint.dateModification" class="text-muted"><small>Last Updated Date
+                                        </small></div>
+                                    <div *ngIf="selectedSprint.dateModification" class="text-muted"><small>
+                                            {{selectedSprint.dateModification|date:'medium'
+                                            }}</small></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item">
+                            <i class="fas fa-folder-open"> Project Name :
+                                {{selectedSprint.projet.nameProjet}}</i>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-clipboard"> Sprint Name :
+                                {{selectedSprint.nomSprint}}</i>
+                        </li>
+
+
+
+                        <li class="list-group-item">
+                            <i class="fas fa-info-circle"> Status :
+                                {{selectedSprint.etatSprint.substring(5)}}
+                            </i>
+                        </li>
+                        
+                        <li class="list-group-item">
+                            <i class="fas fa-user-tie ">Chef : {{selectedSprint.chefAffecter.username}} </i>
+                             </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-users "> Participants : </i>             </li>
+
+                            <div class="col-lg-7" id="cluster_info">
+                                <dl class="">
+                                   <dd class="project-people">
+                                    <a href=""><img alt="image" class="img-circle" src="{{selectedSprint.sprintCreePar.profileImageUrl}}"></a>
+                                    <a href=""><img alt="image" class="img-circle" src="{{selectedSprint.chefAffecter.profileImageUrl}}"></a>
+                                    
+                                    </dd>
+                                </dl>
+                            </div>
+
+
+
+                    </ul>
+                    
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    id="new-sprint-close">Close</button>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>

@@ -120,7 +120,7 @@
                 <div role="toolbar" class="btn-toolbar">
                     <div role="group" class="mr-auto mr-md-2 btn-group">
 
-                        <button type="button" id="refreshProjButton" (click)="getProjets(true)" class="btn btn-success">
+                        <button type="button" id="refreshProjButton" (click)=" (true)" class="btn btn-success">
                             <i *ngIf="refreshProjet" class="fa fa-sync fa-spin"></i> <i *ngIf="! refreshProjet"
                                 class="fa fa-sync"></i>
 
@@ -137,7 +137,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-3 Card_custom-card--border_5wJKy card">
+            <div [hidden]="!isAdmin" class="mb-3 Card_custom-card--border_5wJKy card">
                 <div class="table-responsive-xl">
                     <table class="mb-0 table table-hover">
                         <thead>
@@ -147,11 +147,92 @@
                                 <th class="align-middle bt-0">Status</th>
                                 <th class="align-middle bt-0">Tasks Completed</th>
                                 <th class="align-middle bt-0">Created by</th>
-                                <th class="align-middle bt-0 text-right">Actions</th>
+                                <th class="align-middle bt-0">Nb of Members</th>
+                                <th class="align-middle bt-0">NB of Sprints</th>
+                                <th class="align-middle bt-0 text-right"><span> Actions</span></th>
                             </tr>
                         </thead>
 
                         <tbody *ngFor="let projet of projets ">
+                            <tr *ngIf="projet"  class="text-center">
+
+
+
+                                <td (click)="onSelectProjet(projet)" class="align-middle">
+                                    <div><a href="/apps/tasks/list">{{projet.nameProjet}}</a></div><span>
+                                        Creation Date: {{projet.dateCreation}} <br> Due Date: {{projet.dateEcheance}}
+                                    </span>
+                                </td>
+
+
+                                <td (click)="onSelectProjet(projet)" class="align-middle"><span
+                                        style="background: gray;" class="badge badge-success badge-pill">
+                                        {{projet.etatProjet.substring(5)}}</span>
+
+
+                                </td>
+                                <td (click)="onSelectProjet(projet)" class="align-middle">
+                                    <div class="mb-2 progress" style="height: 5px;">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="25"
+                                            aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                    </div>
+                                    <div>Tasks Completed:<span class="text-inverse">36/94</span></div>
+                                </td>
+                                <td (click)="onSelectProjet(projet)" class="align-middle">
+                                    <div class="avatar-image avatar-image--loaded">
+                                        <div class="avatar avatar--md avatar-image__image">
+                                            <div class="avatar__content"><img src="{{projet.creePar.profileImageUrl}}">
+                                            </div>
+                                            {{projet.creePar.username}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td (click)="onSelectProjet(projet)" class="align-middle"><span
+                                    style="background: greenyellow;" class="badge badge-success badge-pill">
+                                    2</span>
+
+
+                            </td>
+                            <td (click)="onSelectProjet(projet)" class="align-middle"><span
+                                style="background: red;" class="badge badge-success badge-pill">
+                              3</span>
+                        </td>
+
+                                <td class="align-middle text-right">
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-info" (click)="onEditProjet(projet)">
+                                            <i class="fas fa-edit"></i></button>
+                                        <button  class="btn btn-outline-danger"
+                                            (click)="onDeleteProjet(projet.idProjet)"> <i
+                                                class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+            <div [hidden]="!isScrumMasterOnly" class="mb-3 Card_custom-card--border_5wJKy card">
+                <div class="table-responsive-xl">
+                    <table class="mb-0 table table-hover">
+                        <thead>
+                            <tr>
+
+                                <th class="align-middle bt-0">Project</th>
+                                <th class="align-middle bt-0">Status</th>
+                                <th class="align-middle bt-0">Tasks Completed</th>
+                                <th class="align-middle bt-0">Created by</th>
+                                <th class="align-middle bt-0">Nb of Members</th>
+                                <th class="align-middle bt-0">NB of Sprints</th>
+                                <th class="align-middle bt-0 text-right">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody *ngFor="let projet of myProjets ">
                             <tr *ngIf="projet">
 
 
@@ -185,6 +266,18 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td (click)="onSelectProjet(projet)" class="align-middle"><span
+                                    style="background: greenyellow;" class="badge badge-success badge-pill">
+                                    2</span>
+
+
+                            </td>
+                            <td (click)="onSelectProjet(projet)" class="align-middle"><span
+                                style="background: red;" class="badge badge-success badge-pill">
+                              3</span>
+
+
+                        </td>
 
                                 <td class="align-middle text-right">
                                     <div class="btn-group">
@@ -199,9 +292,9 @@
 
                         </tbody>
                     </table>
-                </div>
+                </div> </div>
 
-            </div>
+
         </div>
     </div>
 
@@ -238,11 +331,11 @@
                 </div>
                
 
-                <ul   *ngFor="let projet of myProjets"   class="list-group list-group-flush">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">   <i class="fas fa-file-signature"> Projects Name :</i></li>
 
-                    <li class="list-group-item">
-                        <i class="fas fa-file-signature"> Project Name :
-                            {{projet.nameProjet}}</i>
+                    <li *ngFor="let projet of myProjets" class="list-group-item">
+                        <i class="far fa-star"> {{projet.nameProjet}}</i>
                     </li>
 
 
@@ -528,7 +621,7 @@
 
 
                             <div class="form-group">
-                                <label for=" creePar">cree Par</label>
+                                <label for=" creePar">Created by</label>
                                 <h5> {{ userActuel.username}}</h5>
 
 

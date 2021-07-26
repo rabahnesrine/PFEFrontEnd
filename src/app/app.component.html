@@ -1,25 +1,37 @@
-<!-- <nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse" *ngIf="this.authServ.isLoggedIn()">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">WebSiteName</a>
+      <a class="navbar-brand" href="#">Management Tasks</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a routerLink="/">Home</a></li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Produits
-          <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a routerLink="/inscription">Chercher</a></li>
-          <li><a routerLink="/gereUser">Ajouter</a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+      <li><a routerLink="/user/management">users</a></li>
+    </ul>
+
+    <ul class="nav navbar-nav" [hidden]="!isAdminOrScrumMaster">
+      <li><a routerLink="/projet">Projet</a></li>
+    </ul>
+    <ul class="nav navbar-nav" >
+      <li> <a routerLink="/sprint">sprint</a></li>
+    </ul>
+    <ul class="nav navbar-nav" >
+      <li> <a routerLink="/tasks">Tasks</a></li>
+    </ul> 
+    
+     <!--  <ul class="nav navbar-nav">
+        <li><a routerLink="/profile">profile</a></li>
+      </ul> -->
+      <ul class="nav navbar-nav">
+      </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li><a routerLink="/profile"> <i class="fas fa-user-circle"> Profile</i></a></li>
         </ul>
-      </li>
-      <li><a  routerLink="/gereUser">users</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a  routerLink="/inscription"><span class="glyphicon glyphicon-user"></span> inscription</a></li>
-      <li><a routerLink="/authentification"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-    </ul>
   </div>
-</nav> -->
+</nav>
+
+
 <router-outlet></router-outlet>
 <notifier-container></notifier-container>

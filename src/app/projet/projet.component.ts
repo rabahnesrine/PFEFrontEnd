@@ -155,7 +155,7 @@ console.log(this.myProjets);
         (errorResponse: HttpErrorResponse) => {
           console.log(errorResponse);
           this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
-
+          this.getProjets(false);
         }
       )
     } else {
@@ -250,13 +250,6 @@ console.log(this.myProjets);
       this.getProjets(false);
     }
 
-
-
-
-
-
-
-
   }
 
 
@@ -296,6 +289,9 @@ public get isAdmin():boolean{
 
 public get isScrumMaster():boolean{
   return this.isAdmin ||this.getUserRole()=== Role.SCRUM_MASTER;
+}
+public get isScrumMasterOnly():boolean{
+  return this.getUserRole()===Role.SCRUM_MASTER;
 }
 
 public get isAdminOrScrumMaster():boolean{

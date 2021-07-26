@@ -40,6 +40,9 @@ localStorage.removeItem('user');
 localStorage.removeItem('token');
 localStorage.removeItem('users');
 localStorage.removeItem('projets');
+localStorage.removeItem('sprints');
+
+
 }
  
 
