@@ -78,7 +78,59 @@
                 </div>
 
 
-                <table class="table table-hover">
+                <table class="table table-hover" [hidden]="isAdmin">
+                    <thead class="table-borderless">
+                        <tr class="text-center">
+                            <th class="text-center">Photo</th>
+                            <th class="text-center">User ID</th>
+                            <th class="text-center">User Name</th>
+                            <th class="text-center">Telephone</th>
+                            <th class="text-center"> profession</th>
+
+                            <th class="text-center">Email</th>
+                            <th class="text-center"><span>Status</span></th>
+                            <th class="text-center"><span> Actions</span></th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let user of usersForSM">
+                        <tr class="text-center" *ngIf="user">
+                            <td>
+                                <img height="40" width="40" class="rounded-circle img-fluid img-thumbnail"
+                                    src="{{user?.profileImageUrl}}" alt="" />
+
+                            </td>
+                            <td (click)="onSelectUser(user)">{{user.userId}}</td>
+                            <td (click)="onSelectUser(user)">{{user.username}}</td>
+                            <td (click)="onSelectUser(user)">{{user.telephone}}</td>
+                            <td (click)="onSelectUser(user)">{{user.professionUser}}</td>
+
+                            <td (click)="onSelectUser(user)">{{user.email}}</td>
+
+
+                            <td (click)="onSelectUser(user)">
+                                <span *ngIf="user.isActive" style="background: green;"
+                                    class="badge badge-success">Active</span>
+                                <span *ngIf="!user.isActive" style="background: red;"
+                                    class="badge badge-danger">Inactive</span>
+
+                            </td>
+                            <td class="">
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-info" (click)="onEditUser(user)">
+                                        <i class="fas fa-edit"></i></button>
+                                    <button [hidden]="!isAdminOrScrumMaster" class="btn btn-outline-danger"
+                                        (click)="onDeleteUser(user.username)"> <i class="fas fa-trash"></i></button>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+
+
+                </table>
+
+                <table class="table table-hover" [hidden]="!isAdmin">
                     <thead class="table-borderless">
                         <tr class="text-center">
                             <th class="text-center">Photo</th>
@@ -119,7 +171,7 @@
                                 <div class="btn-group">
                                     <button class="btn btn-outline-info" (click)="onEditUser(user)">
                                         <i class="fas fa-edit"></i></button>
-                                    <button [hidden]="!isAdminOrScrumMaster" class="btn btn-outline-danger"
+                                    <button [hidden]="!isAdmin" class="btn btn-outline-danger"
                                         (click)="onDeleteUser(user.username)"> <i class="fas fa-trash"></i></button>
                                 </div>
 
@@ -569,6 +621,8 @@
                                     <option value="ROLE_MEMBER">MEMBER</option>
                                     <option value="ROLE_CHEF">CHEF
                                     </option>
+                                    <option [disabled]="!isAdmin" value="ROLE_PRODUCT_OWNER">PRODUCT_OWNER
+                                    </option>
                                     <option  [disabled]="!isAdmin" value="ROLE_SCRUM_MASTER">SCRUM_MASTER
                                     </option>
                                     <option  [disabled]="!isAdmin" value="ROLE_ADMIN">ADMIN
@@ -672,6 +726,8 @@
                                     [(ngModel)]="editUser.role" class="form-control">
                                     <option value="ROLE_MEMBER">MEMBER</option>
                                     <option value="ROLE_CHEF">CHEF
+                                    </option>
+                                    <option [disabled]="!isAdmin" value="ROLE_PRODUCT_OWNER">PRODUCT_OWNER
                                     </option>
                                     <option [disabled]="!isAdmin" value="ROLE_SCRUM_MASTER">SCRUM_MASTER
                                     </option>

@@ -29,15 +29,18 @@ public get isScrumMaster():boolean{
 }
 
 public get isChef():boolean{
-  return this.isAdmin ||this.isScrumMaster|| this.getUserRole()==Role.CHEF;
+  return this.isAdmin ||this.isScrumMaster|| this.getUserRole()===Role.CHEF;
 }
 
 public get isMember():boolean{
-  return this.isAdmin ||this.isScrumMaster||this.isChef|| this.getUserRole()==Role.MEMBER;
+  return this.isAdmin ||this.isScrumMaster||this.isChef|| this.getUserRole()===Role.MEMBER;
 }
 
+
 public get isAdminOrScrumMaster():boolean{
-  return this.isAdmin ||this.isScrumMaster;}
+  return this.isAdmin ||this.isScrumMaster ;}
+  public get isAdminOrScrumMasterOrProductOwner():boolean{
+    return this.isAdmin ||this.isScrumMaster ||this.getUserRole()===Role.PRODUCT_OWNER;}
 
   public get isAdminOrScrumMasterOrChef():boolean{
     return this.isAdmin ||this.isScrumMaster||this.isChef;

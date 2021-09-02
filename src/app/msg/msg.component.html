@@ -1,0 +1,321 @@
+
+<div class="container">
+
+
+    <!-- Content wrapper start -->
+    <div class="content-wrapper">
+
+        <!-- Row start -->
+        <div class="row gutters">
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                <div class="card m-0">
+
+                    <!-- Row start -->
+                    <div class="row no-gutters">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+                            <div class="users-container">
+                                <div class="chat-search-box">
+                                    <div class="input-group">
+                                        <input ngModel #searchInput="ngModel" name="searchTerm"
+                                            class="form-control mr-sm-2"
+                                            (ngModelChange)="searchUsers(searchInput.value)" type="search"
+                                            placeholder="Search user ...">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-info" [disabled]="true">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="users">
+                                    <li class="person" data-chat="person1" *ngFor="let u of users">
+                                        <div class="user" *ngIf="u">
+                                            <img src="{{u?.profileImageUrl}}" (click)="onSelectUser(u)"
+                                                alt="Retail Admin">
+                                            <span class="status busy"></span>
+                                        </div>
+                                        <span class="name" (click)="onSelectUser(u)">{{u.username}} &nbsp;</span>
+
+                                        <p class="name-time" (click)="onSelectUser(u)">
+
+                                            <span class="time">&nbsp; {{u.lastLoginDateDisplay | date:'medium' }}</span>
+                                        </p>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+                       
+
+
+ 
+
+                        <!--chatsol-->
+
+
+
+
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+                            <div class="selected-user" *ngIf="selectedUser">
+                                <span>To: <span class="name">{{selectedUser.username}}</span></span>
+                            </div>
+                            <div class="chat-container" *ngIf="selectedUser">
+                                <div class="row no-gutters">
+                                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+                                        <ul class="chat-box chatContainerScroll">
+
+                                            <li  *ngFor="let ms of  allMsg"  [ngClass]="ms.sender === this.currentu ? 'chat-right':'chat-left'"
+                                            > 
+<!--  
+     [ngClass]="{ms.sender === this.currentu ? 'chat-left':'chat-right'} "      [ngClass]="{ 'chat-right' :ms.sender === this.currentu , 'chat-left': ms.sender === this.selectedUser }" 
+                                           "
+ -->
+
+                                                     <div class="chat-avatar"  >
+                                                            <img src="{{ms.sender.profileImageUrl}}" alt="Retail Admin">
+                                                            <div class="chat-name">{{ms.sender.username}}</div>
+                                                        </div>
+
+                                                    <div class="chat-text" >
+                                                        {{ms.msg}}
+                                                        <br>
+                                                    </div>
+
+                                                    <div class="chat-hour" >
+                                                        {{ms.dateCreation|date:'mediumTime'}} &nbsp;&nbsp;
+                                                        
+                                                          
+                        
+                                                            <span *ngIf="ms.vu">
+                                                                <i class="fa fa-check-circle" ></i>
+                                                            </span>
+                                                    </div> 
+                                                    
+                                               <!--  <div  [hidden]="ms.sender == this.selectedUser">
+                                                    <div class="chat-hour" >
+                                                        {{ms.dateCreation|date:'shortTime'}} <span
+                                                            class="fa fa-check-circle"></span></div>
+                                                    <div class="chat-text" >
+                                                        {{ms.msg}}
+                                                        <br>
+                                                    </div>
+                                                    <div class="chat-avatar" >
+                                                        <div class="chat-avatar">
+                                                            <img src="{{ms.sender.profileImageUrl}}" alt="Retail Admin">
+                                                            <div class="chat-name">{{ms.username}}</div>
+
+
+                                                        </div>
+                                                    </div> 
+                                                </div>  -->  
+                                        </li>
+
+                                        </ul>
+                                    </div>
+
+
+
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="form-group mt-3 mb-0">
+                                <form #newMsgForm="ngForm" (ngSubmit)="saveMsg(newMsgForm.value)">
+
+                                    <input [hidden]="true" type="text" name="sender" required [(ngModel)]="currentu"
+                                        class="form-control">
+                                    <input [hidden]="true" type="text" name="receiver" required
+                                        [(ngModel)]="selectedUser" class="form-control">
+                                    <input [hidden]="true" type="text" name="roomName" required [(ngModel)]="roomName"
+                                        class="form-control">
+                                    <input type="checkbox" [hidden]="true" name="vu" required [(ngModel)]="vu"
+                                        class="form-check-input">
+
+
+                                    <textarea class="form-control" name="msg" rows="3"
+                                        placeholder="Type your message here..." required
+                                        [(ngModel)]="msgtoSend"></textarea>
+                                    <button type="submit">Send</button>
+
+                                </form>
+                            </div>
+                        </div> 
+
+
+
+
+
+
+
+
+
+
+                        <!--!chat-->
+
+
+                        <!-- <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+                            <div class="selected-user" *ngIf="selectedUser">
+                                <span>To: <span class="name">{{selectedUser.username}}</span></span>
+                            </div>
+                            <div class="chat-container" *ngIf="selectedUser">
+                                <div class="row no-gutters">
+                                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-4 col-4">
+                                        <ul class="chat-box chatContainerScroll">
+
+                                            <li class="chat-left" *ngFor="let ms of  msgSelectedU">
+                                                <div class="chat-avatar">
+                                                    <img src="{{selectedUser.profileImageUrl}}"
+                                                                alt="Retail Admin">
+                                                            <div class="chat-name">{{selectedUser.username}}</div>
+
+                                                </div>
+
+                                                <div class="chat-text">{{ms.msg}}
+                                                    <br>
+                                                </div>
+
+                                                <div class="chat-hour">{{ms.dateCreation|date:'shortTime'}} <span class="fa fa-check-circle"></span>
+                                                </div>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-4 col-4">
+                                        <div class="chat-container">
+                                            <ul class="chat-box chatContainerScroll">
+
+                                                <li class="chat-right"  *ngFor="let m of msgCurrentUr">
+                                                    
+                                                   
+                                                    <div class="chat-hour">{{m.dateCreation|date:'shortTime'}} <span
+                                                            class="fa fa-check-circle"></span></div>
+                                                    <div class="chat-text">{{m.msg}}
+                                                        <br>
+                                                    </div>
+                                                    <div class="chat-avatar">
+                                                        <div class="chat-avatar">
+                                                            <img src="{{this.currentu.profileImageUrl}}" alt="Retail Admin">
+                                                            <div class="chat-name">{{currentu.username}}</div>
+        
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        
+                                    </div>
+
+                                    
+
+
+                                </div>
+                                <div class="form-group mt-3 mb-0">
+                                    <form #newMsgForm="ngForm" (ngSubmit)="saveMsg(newMsgForm.value)">
+
+                                        <input [hidden]="true" type="text" name="sender" required [(ngModel)]="currentu"
+                                            class="form-control">
+                                        <input [hidden]="true" type="text" name="receiver" required
+                                            [(ngModel)]="selectedUser" class="form-control">
+                                        <input [hidden]="true" type="text" name="roomName" required
+                                            [(ngModel)]="roomName" class="form-control">
+                                        <input type="checkbox" [hidden]="true" name="vu" required [(ngModel)]="vu"
+                                            class="form-check-input">
+
+
+                                        <textarea class="form-control" name="msg" rows="3"
+                                            placeholder="Type your message here..." required
+                                            [(ngModel)]="msgtoSend"></textarea>
+                                        <button type="submit">Send</button>
+
+                                    </form>
+                                </div>
+                            </div>
+
+ -->
+
+
+
+
+                        <!-- <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+                                <div class="selected-user" *ngIf="selectedUser">
+                                    <span>To: <span class="name">{{selectedUser.username}}</span></span>
+                                </div>
+                                <div class="chat-container" *ngIf="selectedUser">
+                                    <ul class="chat-box chatContainerScroll">
+
+                                        <li class="chat-left" *ngFor="let m of msgCurrentUr">
+                                            <div class="chat-avatar">
+                                                <img src="{{this.currentu.profileImageUrl}}" alt="Retail Admin">
+                                                <div class="chat-name">{{currentu.username}}</div>
+                                            </div>
+                                            <div class="chat-text">{{m.msg}}
+                                                <br>
+                                            </div>
+                                            <div class="chat-hour">08:55 <span class="fa fa-check-circle"></span></div>
+                                        </li>
+                                        <li class="chat-right" *ngFor="let ms of  msgSelectedU">
+                                            <div class="chat-hour">08:56 <span class="fa fa-check-circle"></span></div>
+                                            <div class="chat-text">{{ms.msg}}
+                                                <br>
+                                            </div>
+                                            <div class="chat-avatar">
+                                                <img src="{{selectedUser.profileImageUrl}}" alt="Retail Admin">
+                                                <div class="chat-name">{{selectedUser.username}}</div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                    <div class="form-group mt-3 mb-0">
+                                        <form #newMsgForm="ngForm" (ngSubmit)="saveMsg(newMsgForm.value)">
+
+                                            <input [hidden]="true" type="text" name="sender" required
+                                                [(ngModel)]="currentu" class="form-control">
+                                            <input [hidden]="true" type="text" name="receiver" required
+                                                [(ngModel)]="selectedUser" class="form-control">
+                                            <input [hidden]="true" type="text" name="roomName" required
+                                                [(ngModel)]="roomName" class="form-control">
+                                            <input type="checkbox" [hidden]="true" name="vu" required [(ngModel)]="vu"
+                                                class="form-check-input">
+
+
+                                            <textarea class="form-control" name="msg" rows="3"
+                                                placeholder="Type your message here..." required
+                                                [(ngModel)]="msgtoSend"></textarea>
+                                            <button type="submit">Send</button>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div> -->
+                   </div>
+                     <!-- Row end -->
+                </div>
+
+            </div>
+
+        </div> 
+        <!-- Row end -->
+
+     </div>
+    <!-- Content wrapper end -->
+
+</div>
+
+
+

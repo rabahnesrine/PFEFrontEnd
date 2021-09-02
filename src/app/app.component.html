@@ -1,28 +1,43 @@
 <nav class="navbar navbar-inverse" *ngIf="this.authServ.isLoggedIn()">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Management Tasks</a>
+      <a class="navbar-brand" href="#">Management Tasks   </a>
     </div>
-    <ul class="nav navbar-nav">
+   <!--  <ul class="nav navbar-nav">
       <li class="active"><a routerLink="/">Home</a></li>
+    </ul> -->
+    <ul class="nav navbar-nav">
+      <li class="active"><a routerLink="/dashbord">Dashbord</a></li>
     </ul>
+
+
+    
     <ul class="nav navbar-nav">
       <li><a routerLink="/user/management">users</a></li>
     </ul>
 
-    <ul class="nav navbar-nav" [hidden]="!isAdminOrScrumMaster">
+    <ul class="nav navbar-nav" [hidden]="!isAdminOrScrumMasterOrProductOwner">
       <li><a routerLink="/projet">Projet</a></li>
     </ul>
-    <ul class="nav navbar-nav" >
+    <ul class="nav navbar-nav" [hidden]="!isMember">
       <li> <a routerLink="/sprint">sprint</a></li>
     </ul>
-    <ul class="nav navbar-nav" >
-      <li> <a routerLink="/tasks">Tasks</a></li>
-    </ul> 
     
-     <!--  <ul class="nav navbar-nav">
-        <li><a routerLink="/profile">profile</a></li>
+    <ul class="nav navbar-nav"[hidden]="true">
+      <li><a routerLink="/Calandrie">Calandrie</a></li>
+    </ul> 
+    <ul class="nav navbar-nav">
+      <li><a routerLink="/document">Document</a></li>
+    </ul> 
+
+  <ul class="nav navbar-nav" [hidden]="true">
+        <li><a routerLink="/msg">chat</a></li>
+      </ul> 
+      
+    <!--   <ul class="nav navbar-nav">
+        <li><a routerLink="/chat">chat</a></li>
       </ul> -->
+
       <ul class="nav navbar-nav">
       </ul>
 

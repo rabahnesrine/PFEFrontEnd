@@ -22,6 +22,8 @@ export class UserComponent implements OnInit,OnDestroy {
  public titleAction$=this.titleSubject.asObservable(); //action listener
 
 public users: User[]; 
+public usersForSM: User[]; 
+
 public user: User; //user actual 
 public refreshing: boolean;
 private subscriptions :Subscription[]=[];
@@ -53,6 +55,7 @@ public currentKeyword:string="";
   this.user= this.authServ.getUserFromLocalCache(); // recupere user actuel 
   console.log(this.authServ.currentUserlogged());
 //this.getAllUsers() ;
+
 }
     
  
@@ -71,6 +74,7 @@ public getUsers(showNotification:boolean):void{
       console.log(response);
       this.userServ.addUsersToLocalCache(response);
       this.users=response;
+      this.usersForSM=response.filter(u=>u.role!="ROLE_ADMIN");
       this.refreshing=false;
       if(showNotification){
 this.sendNotification(NotificationType.SUCCESS,`${response.length} user(s) loaded successfully . `);

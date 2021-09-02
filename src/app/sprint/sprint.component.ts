@@ -28,10 +28,13 @@ export class SprintComponent implements OnInit {
   public nomSprint: string = '';
   public dateFin: Date = null;
   public refreshSprint: boolean;
-  public sprints: Sprint[];//for admin all
+  public sprints: Sprint[]=[];//for admin all
   public mySprints:Sprint[];//for scrum master
   public sprintsChef:Sprint[];//for chef 
   
+
+  public sprintsSmtest:Sprint[];//sprint Sm de son projet meme si admin cree des sprint et les affecte a un projet Sm 
+
   public description: string = '';
   public myProjects:Projet[];
   public chefs: User[];
@@ -46,7 +49,10 @@ export class SprintComponent implements OnInit {
 
   public tasks:Task[];
   public tasksMember:Task[];
-  public sprintsMember = [ ];
+  public sprintsMember:Sprint[] = [];
+  public lengthtab: number;
+  public indexitemTest:number;
+  public iduser:number;
 
   constructor(private authServ: AuthServService,private taskServ:TaskService,private userServ: UserServService,private sprintServ: SprintService ,private projetServ: ProjetServService, private notificationService: NotificationService, private router: Router) {
    }
@@ -68,18 +74,8 @@ console.log(this.myProjects);
 this.chefs=this.userServ.getUsersFromLocalCache().filter(u=>u.role=="ROLE_CHEF");
 console.log(this.chefs);
 
-
-
-// a voir  if currentUser == member
-if (this.userActuel.role=='ROLE_MEMBER'){
-this.tasks=this.taskServ.getTasksFromLocalCache();
-this.tasksMember=this.tasks.filter(t=>t.memberAffecter.id==this.userActuel.id);
-this.tasksMember.forEach(e=>{
-  this.sprintsMember.push(e.sprint)
-  console.log("for member")
-  console.log(this.sprintsMember)
-});
-}
+//this.sprintMember();
+this.getSprintMember()
 
   }
 
@@ -118,14 +114,61 @@ this.tasksMember.forEach(e=>{
     document.getElementById("refreshsprintButton").click();
   }
 
+/* public sprintMember():void{
+  
+// a voir  if currentUser == member
+if (this.userActuel.role=='ROLE_MEMBER'){
+  this.tasks=this.taskServ.getTasksFromLocalCache();
+  this.tasksMember=this.tasks.filter(t=>t.memberAffecter.id==this.userActuel.id);
+  this.tasksMember.forEach(e=>{
+    this.sprintsMember.push(e.sprint) 
+  });
+  
+  }
+} */
+
+
+public getSprintMember(): void {
+  console.log("getsprintMember")
+this.iduser=this.userActuel.id;
+  this.sprintServ.getSprintMember(this.userActuel.id).subscribe(
+    (response: Sprint[]) => {
+console.log("resp")
+      console.log(response);
+      this.sprintsMember = response;
+      this.refreshSprint = false;
+
+
+    }, (errorResponse: HttpErrorResponse) => {
+      console.log(errorResponse);
+      this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+      this.refreshSprint = false;
+    }
+  );
+
+}
+
+
+
 
   public getMySprints(): void {
     this.refreshSprint = true;
-    this.mySprints = this.sprints.filter(p => p.sprintCreePar.id==this.userActuel.id);
+   /*  this.mySprints = this.sprints.filter(p => p.sprintCreePar.id==this.userActuel.id);
+    //console.log("sprintbyprojetSm")
+    this.sprintsSmtest=this.sprints.filter(s=>s.projet.creePar.id==this.userActuel.id)
+    //console.log(this.sprintsSmtest);
     this.sprintsChef= this.sprints.filter(sprint=>sprint.chefAffecter.id==this.userActuel.id);
   // console.log(this.projets.find(p => p.creePar.username=="med"));
-console.log(this.mySprints);
-    
+//console.log(this.mySprints); */
+
+
+if(this.userActuel.role=="ROLE_ADMIN"){
+  this.sprints=this.sprintServ.getSprintsFromLocalCache();
+             }else if (this.userActuel.role=="ROLE_SCRUM_MASTER"){
+    this.sprints=this.sprints.filter(s=>s.projet.creePar.id==this.userActuel.id)
+}else if (this.userActuel.role=="ROLE_CHEF"){
+  this.sprints= this.sprints.filter(sprint=>sprint.chefAffecter.id==this.userActuel.id);
+} else{this.getSprintMember();}
   }
 
 
@@ -263,29 +306,32 @@ console.log(this.mySprints);
   public searchSprints(searchSprint: string): void {
     console.log(searchSprint);
     const results: Sprint[] = [];
-    for (const sprint of this.sprintServ.getSprintsFromLocalCache()) {
+    for (const sprint of this.sprints) {
       console.log(sprint);
       console.log("test3" + sprint.nomSprint)
       if (sprint.nomSprint.toLowerCase().indexOf(searchSprint.toLowerCase()) !== -1 ||
-       // sprint.dateCreation.toString().indexOf(searchSprint.toLowerCase()) !== -1 ||
-       // sprint.dateFin.toString().indexOf(searchSprint.toLowerCase()) !== -1 ||
-       // sprint.etatSprint.toLowerCase().indexOf(searchSprint.toLowerCase()) !== -1 ||
+      sprint.projet.nameProjet.toLowerCase().indexOf(searchSprint.toLowerCase()) !== -1 ||
         sprint.sprintCreePar.username.toLowerCase().indexOf(searchSprint.toLowerCase()) !== -1 ||
         sprint.chefAffecter.username.toLowerCase().indexOf(searchSprint.toLowerCase()) !== -1) {
         results.push(sprint);
         console.log(results);
         this.sprints = results;
         console.log(this.sprints);
-
-
       }
-
     }
     this.sprints = results;
-    if (results.length === 0 || !searchSprint) {
-      this.sprints = this.sprintServ.getSprintsFromLocalCache();
-      // document.getElementById("refreshProjButton").click();
 
+    if (results.length === 0 || !searchSprint) {
+      this.getSprints(false);
+      /*  if(this.userActuel.role=="ROLE_ADMIN"){
+        this.sprints = this.sprintServ.getSprintsFromLocalCache();}
+        else if (this.userActuel.role=="ROLE_SCRUM_MASTER"){
+        this.sprints=this.sprints.filter(s=>s.projet.creePar.id==this.userActuel.id)}
+       else if (this.userActuel.role=="ROLE_CHEF"){
+         this.sprints= this.sprints.filter(sprint=>sprint.chefAffecter.id==this.userActuel.id);}
+        else { this.getSprintMember()}  */
+ 
+      // document.getElementById("refreshProjButton").click();
       console.log("err")
     }
 
@@ -326,6 +372,9 @@ public get isAdminOrScrumMaster():boolean{
 
   public get isChefOnly():boolean{
     return this.getUserRole()===Role.CHEF;
+  }
+  public get isMemberOnly():boolean{
+    return this.getUserRole()===Role.MEMBER;
   }
 
   private clickButton(buttonId: string): void {

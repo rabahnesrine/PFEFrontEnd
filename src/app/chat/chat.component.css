@@ -1,0 +1,23 @@
+.header {
+    height: 6%;
+    background: #fafafa;
+  }
+  
+  chat-stream {
+    height: 100%;
+  }
+  
+  .chat {
+    height: 94%;
+  }
+  
+  .users {
+    background-color: #f1f1f1;
+    height: 100%;
+  }
+  
+  .logged-in-user {
+    float: right;
+    font-size: 25px;
+    padding-top: 6px;
+  }

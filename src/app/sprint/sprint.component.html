@@ -33,7 +33,7 @@
 
     <!--For Admin list Sprint-->
 
-    <div class="row" [hidden]="!isAdmin" >
+    <div class="row"  >
         <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprints " >
             <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
                 <div class="text-center">
@@ -89,10 +89,10 @@
         
         
     </div>
-    <!--For ScrumMaster list Sprint-->
-
-    <div class="row" [hidden]="!isScrumMasterOnly">
-        <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   mySprints " > <!--mySprints-->
+    <!--For ScrumMaster list Sprint   au lieu de mySprints on va modifier par sprintsSmtest pour visualise tous les sprint de projet cree par Sm  -->
+<!--mySprints-->
+    <!-- <div class="row" [hidden]="!isScrumMasterOnly">
+        <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprintsSmtest " > 
             <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
                 <div class="text-center">
                 <h5 class="m-0" (click)="onSelectSprint(sprint)" >{{sprint.nomSprint}}</h5>
@@ -144,10 +144,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!--For chef list Sprint-->
-    <div class="row" [hidden]="!isChefOnly">
-        <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprintsChef " > <!--mySprints-->
+   <!--  <div class="row" [hidden]="!isChefOnly">
+        <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprintsChef " > 
             <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
                 <div class="text-center">
                 <h5 class="m-0" (click)="onSelectSprint(sprint)" >{{sprint.nomSprint}}</h5>
@@ -200,10 +200,10 @@
             </div>
         </div>
         
-    </div>
+    </div> -->
 
  <!--For member list Sprint-->
- <div class="row" >
+ <!-- <div class="row" >
     <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprintsMember " > 
         <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
             <div class="text-center">
@@ -260,7 +260,7 @@
 </div>
 
 
-
+ -->
     <button [hidden]="true" type="button" id="openSprintEdit" data-toggle="modal" data-target="#editSprintModal">
     </button>
     <button [hidden]="true" type="button" id="openSprintInfo" data-toggle="modal" data-target="#viewSprintModal">
@@ -332,13 +332,12 @@
                             <div class="form-group">
                                 <label for="status"> etat Sprint</label>
                                 <select name="etatSprint" required [(ngModel)]="editSprint.etatSprint" [disabled]="!isAdminOrScrumMasterOrChef"  class="form-control">
-        
-                                    <option value="ETAT_ACTIVE"> ACTIVE</option>
-                                    <option value="ETAT_SUSPENDED">SUSPENDED
+                                    <option value="ETAT_PAUSED">PAUSED</option>
+
+                                    <option value="ETAT_TESTING"> TESTING</option>
+                                    <option value="ETAT_DELIVERY">DELIVERY
                                     </option>
-                                    <option value="ETAT_WAITING">WAITING
-                                    </option>
-                                    <option value="ETAT_PAUSED">PAUSED
+                                    <option value="ETAT_DEVELOPMENT"> DEVELOPMENT
                                     </option>
         
                                 </select>
@@ -357,11 +356,11 @@
 
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer"[hidden]="isMemberOnly" >
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
                         id="edit-sprint-close">Close</button>
-                    <button type="button" (click)="onUpdateSprint()" [disabled]="editSprintForm.invalid"
+                    <button type="button" (click)="onUpdateSprint()"  [disabled]="editSprintForm.invalid"
                         class="btn btn-primary"> Save changes
                     </button>
                 </div>
@@ -442,15 +441,15 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
              <div class="form-group">
                         <label for="status"> etat Sprint</label>
                         <select name="etatSprint" required ngModel="ETAT_PAUSED" class="form-control">
+                            <option value="ETAT_PAUSED">PAUSED</option>
 
-                            <option value="ETAT_ACTIVE"> ACTIVE</option>
-                            <option value="ETAT_SUSPENDED">SUSPENDED
+                            <option value="ETAT_TESTING"> TESTING</option>
+                            <option value="ETAT_DELIVERY">DELIVERY
                             </option>
-                            <option value="ETAT_WAITING">WAITING
+                            <option value="ETAT_DEVELOPMENT"> DEVELOPMENT 
                             </option>
-                            <option value="ETAT_PAUSED">PAUSED
-                            </option>
-
+                           
+                           
                         </select>
 
                     </div>

@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { CanlendrierComponent } from './canlendrier/canlendrier.component';
+import { ChatComponent } from './chat/chat.component';
+import { DashbordComponent } from './dashbord/dashbord.component';
+import { DocumentComponent } from './document/document.component';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { LoginComponent } from './login/login.component';
+import { MsgComponent } from './msg/msg.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProjetComponent } from './projet/projet.component';
 import { RegisterComponent } from './register/register.component';
@@ -19,7 +24,12 @@ const routes: Routes = [
 {path:'sprint',component:SprintComponent, canActivate: [AuthenticationGuard] },
 {path:'profile',component:ProfileComponent, canActivate: [AuthenticationGuard] },
 {path:'tasks/:idSprint',component:TasksComponent, canActivate: [AuthenticationGuard] },
+{path:'chat',component:ChatComponent, canActivate: [AuthenticationGuard] },
+{path:'msg',component:MsgComponent, canActivate: [AuthenticationGuard] },
+{path:'dashbord',component:DashbordComponent, canActivate: [AuthenticationGuard] },
+{path:'document',component:DocumentComponent, canActivate: [AuthenticationGuard] },
 
+{path:'Calandrie',component:CanlendrierComponent, canActivate: [AuthenticationGuard] },
 
 {path:'', redirectTo:'/login', pathMatch:'full'}
 ];

@@ -20,6 +20,16 @@ import { ProjetComponent } from './projet/projet.component';
 import { SprintComponent } from './sprint/sprint.component';
 import { ProfileComponent } from './profile/profile.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { ChatStreamComponent } from './chat-stream/chat-stream.component';
+import { ChatComponent } from './chat/chat.component';
+import { ChatuserComponent } from './chatuser/chatuser.component';
+import { WebSocketServiceService } from './web-socket-service.service';
+import { MsgComponent } from './msg/msg.component';
+import { UpcomingToLatestPipePipe } from './upcoming-to-latest-pipe.pipe';
+import { DashbordComponent } from './dashbord/dashbord.component';
+import { CanlendrierComponent } from './canlendrier/canlendrier.component';
+import { AgendaService, DayService, MonthService, ScheduleModule, WeekService, WorkWeekService } from '@syncfusion/ej2-angular-schedule';
+import { DocumentComponent } from './document/document.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +40,14 @@ import { TasksComponent } from './tasks/tasks.component';
     SprintComponent,
     ProfileComponent,
     TasksComponent,
+    ChatStreamComponent,
+    ChatComponent,
+    ChatuserComponent,
+    MsgComponent,
+    UpcomingToLatestPipePipe,
+    DashbordComponent,
+    CanlendrierComponent,
+    DocumentComponent,
     
   ],
   imports: [
@@ -38,9 +56,12 @@ import { TasksComponent } from './tasks/tasks.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NotificationModule  
+    NotificationModule,
+    ScheduleModule
+
+
   ],
-  providers: [NotificationService, AuthenticationGuard, AuthServService,UserServService,{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}],
+  providers: [NotificationService, AuthenticationGuard, AuthServService,UserServService,WebSocketServiceService,{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true},AgendaService, DayService, WeekService, WorkWeekService, MonthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

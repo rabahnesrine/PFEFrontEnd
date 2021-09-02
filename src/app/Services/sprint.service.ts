@@ -5,6 +5,7 @@ import { Projet } from '../models/Projet';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CustomHttpResponse } from '../models/custom-http-response';
 import { Sprint } from '../models/Sprint';
+import { User } from '../models/User';
 
 
 @Injectable({
@@ -17,6 +18,10 @@ export class SprintService {
 
   public getSprints():Observable<Sprint[]|HttpErrorResponse>{
     return this.http.get<Sprint[]> (`${this.host}/sprint/all`);
+  }
+
+  public getSprintMember(id:number):Observable<Sprint[]|HttpErrorResponse>{
+    return this.http.get<Sprint[]|HttpErrorResponse>(`${this.host}/sprint/sprintBytaskMember/${id}`)
   }
 
   public addSprint(sprint:Sprint):Observable<Sprint|HttpErrorResponse>{

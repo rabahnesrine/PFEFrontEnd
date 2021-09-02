@@ -1,0 +1,7 @@
+<app-chatuser (usernameSet)="usernameSet($event)" *ngIf="!openChat"></app-chatuser>
+<app-chat-stream *ngIf="openChat" [username]="username"></app-chat-stream>
+
+
+
+
+

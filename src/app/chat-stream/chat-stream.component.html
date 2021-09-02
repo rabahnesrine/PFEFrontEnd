@@ -1,0 +1,22 @@
+<div class="chat_window">
+    <div class="top_menu">
+      <div class="buttons">
+  
+      </div>
+      <div class="title">Chat</div>
+    </div>
+    <ul class="messages" >
+      <!--<div class="card" *ngFor="let listMSG of list"><div class="card-body"><b><i>{{listMSG.time}}</i> <b> {{listMSG.name}}:</b></b> {{listMSG.message}}</div></div>-->
+      
+      <div class="card" *ngFor="let message of sesList"><div class="card-body"> <button class="btn-danger">{{message.message}}</button>{{message.message}}
+        <b><i>{{message.time}}</i> <b> {{message.name}}:</b></b> {{message.message}}</div></div>
+    </ul>
+    <div class="bottom_wrapper clearfix">
+      <div class="message_input_wrapper">
+        <input type="text" class="message_input" placeholder="Type your message here..." [(ngModel)]="input" #message/>
+      </div>
+      <div class="send_message">
+        <button (click)="sendMessage()" class="btn btn-success btn-lg">Send</button>
+      </div>
+    </div>
+  </div>

@@ -30,7 +30,7 @@ this.description='';
     this.etatSprint='';
 
 this.projet={
-idProjet:0,nameProjet:'',dateCreation:null, dateEcheance:null,dateModification:null,etatProjet:'',creePar:null};
+idProjet:0,nameProjet:'',dateCreation:null, dateEcheance:null,dateModification:null,etatProjet:'',creePar:null,client:null};
 
 
 

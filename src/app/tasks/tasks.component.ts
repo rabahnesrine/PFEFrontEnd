@@ -40,10 +40,14 @@ export class TasksComponent implements OnInit {
   public mySprints: Sprint[];
   public tasksMember:Task[];
   public tasksBySprint:Task[];
-  public TasksInProgress:Task[];
-  public TasksCancel:Task[];
-  public TasksInFinish:Task[];
-  public TasksToDo:Task[];
+  public tasksInProgress:Task[];
+  public tasksCancel:Task[];
+  public tasksInFinish:Task[];
+  public tasksToDo:Task[];
+
+  public tasksArchived:Task[];
+
+
 
 public editTask = new Task();
   public TasksUpdate:Task[];
@@ -51,6 +55,7 @@ public editTask = new Task();
   public selectedTask:Task;
 
  public idSprint:number;
+ public selectcmtDelete:Commentaire;
 
 
 
@@ -59,7 +64,7 @@ public editTask = new Task();
 public submited = false;
  public messageTask: string;
 public id: number;
-public commentTask:any;
+public commentTask:Commentaire[];
 public messageComment: string;
 //attach
 progress: { percentage: number } = { percentage: 0 };
@@ -67,8 +72,10 @@ progress: { percentage: number } = { percentage: 0 };
   selectedFiles: FileList;
   currentFileUpload: File;
   allAttachement: any;
-  attachementTache: any;
+  attachementTache: Attachement[];
   attachement: Attachement =  new Attachement();
+ public uploadvalid :boolean = false;
+
 
 
 
@@ -91,15 +98,7 @@ this.idSprint = sprint;
 console.log(this.idSprint);
 
 console.log(params);});
-
-if(this.userActuel.role=="ROLE_CHEF"){
-this.sprints=this.sprintServ.getSprintsFromLocalCache().filter(sprint => sprint.chefAffecter.id==this.userActuel.id).filter(sprint=>sprint.idSprint==this.idSprint);//si Useractuel et le chef Chef
-}else if(this.userActuel.role=="ROLE_SCRUM_MASTER") {
-this.sprints=this.sprintServ.getSprintsFromLocalCache().filter(sprint => sprint.sprintCreePar.id==this.userActuel.id).filter(sprint=>sprint.idSprint==this.idSprint);//si Useractuel et le cree Par 
-  }else {
-    this.sprints=this.sprintServ.getSprintsFromLocalCache().filter(sprint=>sprint.idSprint==this.idSprint);
-  }
-console.log(this.sprints);
+this.getSprintByActuelUser()
 
 //console.log(this.getTasks(false));
     
@@ -118,17 +117,18 @@ console.log(this.sprints);
         this.taskServ.addTasksToLocalCache(response);
         this.tasks = response;
         this.tasksBySprint=this.tasks.filter(t=>t.sprint.idSprint==this.idSprint);
-        this.TasksCancel=this.tasksBySprint.filter(t=>t.etatTask=="TASKETAT_CANCEL");  
-        this.TasksInFinish=this.tasksBySprint.filter(t=>t.etatTask=="TASKETAT_TOFINISH");
-        this.TasksInProgress=this.tasksBySprint.filter(t=>t.etatTask=="TASKETAT_INPROGRESS");
-        this.TasksToDo=this.tasksBySprint.filter(t=>t.etatTask=="TASKETAT_UNSTARTED");
+        this.tasksCancel=this.tasksBySprint.filter(t=>t.etatTask=="TASKETAT_CANCEL"&& t.archive==false);  
+        this.tasksInFinish=this.tasksBySprint.filter(t=>t.etatTask=="TASKETAT_COMPLETED"&& t.archive==false);
+        this.tasksInProgress=this.tasksBySprint.filter(t=>t.etatTask=="TASKETAT_INPROGRESS"&& t.archive==false);
+        this.tasksToDo=this.tasksBySprint.filter(t=>t.etatTask=="TASKETAT_UNSTARTED" && t.archive==false);
+        this.tasksArchived=this.tasksBySprint.filter(t=>t.archive==true)
         console.log(this.tasksBySprint);
         this.refreshTask = false;
 
        // this.getMyTasks()
 
         if (showNotification) {
-          this.sendNotification(NotificationType.SUCCESS, `${response.length} task(s) loaded successfully . `);
+          this.sendNotification(NotificationType.SUCCESS, `${this.tasksBySprint.length} task(s) loaded successfully . `);
         }
       }, (errorResponse: HttpErrorResponse) => {
         console.log(errorResponse);
@@ -200,7 +200,12 @@ console.log(this.myTasks);
       // this.currentUsername= editUser.username;
       this.clickButton('openTaskEdit');
     }
-  
+   /*  public outArchiveTask(editTask: Task): void {
+      this.editTask = editTask;
+      console.log("edit  " + editTask.nameTask);
+      // this.currentUsername= editUser.username;
+      this.clickButton('openTaskEdit');
+    } */
   
   
     public onUpdateTask(): void {
@@ -235,6 +240,53 @@ console.log(this.myTasks);
   
     }
   
+
+
+    public outArchiveTask(editTask:Task): void {
+      this.editTask = editTask;
+console.log(this.editTask);
+  this.editTask.archive=false;
+
+      if (this.userActuel.role == "ROLE_ADMIN"|| this.userActuel.role == "ROLE_SCRUM_MASTER" ||this.userActuel.role == "ROLE_CHEF"|| this.editTask.memberAffecter.id == this.userActuel.id){
+        if ((this.tasksBySprint.filter(t=>t.nameTask==this.editTask.nameTask)).length===1) { 
+         this.taskServ.updateTask(this.editTask.idTask,this.editTask).subscribe(
+           (response: Task) => {
+              this.getTasks(false);
+              this.sendNotification(NotificationType.INFO, `${response.nameTask} : restored task successfully.`);
+  
+  
+            },
+            (errorResponse: HttpErrorResponse) => {
+              console.log(errorResponse);
+              this.sendNotification(NotificationType.ERROR, errorResponse.error.message );
+              this.getTasks(false); 
+            }
+          )
+        } else {
+          this.sendNotification(NotificationType.ERROR, "Erreur task name "+this.editTask.nameTask+" existed  into sprint "+this.editTask.sprint.nomSprint);
+          this.getTasks(false);
+        }
+      }else {
+        this.sendNotification(NotificationType.ERROR, "you don't have permission ");
+        this.getTasks(false);
+      }
+
+
+     
+  
+      
+  
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -287,11 +339,26 @@ console.log(this.myTasks);
     
     }
 
+
+public getSprintByActuelUser(){
+  if(this.userActuel.role=="ROLE_CHEF"){
+    this.sprints=this.sprintServ.getSprintsFromLocalCache().filter(sprint => sprint.chefAffecter.id==this.userActuel.id).filter(sprint=>sprint.idSprint==this.idSprint);//si Useractuel et le chef Chef
+    }else if(this.userActuel.role=="ROLE_SCRUM_MASTER") {
+    this.sprints=this.sprintServ.getSprintsFromLocalCache().filter(sprint => sprint.sprintCreePar.id==this.userActuel.id).filter(sprint=>sprint.idSprint==this.idSprint);//si Useractuel et le cree Par 
+      }else {
+        this.sprints=this.sprintServ.getSprintsFromLocalCache().filter(sprint=>sprint.idSprint==this.idSprint);
+      }
+    console.log(this.sprints);
+}
+
+
+
+
 //commentaire
 
 
 commentTacheByID() {
-  this.taskServ.getCommentByTacheId(this.selectedTask.idTask).subscribe(data => {
+  this.taskServ.getCommentByTacheId(this.selectedTask.idTask).subscribe((data:Commentaire[]) => {
     this.commentTask = data;
     console.log(this.commentTask)
   });
@@ -300,32 +367,29 @@ commentTacheByID() {
 
 addNewComment(valid) {
   this.commentaire.tacheCom = this.selectedTask;
+  
   this.taskServ.saveComment(this.commentaire).subscribe( data => {
     console.log(data);
    this.submited = true;
   this.commentTacheByID();
    this.messageComment = 'Laissez un autre commentaire ...';
+   this.sendNotification(NotificationType.SUCCESS,"success commentaire added")
+
   }, err => {
+    
     console.log(err);
   });
+  this.submited = false;
   this.commentaire = new Commentaire();
 }
 
 public onDeleteComment(id: number): void {
- // console.log(this.tasks.find(t => t.idTask == id));
 
- /*  this.selectTaskDelete = this.tasks.find(t => t.idTask == id);
-  console.log(this.selectTaskDelete.taskCreePar.id);
+  this.selectcmtDelete = this.commentTask.find(c =>c.idCommentaire == id);
+  console.log(this.selectcmtDelete.userCom.id);
   console.log(this.userActuel.id)
 
-
-  if (this.selectTaskDelete.taskCreePar.id == this.userActuel.id) {
-    console.log("egaux");
-  }
-  else { console.log("non "); } */
-
-
-  //if (this.userActuel.role == "ROLE_ADMIN"|| this.userActuel.role == "ROLE_SCRUM_MASTER" || this.selectTaskDelete.taskCreePar.id == this.userActuel.id) {
+  if (this.userActuel.role == "ROLE_ADMIN"|| this.userActuel.role == "ROLE_SCRUM_MASTER" || this.userActuel.role == "ROLE_CHEF" || this.selectcmtDelete.userCom.id == this.userActuel.id) {
     this.taskServ.deleteCommentaire(id).subscribe(
       (response: CustomHttpResponse) => {
         console.log(response);
@@ -339,10 +403,10 @@ public onDeleteComment(id: number): void {
       }
 
     )
-  /* } else {
+   } else {
     this.sendNotification(NotificationType.ERROR, "you don't have permission ");
-    this.getTasks(false);
-  } */
+    this.commentTacheByID();
+  } 
 
 }
 
@@ -350,6 +414,7 @@ public onDeleteComment(id: number): void {
 //attachement 
 
 upload() {
+  this.uploadvalid=true;
   this.progress.percentage = 0;
 
   this.currentFileUpload = this.selectedFiles.item(0);
@@ -357,6 +422,8 @@ upload() {
     if (event.type === HttpEventType.UploadProgress) {
       this.progress.percentage = Math.round(100 * event.loaded / event.total);
     } else if (event instanceof HttpResponse) {
+      this.sendNotification(NotificationType.SUCCESS, "File is completely uploaded! click save");
+
       console.log('File is completely uploaded!');
       this.getAllAttachement();
 
@@ -377,7 +444,7 @@ getAllAttachement() {
   });
 }
 getAttachementByTacheID() {
-  this.attachementService.getAttachementByTache(this.selectedTask.idTask).subscribe(data => {
+  this.attachementService.getAttachementByTache(this.selectedTask.idTask).subscribe((data:Attachement[]) => {
     this.attachementTache = data;
     console.log(this.attachementTache);
   });
@@ -385,11 +452,16 @@ getAttachementByTacheID() {
 saveAttachement() {
  
   this.attachement.taskAtt =  this.selectedTask;
+  console.log(this.attachement)
   console.log(this.attachement.taskAtt.idTask)
   this.attachementService.saveAttachement(this.attachement).subscribe(data => {
     this.getAttachementByTacheID();
      console.log(this.getAttachementByTacheID());
-    console.log(data);
+     this.uploadvalid=false;
+     this.sendNotification(NotificationType.SUCCESS, "File is completely saved ");
+
+   // console.log(data);
+
   }, err => {
     console.log(err);
   });
@@ -399,6 +471,9 @@ saveAttachement() {
 onDeleteAttachement(att) {
   console.log(att)
 console.log(att.idAttachement);
+
+
+
   this.attachementService.deleteAttachement(att.idAttachement).subscribe(
     (response: CustomHttpResponse) => {
       console.log(response);
@@ -417,6 +492,8 @@ console.log(att.idAttachement);
  downloadFileToSave(attachement) {
   this.taskServ.getFile(attachement.file).subscribe(res => {
     this.saveToFileSystem(res);
+    this.sendNotification(NotificationType.SUCCESS, "File download");
+
   });
 } 
  private saveToFileSystem(response) {
@@ -486,6 +563,9 @@ public get isAdminOrScrumMaster():boolean{
 
   public get isScrumMasterOnly():boolean{
     return this.getUserRole()===Role.SCRUM_MASTER;
+  }
+  public get isMemberOnly():boolean{
+    return this.getUserRole()===Role.MEMBER;
   }
 
   public get isChefOnly():boolean{

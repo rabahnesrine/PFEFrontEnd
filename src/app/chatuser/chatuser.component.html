@@ -1,0 +1,17 @@
+<body class="background">
+    <div>
+      <div class="text-center center center-c">
+        <h1>Pleace enter a username to join the chat</h1>
+  
+        <div class="input-group mb-3 input-group-lg">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">@</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" #username>
+          <input type="text" class="form-control" placeholder="Chat-room" aria-describedby="basic-addon1" #room>
+  
+          <button class="btn btn-primary" (click)="setUsername()">Go to Chat</button>
+        </div>
+      </div>
+    </div>
+  </body>

@@ -11,6 +11,7 @@ export class Projet{
     public   etatProjet:string;
     
     public  creePar:User;
+    public client:User;
 
 
     constructor(){
@@ -25,7 +26,11 @@ export class Projet{
         this.creePar= { id: 0, userId :'' ,username:'',email:'',telephone:'',professionUser:'',
         lastLoginDate:null,lastLoginDateDisplay:null,joinDate:null,profileImageUrl:'',
         isActive:false,isNotLocked:false, role:'',authorities:[]};
-
-    }
+    
+    this.client= { id: 0, userId :'' ,username:'',email:'',telephone:'',professionUser:'',
+    lastLoginDate:null,lastLoginDateDisplay:null,joinDate:null,profileImageUrl:'',
+    isActive:false,isNotLocked:false, role:'',authorities:[]};
+    
+}
 
 }
