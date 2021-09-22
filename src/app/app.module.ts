@@ -30,6 +30,10 @@ import { DashbordComponent } from './dashbord/dashbord.component';
 import { CanlendrierComponent } from './canlendrier/canlendrier.component';
 import { AgendaService, DayService, MonthService, ScheduleModule, WeekService, WorkWeekService } from '@syncfusion/ej2-angular-schedule';
 import { DocumentComponent } from './document/document.component';
+import { EventComponent } from './event/event.component';
+import { JwPaginationComponent } from './jw-pagination/jw-pagination.component';
+import { JwPaginationModule } from 'jw-angular-pagination';
+import { FirstWindowsComponent } from './first-windows/first-windows.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +52,9 @@ import { DocumentComponent } from './document/document.component';
     DashbordComponent,
     CanlendrierComponent,
     DocumentComponent,
+    EventComponent,
+    JwPaginationComponent,
+    FirstWindowsComponent,
     
   ],
   imports: [
@@ -57,7 +64,8 @@ import { DocumentComponent } from './document/document.component';
     FormsModule,
     ReactiveFormsModule,
     NotificationModule,
-    ScheduleModule
+    ScheduleModule,
+    JwPaginationModule
 
 
   ],

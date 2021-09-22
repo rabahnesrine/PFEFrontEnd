@@ -77,6 +77,7 @@
 
                 </div>
 
+                <div class="scroller" [hidden]="isAdmin">
 
                 <table class="table table-hover" [hidden]="isAdmin">
                     <thead class="table-borderless">
@@ -129,8 +130,11 @@
 
 
                 </table>
+            </div>
+                <div class="scroller"  [hidden]="!isAdmin">
 
                 <table class="table table-hover" [hidden]="!isAdmin">
+
                     <thead class="table-borderless">
                         <tr class="text-center">
                             <th class="text-center">Photo</th>
@@ -145,8 +149,8 @@
 
                         </tr>
                     </thead>
-                    <tbody *ngFor="let user of users">
-                        <tr class="text-center" *ngIf="user">
+                    <tbody *ngFor="let user of userslist" >             
+                        <tr class="text-center " *ngIf="user">
                             <td>
                                 <img height="40" width="40" class="rounded-circle img-fluid img-thumbnail"
                                     src="{{user?.profileImageUrl}}" alt="" />
@@ -178,10 +182,10 @@
                             </td>
                         </tr>
                     </tbody>
-
-
+                    
                 </table>
-            </div>
+            </div>                </div>
+
         </div>
 
 
@@ -501,14 +505,15 @@
                                     </div>
                                     <div class="col d-flex flex-column flex-sm-row justify-content-between ">
                                         <div class="text-left text-sm-left  mb-sm-0">
-                                            <h5 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser.username}}</h5>
+                                            <h5 class="pt-sm-2 pb-1 mb-0 text-nowrap">
+                                                <i class="fas fa-user"> Username: {{selectedUser.username}}</i></h5>
                                             <!--                                             <p class="mb-1">{{selectedUser.telephone}}</p>
  -->
-                                            <div class=""> Status:
+                                            <div class="">  <i class="fas fa-info-circle"> Status: </i> 
                                                 <span *ngIf="selectedUser.isActive"
-                                                    class="badge badge-success">Active</span>
+                                                    class="badge badge-success" style="background : green;">Active</span>
                                                 <span *ngIf="!selectedUser.isActive"
-                                                    class="badge badge-danger">Inactive</span>
+                                                    class="badge badge-danger" style="background: red;">Inactive</span>
 
                                             </div>
                                             <div *ngIf="selectedUser.lastLoginDateDisplay" class="text-muted">
@@ -529,34 +534,34 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"></li>
                                 <li class="list-group-item">
-                                    <i class="fa fa-id-badge float-right"></i> {{selectedUser.userId}}
+                                    <i class="fa fa-id-badge float-right"> ID: {{selectedUser.userId}}</i>
                                 </li>
                                 <li class="list-group-item">
-                                    <i class="fa fa-id-badge float-right"></i> {{selectedUser.professionUser}}
+                                    <i class="fa fa-id-badge float-right"> Profession: {{selectedUser.professionUser}}</i> 
                                 </li>
                                 <li class="list-group-item">
-                                    <i class="fa fa-phone float-right"></i> {{selectedUser.telephone}}
-                                </li>
-
-                                <li class="list-group-item">
-                                    <i class="fa fa-envelope float-right"></i> {{selectedUser.email}}
+                                    <i class="fa fa-phone float-right"> Telephone: {{selectedUser.telephone}}</i>
                                 </li>
 
                                 <li class="list-group-item">
-                                    <i class="fa fa-shield-alt float-right"></i> {{selectedUser.role.substring(5)}}
+                                    <i class="fa fa-envelope float-right"> Email: {{selectedUser.email}}</i> 
+                                </li>
+
+                                <li class="list-group-item">
+                                    <i class="fa fa-shield-alt float-right">  {{selectedUser.role.substring(5)}}</i> 
                                 </li>
                                 <li *ngIf="selectedUser.lastLoginDateDisplay" class="list-group-item">
-                                    <i class="fa fa-sign-in-alt float-right"></i> {{selectedUser.lastLoginDateDisplay |
-                                    date:'medium'}}
+                                    <i class="fa fa-sign-in-alt float-right"> Last Login Date: {{selectedUser.lastLoginDateDisplay |
+                                        date:'medium'}}</i> 
                                 </li>
 
                                 <li class="list-group-item">
-                                    <span *ngIf="!selectedUser.isNotLocked"> Account locked
-                                        <i class="fa fa-lock float-right" style="color : red;"></i>
+                                    <span *ngIf="!selectedUser.isNotLocked"> 
+                                        <i class="fa fa-lock float-right" style="color : red;"> Account locked</i>
                                     </span>
 
                                     <span *ngIf="selectedUser.isNotLocked">
-                                        <i class="fa fa-unlock float-right" style="color : green;"></i>Account Unlocked
+                                        <i class="fa fa-unlock float-right" style="color : green;"> Account Unlocked</i>
                                     </span>
                                 </li>
 

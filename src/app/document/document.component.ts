@@ -423,6 +423,89 @@ public get isMember():boolean{
 }
 
 
+
+public searchDocuments(searchDocument: string): void {
+  console.log(searchDocument);
+  const resultsPublic: Document[] = [];
+  const resultsPrive: Document[] = [];
+  const resultsAllPrivate: Document[] = [];
+
+  
+  //search private doc of current user
+for (const doc of this.docPrivate) {
+    
+    if (doc.nomDocument.toLowerCase().indexOf(searchDocument.toLowerCase()) !== -1 ||
+      doc.typeDocument.toString().indexOf(searchDocument.toLowerCase()) !== -1 ||
+      doc.file.toLowerCase().indexOf(searchDocument.toLowerCase()) !== -1 ||
+      doc.docUser.username.toLowerCase().indexOf(searchDocument.toLowerCase()) !== -1) {
+      resultsPrive.push(doc);
+      this.docPrivate = resultsPrive;
+
+
+    }
+
+  }
+  this.docPrivate = resultsPrive;
+  if (resultsPrive.length === 0 || !searchDocument) {
+    this.getPrivateDocbyuser(false);
+    //console.log("err")
+  }
+
+
+
+//search all public doc
+for (const doc of this.documents) {
+
+  if (doc.nomDocument.toLowerCase().indexOf(searchDocument.toLowerCase()) !== -1 ||
+  doc.typeDocument.toString().indexOf(searchDocument.toLowerCase()) !== -1 ||
+  doc.file.toLowerCase().indexOf(searchDocument.toLowerCase()) !== -1 ||
+  doc.docUser.username.toLowerCase().indexOf(searchDocument.toLowerCase()) !== -1) {
+    resultsPublic.push(doc);
+  this.documents = resultsPublic;
+
+
+}
+
+}
+this.documents = resultsPublic;
+if (resultsPublic.length === 0 || !searchDocument) {
+  this.getAllDocuments()
+//this.docPrivate = this.projetServ.getProjetsFromLocalCache().filter(p=>p.client.role=="ROLE_PRODUCT_OWNER");
+//console.log("err")
+}
+
+// liste tous les doc prive just admin
+
+for (const doc of this.documentsPrive) {
+if (doc.nomDocument.toLowerCase().indexOf(searchDocument.toLowerCase()) !== -1 ||
+      doc.typeDocument.toString().indexOf(searchDocument.toLowerCase()) !== -1 ||
+      doc.file.toLowerCase().indexOf(searchDocument.toLowerCase()) !== -1 ||
+      doc.docUser.username.toLowerCase().indexOf(searchDocument.toLowerCase()) !== -1) {
+      resultsAllPrivate.push(doc);
+      this.documentsPrive = resultsAllPrivate;
+
+
+    }
+}
+this.documentsPrive = resultsAllPrivate;
+if (resultsAllPrivate.length === 0 || !searchDocument) {
+  this.getAllDocumentsPrivate();
+//this.documentsPrive=this.projetServ.getProjetsFromLocalCache().filter(p=>p.creePar.role=="ROLE_SCRUM_MASTER")
+
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
 }
 /* function saveAs(blob: Blob, arg1: string) {
   throw new Error('Function not implemented.');

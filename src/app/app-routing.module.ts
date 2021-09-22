@@ -4,6 +4,8 @@ import { CanlendrierComponent } from './canlendrier/canlendrier.component';
 import { ChatComponent } from './chat/chat.component';
 import { DashbordComponent } from './dashbord/dashbord.component';
 import { DocumentComponent } from './document/document.component';
+import { EventComponent } from './event/event.component';
+import { FirstWindowsComponent } from './first-windows/first-windows.component';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { LoginComponent } from './login/login.component';
 import { MsgComponent } from './msg/msg.component';
@@ -28,6 +30,8 @@ const routes: Routes = [
 {path:'msg',component:MsgComponent, canActivate: [AuthenticationGuard] },
 {path:'dashbord',component:DashbordComponent, canActivate: [AuthenticationGuard] },
 {path:'document',component:DocumentComponent, canActivate: [AuthenticationGuard] },
+{path:'event',component:EventComponent, canActivate: [AuthenticationGuard] },
+{path:'firstWindows',component:FirstWindowsComponent, canActivate: [AuthenticationGuard] },
 
 {path:'Calandrie',component:CanlendrierComponent, canActivate: [AuthenticationGuard] },
 

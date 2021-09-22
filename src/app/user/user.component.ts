@@ -11,6 +11,12 @@ import { CustomHttpResponse } from '../models/custom-http-response';
 import { Router } from '@angular/router';
 import { FileUploadStatus } from '../models/file-upload.status';
 import { Role } from '../enum/role.enum';
+import { TaskService } from '../Services/task.service';
+import { Task } from '../models/Task';
+import { Sprint } from '../models/Sprint';
+import { SprintService } from '../Services/sprint.service';
+import { Projet } from '../models/Projet';
+import { ProjetServService } from '../Services/projet-serv.service';
 
 @Component({
   selector: 'app-user',
@@ -22,7 +28,10 @@ export class UserComponent implements OnInit,OnDestroy {
  public titleAction$=this.titleSubject.asObservable(); //action listener
 
 public users: User[]; 
-public usersForSM: User[]; 
+public usersForSM: User[];
+public userslist: User[]; 
+
+
 
 public user: User; //user actual 
 public refreshing: boolean;
@@ -42,9 +51,20 @@ public totalPages:number;
 public pages:Array<number>;
 public currentKeyword:string="";
 
-
-
-  constructor(private router:Router, private userServ: UserServService,private authServ:AuthServService, private notificationService: NotificationService) { 
+public userTochange :User;
+//task
+public tasks:Task[];
+public tasksTochange:Task[];
+public anonymeMember:User;
+//sprint
+public sprints:Sprint[];
+public sprintsTochange:Sprint[];
+public anonymeChef:User;
+//projet
+public projets:Projet[];
+public projetsTochange:Projet[];
+public anonymeProductowner:User;
+  constructor(private router:Router, private userServ: UserServService,private authServ:AuthServService, private notificationService: NotificationService,private taskServ:TaskService,private sprintServ:SprintService,private projetServ:ProjetServService) { 
 
   }
   
@@ -56,6 +76,9 @@ public currentKeyword:string="";
   console.log(this.authServ.currentUserlogged());
 //this.getAllUsers() ;
 
+this.tasks=this.taskServ.getTasksFromLocalCache();
+this.sprints=this.sprintServ.getSprintsFromLocalCache();
+this.projets=this.projetServ.getProjetsFromLocalCache();
 }
     
  
@@ -74,10 +97,16 @@ public getUsers(showNotification:boolean):void{
       console.log(response);
       this.userServ.addUsersToLocalCache(response);
       this.users=response;
-      this.usersForSM=response.filter(u=>u.role!="ROLE_ADMIN");
+      this.userslist=response.filter(u=>u.username!="AnonymeMember").filter(u=>u.username!="AnonymeChef").filter(u=>u.username!="AnonymeProductOwner");
+      this.usersForSM=this.userslist.filter(u=>u.role!="ROLE_ADMIN");
       this.refreshing=false;
       if(showNotification){
-this.sendNotification(NotificationType.SUCCESS,`${response.length} user(s) loaded successfully . `);
+        if(this.user.role=="ROLE_ADMIN"){
+this.sendNotification(NotificationType.SUCCESS,`${this.userslist.length} user(s) loaded successfully . `);}
+else{
+  this.sendNotification(NotificationType.SUCCESS,`${this.usersForSM.length} user(s) loaded successfully . `);
+
+}
       }
     },(errorResponse:HttpErrorResponse)=>{
 console.log(errorResponse);
@@ -95,7 +124,11 @@ console.log(errorResponse);
 public searchUsers(searchTerm:string ):void{
  console.log(searchTerm);
   const results: User[]=[];
-  for(const user of this.userServ.getUsersFromLocalCache()){
+  this.users=this.userServ.getUsersFromLocalCache();
+  this.userslist=this.users.filter(u=>u.username!="AnonymeMember").filter(u=>u.username!="AnonymeChef").filter(u=>u.username!="AnonymeProductOwner");
+
+  if(this.user.role=="ROLE_ADMIN"){
+  for(const user of this.userslist){
  console.log(user) ;
   console.log("test2"+user.username)
     if(user.username.toLowerCase().indexOf(searchTerm.toLowerCase())!== -1 ||
@@ -105,15 +138,52 @@ public searchUsers(searchTerm:string ):void{
     user.professionUser.toLowerCase().indexOf(searchTerm.toLowerCase())!==-1 ) {
         results.push(user); 
         console.log(results);
-        this.users=results;
-console.log(this.users);
+        this.userslist=results;
+console.log(this.userslist);
 
     }}
-         this.users=results;
+         this.userslist=results;
 if(results.length === 0 || !searchTerm){
   this.users=this.userServ.getUsersFromLocalCache();
+  this.userslist=this.users.filter(u=>u.username!="AnonymeMember").filter(u=>u.username!="AnonymeChef").filter(u=>u.username!="AnonymeProductOwner");
+
   console.log("err")
-} 
+} }
+if (this.user.role=="ROLE_SCRUM_MASTER"){
+  this.usersForSM=this.userslist.filter(u=>u.role!="ROLE_ADMIN");
+
+
+  for(const user of this.usersForSM){
+    console.log(user) ;
+     console.log("test2"+user.username)
+       if(user.username.toLowerCase().indexOf(searchTerm.toLowerCase())!== -1 ||
+       user.userId.toLowerCase().indexOf(searchTerm.toLowerCase())!== -1 ||
+       user.email.toLowerCase().indexOf(searchTerm.toLowerCase())!==-1 ||
+       user.isActive.toString().indexOf(searchTerm.toLowerCase())!==-1 ||
+       user.professionUser.toLowerCase().indexOf(searchTerm.toLowerCase())!==-1 ) {
+           results.push(user); 
+           console.log(results);
+           this.usersForSM=results;
+   console.log(this.usersForSM);
+   
+       }}
+            this.usersForSM=results;
+   if(results.length === 0 || !searchTerm){
+     this.users=this.userServ.getUsersFromLocalCache();
+     this.userslist=this.users.filter(u=>u.username!="AnonymeMember").filter(u=>u.username!="AnonymeChef").filter(u=>u.username!="AnonymeProductOwner");
+     this.usersForSM=this.userslist.filter(u=>u.role!="ROLE_ADMIN");
+
+     console.log("err")
+   } 
+
+
+
+
+
+}
+
+
+
     
 }
 
@@ -275,6 +345,12 @@ public onEditUser(editUser:User):void{
 
 
 public onDeleteUser(username:string):void{
+
+ this.userTochange=this.users.find(u=>u.username==username)
+if(this.userTochange.role=="ROLE_MEMBER"||this.userTochange.role=="ROLE_PRODUCT_OWNER"||this.userTochange.role=="ROLE_CHEF"){
+
+this.onChange(username);
+
   this.subscriptions.push(
     this.userServ.deleteUser(username).subscribe(
       (response: CustomHttpResponse)=>{
@@ -288,10 +364,87 @@ public onDeleteUser(username:string):void{
             }
 
     )
-  );
+  );  }
+  else{
+            this.subscriptions.push(
+              this.userServ.deleteUser(username).subscribe(
+                (response: CustomHttpResponse)=>{
+                  this.sendNotification(NotificationType.SUCCESS, "success deleting");
+                  
+                  this.getUsers(true);
+                },(errorResponse:HttpErrorResponse)=>{
+                  console.log(errorResponse);
+                        this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+              
+                      }
+          
+              )
+            );
+          }
 
 }
 
+
+
+private onChange(username:String){
+  this.userTochange=this.users.find(u=>u.username==username)
+
+//Member
+ if(this.userTochange.role=="ROLE_MEMBER"){
+  this.anonymeMember=this.users.find(u=>u.username=="AnonymeMember");
+ 
+  this.tasksTochange= this.tasks.filter(t=>t.memberAffecter.username==username)
+  for (let i = 0; i < this.tasksTochange.length; i++) {
+   this.tasksTochange[i].memberAffecter=this.anonymeMember;
+ 
+    this.taskServ.updateTask(this.tasksTochange[i].idTask,this.tasksTochange[i]).subscribe(
+     (response: Task) => {
+        console.log(response);
+ });
+ }
+ this.taskServ.addTasksToLocalCache(this.tasksTochange);
+ 
+ }
+//chef 
+if(this.userTochange.role=="ROLE_CHEF"){
+  this.anonymeChef=this.users.find(u=>u.username=="AnonymeChef");
+ 
+  this.sprintsTochange= this.sprints.filter(t=>t.chefAffecter.username==username)
+  for (let i = 0; i < this.sprintsTochange.length; i++) {
+   this.sprintsTochange[i].chefAffecter=this.anonymeChef;
+ 
+    this.sprintServ.updateSprint(this.sprintsTochange[i].idSprint,this.sprintsTochange[i]).subscribe(
+     (response: Sprint) => {
+        console.log(response);
+ });
+ }
+ this.sprintServ.addSprintsToLocalCache(this.sprintsTochange);
+ 
+ }
+
+
+//productowner
+if(this.userTochange.role=="ROLE_PRODUCT_OWNER"){
+  this.anonymeProductowner=this.users.find(u=>u.username=="AnonymeProductOwner");
+ 
+  this.projetsTochange= this.projets.filter(t=>t.client.username==username)
+  for (let i = 0; i < this.projetsTochange.length; i++) {
+   this.projetsTochange[i].client=this.anonymeProductowner;
+ 
+    this.projetServ.updateProjet(this.projetsTochange[i].idProjet,this.projetsTochange[i]).subscribe(
+     (response: Projet) => {
+        console.log(response);
+ });
+ }
+ this.projetServ.addProjetsToLocalCache(this.projetsTochange);
+ 
+ }
+
+
+
+
+
+}
 
 
 private  sendNotification(notificationType: NotificationType, message: string):void {

@@ -8,8 +8,10 @@
           <div class="btn-group mr-2">
             <form class="form-inline my-2 my-lg-0 justify-content-center">
 
-              <input placeholder="Search Documents..." type="search" class="form-control " name="searchDoc">
 
+                <input placeholder="Search Documents..." type="search" class="form-control " ngModel
+                    #searchDocument="ngModel" name="searchDocument"
+                    (ngModelChange)="searchDocuments(searchDocument.value)">
 
 
 

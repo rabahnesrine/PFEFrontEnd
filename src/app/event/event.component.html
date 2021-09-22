@@ -1,0 +1,739 @@
+<div class="content">
+
+  <div class="container">
+
+
+    <div class="row">
+      <div class="col-lg-3">
+       
+        <div class="mb-4">
+          <div class="small mb-3">Archive</div>
+       
+        </div>
+
+        
+        <div class="mb-4">
+          <ul class="nav flex-column nav-pills">
+
+            <li class="nav-item">
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProjetModal">
+                <i class="fa fa-fw fa-plus mr-2"></i>Archived Events 
+              </button>
+            </li>
+
+          </ul>
+        </div>
+
+
+
+
+      </div>
+
+
+
+
+
+
+      <div class="col-lg-9">
+        <div class="d-flex flex-column flex-md-row mb-3 mb-md-0">
+            
+            <div role="toolbar" class="btn-toolbar">
+                <div role="group" class="mr-auto mr-md-2 btn-group">
+
+                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addEventModal">
+                    <i class="fa fa-plus"></i>
+                    New Event
+                  </button>
+
+                </div>
+            
+            </div>
+        </div>
+
+
+        <div class="col-lg-6">
+
+
+        <div class="tab-content mt-3" id="myTabContent" [hidden]="!this.hiddenMyEvent">
+          <div id="myevt" class="tab-pane fade in active">
+            <div class=" mb-3 float-right">
+              <div class="btn-group mr-2">
+                         
+  
+                <!--debut test-->
+                <nav class="mr-auto d-flex align-items-center" aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                      <li class="active breadcrumb-item" aria-current="page"><a href="/"><i class="fas fa-calendar-week"></i></a></li>
+  
+                      <li class="active breadcrumb-item" aria-current="page">My Events List</li>
+
+                  </ol>
+                  <div class="mb-4">
+                    <div class="input-group">
+                      <input placeholder="Search Events..." type="search" class="form-control " ngModel>
+          
+                    </div>
+                  </div>
+              </nav>
+              
+  
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                 <!--  <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                  </ol> -->
+  
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner">
+                    <div class="item pointer" *ngFor="let evt of eventsByuserActuel; let i=index; ">
+                      <div id="myevents" class="event-list owl-carousel owl-loaded owl-drag" *ngIf="evt">
+                        <div class="owl-stage-outer">
+                          <div class="owl-stage">
+  
+                            <div class="owl-item cloned" style="width: 374.5px;">
+                              <div class="event-item featured">
+                                <div class="event-schedule">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-calendar event-icon">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                  </svg>
+                                  <span class="event-day">{{evt.startDate| date:"dd"}}</span>
+                                  <div class="event-month-time">
+                                    <span>{{evt.startDate| date:'mediumDate'|date:"MMM"}} {{evt.startDate|
+                                      date:'mediumDate'|date:"y"}}</span>
+                                    <span>{{evt.timeEvent}}</span>
+                                  </div>
+
+                               <div class="card-body text-right ">
+
+                        <ul class="float-right btn-group btn-group-sm">
+                                          <ol class="table-link  text-warning" (click)="onSelectEvt(evt)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                          </ol>
+                                        <ol class="table-link  text-info" >
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                          </ol>
+                                        <ol class="table-link text-danger" >
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                          </ol>
+                                      </ul>
+                                </div>
+                                </div>
+                                <a href="#" class="event-title text-center">{{evt.subject}}</a>
+                                <p class="event-content">{{evt.categorie}}</p>
+                                <ul class="event-participants">
+                                  <li class="event-user" data-toggle="tooltip" data-placement="top"
+                                    data-skin-class="tooltip-base" data-html="true" title=""
+                                    data-original-title="<b>Keith J</b>">
+                                    <img class="event-user-pic"  src="{{evt.eventUser.profileImageUrl}}"
+                                      alt="Profile Pic" />
+                                  </li>
+                                 <!--  <li class="event-user bg-soft-primary" data-toggle="tooltip" data-placement="top"
+                                    data-skin-class="tooltip-base" data-html="true" title=""
+                                    data-original-title="<b>Massi J</b>">
+                                    <span class="event-user-inital text-primary">MS</span>
+                                  </li>
+                                  <li class="event-user" data-toggle="tooltip" data-placement="top"
+                                    data-skin-class="tooltip-base" data-html="true" title=""
+                                    data-original-title="<b>Lex L</b>">
+                                    <img class="event-user-pic" src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                      alt="Profile Pic" />
+                                  </li>
+                                  <li class="event-user bg-soft-danger" data-toggle="tooltip" data-placement="top"
+                                    data-skin-class="tooltip-base" data-html="true" title=""
+                                    data-original-title="<b>Sam R</b>">
+                                    <span class="event-user-inital text-danger">SR</span>
+                                  </li>
+                                  <li class="event-user bg-soft-info" data-original-title="" title="">
+                                    <span class="event-user-inital text-dark">+99</span>
+                                  </li> -->
+                                </ul>
+                              </div>
+                            </div>
+  
+  
+                          </div>
+                        </div>
+                      </div>
+  
+  
+  
+  
+                    </div>
+  
+  
+  
+  
+                  </div>
+  
+                  <!-- Left and right controls -->
+                  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+                <!--fin test-->
+  
+  
+                 
+  
+  
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+  
+  
+
+
+
+
+        <div class="col-lg-6">
+
+
+        <div class="tab-content mt-3" id="myTabContent" [hidden]="!this.hiddenEventInvite">
+          <div id="invite" class="tab-pane fade in active">
+            <div class=" mb-3 float-right">
+              <div class="btn-group mr-2">
+                         
+  
+                <!--debut test-->
+                <nav class="mr-auto d-flex align-items-center" aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                      <li class="active breadcrumb-item" aria-current="page"><a href="/"><i class="fas fa-calendar-week"></i></a></li>
+  
+                      <li class="active breadcrumb-item" aria-current="page">Invite To Events </li>
+
+                  </ol>
+                  <div class="mb-4">
+                    <div class="input-group">
+                      <input placeholder="Search Events..." type="search" class="form-control " ngModel>
+          
+                    </div>
+                  </div>
+              </nav>
+              
+  
+                <div id="myCarousel2" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                <!--   <ol class="carousel-indicators">
+                    <li data-target="#myCarousel2" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel2" data-slide-to="1"></li>
+                    <li data-target="#myCarousel2" data-slide-to="2"></li>
+                  </ol> -->
+  
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner">
+                    <div class="item pointer" *ngFor="let evt of events; let j=index; ">
+                      <div id="events" class="event-list owl-carousel owl-loaded owl-drag" *ngIf="evt">
+                        <div class="owl-stage-outer">
+                          <div class="owl-stage">
+  
+                            <div class="owl-item cloned" style="width: 374.5px;">
+                              <div class="event-item featured">
+                                <div class="event-schedule">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-calendar event-icon">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                  </svg>
+                                  <span class="event-day">{{evt.startDate| date:"dd"}}</span>
+                                  <div class="event-month-time">
+                                    <span>{{evt.startDate| date:'mediumDate'|date:"MMM"}} {{evt.startDate|
+                                      date:'mediumDate'|date:"y"}}</span>
+                                    <span>{{evt.timeEvent}}</span>
+                                  </div>
+                                  <div class="card-body text-right ">
+
+                        <ul class="float-right btn-group btn-group-sm">
+                                          <ol class="table-link  text-warning"  (click)="onSelectEvt(evt)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                          </ol>
+                                        <ol class="table-link  text-info" >
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                          </ol>
+                                        <ol class="table-link text-danger" >
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                          </ol>
+                                      </ul>
+                                </div>
+                                </div>
+                                <a href="#" class="event-title text-center">{{evt.subject}}</a> 
+                                <p class="event-content"> {{evt.categorie}} </p>   
+
+                                
+
+                                <ul class="event-participants">
+                                  <li class="event-user" data-toggle="tooltip" data-placement="top"
+                                    data-skin-class="tooltip-base" data-html="true" title=""
+                                    data-original-title="<b>Keith J</b>">
+                                    <img class="event-user-pic" src="{{evt.eventUser.profileImageUrl}}"
+                                      alt="Profile Pic" />
+                                  </li> 
+                                 <!--  <li class="event-user bg-soft-primary" data-toggle="tooltip" data-placement="top"
+                                    data-skin-class="tooltip-base" data-html="true" title=""
+                                    data-original-title="<b>Massi J</b>">
+                                    <span class="event-user-inital text-primary">MS</span>
+                                  </li>
+                                  <li class="event-user" data-toggle="tooltip" data-placement="top"
+                                    data-skin-class="tooltip-base" data-html="true" title=""
+                                    data-original-title="<b>Lex L</b>">
+                                    <img class="event-user-pic" src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                      alt="Profile Pic" />
+                                  </li>
+                                  <li class="event-user bg-soft-danger" data-toggle="tooltip" data-placement="top"
+                                    data-skin-class="tooltip-base" data-html="true" title=""
+                                    data-original-title="<b>Sam R</b>">
+                                    <span class="event-user-inital text-danger">SR</span>
+                                  </li>
+                                  <li class="event-user bg-soft-info" data-original-title="" title="">
+                                    <span class="event-user-inital text-dark">+99</span>
+                                  </li> -->
+                                </ul>
+                              </div>
+                            </div>
+  
+  
+                          </div>
+                        </div>
+                      </div>
+  
+  
+  
+  
+                    </div>
+  
+  
+  
+  
+                  </div>
+  
+                  <!-- Left and right controls -->
+                  <a class="left carousel-control" href="#myCarousel2" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="right carousel-control" href="#myCarousel2" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+                <!--fin test-->
+  
+  
+                 
+              </div>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+  
+
+  
+      </div>
+    </div>
+      </div>
+
+
+
+
+     
+
+
+  <button [hidden]="true" type="button" id="openEventInfo" data-toggle="modal" data-target="#viewEvtModal">
+  </button>
+  <button [hidden]="true" type="button" id="openDocEdit" data-toggle="modal" data-target="#editDocModal">
+  </button>
+
+
+
+
+  <!-- add  Event  -->
+
+
+  <div class="modal draggable fade bd-example-modal-lg" size="5" id="addEventModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog	" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title text-center"><i class="fas fa-file-import"> New Event</i> </h4>
+          <button class="btn-close" type="button" id="openEventInfo" aria-label="Close" data-dismiss="modal"><span
+              aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="card w-100">
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="fas fa-file-alt"></i>
+
+
+
+                Event
+              </h5>
+
+
+
+              <!--  <p class="card-text"></p>
+                              <div class="alert alert-success" *ngIf="submitedFormEvt">
+                                {{messageFormEvt}}
+                              </div> -->
+              <form #fo="ngForm" (ngSubmit)="saveEvent()">
+
+                <div class="form-row">
+
+                  <div class="form-group">
+                    <label for="name"> Subject</label>
+                    <input type="text" placeholder="Subject" #subject="ngModel" name="subject" required
+                      [(ngModel)]="event.subject" class="form-control">
+                  </div>
+
+
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6"><label for="startDate"> Start Date : </label>
+                    <div class="form-label-group">
+                      <input type="date" name="startDate" [(ngModel)]="event.startDate" #startDate="ngModel"
+                        class="form-control" required>
+
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6"><label for="endDate">End Date :</label>
+                    <div class="form-label-group">
+                      <input type="date" name="endDate" [(ngModel)]="event.endDate" #endDate="ngModel"
+                        class="form-control" required>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="form-row">
+
+                  <div class="form-group col-md-6"> <label for="lieu">Place :</label>
+                    <div class="form-label-group">
+                      <input type="text" name="lieu" placeholder="Place" class="form-control" [(ngModel)]="event.lieu"
+                        #lieu="ngModel" required>
+
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-6"> <label for="timeEvent">Time :</label>
+                    <div class="form-label-group">
+                      <input type="time" name="timeEvent" [(ngModel)]="event.timeEvent" #timeEvent="ngModel"
+                        class="form-control" required>
+
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+                <div class="form-group"> <label for="categorie">Categorie :</label>
+
+                  <select class="form-control" id="inputGroupSelect01" name="categorie" [(ngModel)]="event.categorie"
+                    #categorie="ngModel" required>
+                    <option value="Sprint Planning Meeting ">Sprint Planning Meeting </option>
+                    <option value="Daily SCRUM">Daily SCRUM </option>
+                    <option value="Sprint Review Meeting">Sprint Review Meeting</option>
+                    <option value="Backlog Refinement Meeting">Backlog Refinement Meeting </option>
+                    <option value="Sports Challenge ">Sports Challenge </option>
+                    <option value="Incentive Trip">Incentive Trip</option>
+                    <option value="Team learning">Team learning</option>
+                    <option value="Seminar">Seminar </option>
+                    <option value="Marketing">Marketing </option>
+                    <option value="Congress">Congress</option>
+                    <option value="Others...">Others... </option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <div class="form-label-group"> <label for="description">Description :</label>
+                    <textarea name="description" placeholder="Description" [(ngModel)]="event.description"
+                      #description="ngModel" class="form-control"> </textarea>
+
+                  </div>
+                </div>
+
+
+
+                <button type="submit" style="display: none;" id="new-evt-save"></button>
+
+
+
+
+              </form>
+
+              <!--   <div class="form-group">
+                                <label for="username"> Member Invited </label><br>
+                                
+              
+                                <input type="text" name="username" autocomplete="off" placeholder="Search..."   ngModel #searchTerm="ngModel" (input)="searchUsers(searchTerm.value)" style="color: rgb(14, 12, 10);" required ngModel class="form-control">
+                                </div>
+                                <div class="scroller ">
+                              <ul role="listbox" tabindex="0" >
+                                <li tabindex="-1" role="option" aria-checked="false"class="pointer" *ngFor="let t of users;let i=index">
+                                  <div class="custom-control custom-checkbox mb-0">
+                                    <input tabindex="-1"  class="form-check-input"type="checkbox"  name="intoEvent"  [(ngModel)]="intoEvent[i]" (click)="onSelectUser(t)"><label for="check1"> {{t.username}}
+                                    </label>
+                                  </div>
+                                </li>
+                            </ul></div>
+       -->
+
+
+
+              <div class="form-group">
+                <label for="username"> Add Member to Event </label><br>
+
+
+                <span class="badge rounded-pill bg-warning" *ngFor="let u of userNameList" style="margin-right: 10px;">
+
+                  {{u}}
+                  <span style="margin-left: 3px;color: red; cursor: pointer;" (click)="removeUserFromList(u)">X</span>
+                </span>
+                <input type="text" name="username" autocomplete="off" placeholder="Search..." ngModel
+                  #searchTrainer="ngModel" (input)="searchUser(searchTrainer.value)" style="color: rgb(14, 12, 10);"
+                  required ngModel class="form-control">
+              </div>
+              <div class=" scroller " id="searchBox" hidden="true">
+
+                <div *ngFor="let t of searchedUsers">
+
+                  <div *ngIf="existUserName(t.username)">
+                    <input type="checkbox" id="checkUsername{{t.username}}" (click)="addUserToList(t.username)" checked>
+                    {{t.username}}
+                  </div>
+                  <div *ngIf="!existUserName(t.username)">
+                    <input type="checkbox" id="checkUsername{{t.username}}" (click)="addUserToList(t.username)">
+                    {{t.username}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-evt-close">Close</button>
+          <!--  <button [disabled]="!uploadvalid" (click)="saveNewDoc()" type="submit" class="btn-md  btn btn-default">
+                    Save
+                </button>
+ --> <button [disabled]="!fo.form.valid" type="submit" (click)="saveNewEvt()"
+            class="btn-md  btn btn-default">Save</button>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+      
+<!-- detail Event  -->
+
+
+<div class="modal fade bd-example-modal-lg" id="viewEvtModal" tabindex="-1" role="dialog" aria-labelledby=""
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 *ngIf="selectedEvt" class="modal-title text-center" id="exampleModalLongTitle">
+                <i class="fas fa-money-check"> Event : {{selectedEvt.subject}} </i>
+            </h4>
+            <button class="btn-close" type="button" id="openSprintInfo" aria-label="Close"
+                data-dismiss="modal"><span aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="modal-body" *ngIf="selectedEvt!==undefined">
+            <div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-auto ">
+                                <div class="mx-auto" style="width: 60px;">
+                                    <div class="d-flex justify-content-center align-items-center rounded">
+
+                                        <img class="rounded" height="60" width="60"class="rounded-circle shadow p-1 bg-white"
+                                            src="{{selectedEvt.eventUser.profileImageUrl}}"
+                                            alt="{{selectedEvt.eventUser.username}}">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col d-flex flex-column flex-sm-row justify-content-between ">
+                                <div class="text-left text-sm-left  mb-sm-0">
+
+                                    <h5 class="pt-sm-2 pb-1 mb-0 text-nowrap"><i class="fas fa-user-shield">
+                                            Created
+                                            by:
+                                            {{selectedEvt.eventUser.username}}</i>
+                                    </h5>
+                                   
+                                    <div class="">
+                                        <i
+                                            class="fa fa-shield-alt float-right">
+                                            {{selectedEvt.eventUser.role.substring(5)}}</i>
+
+                                    </div>
+
+
+                                    <div class="text-muted"><small>
+                                            <div class=""> Contact: </div>
+                                            {{selectedEvt.eventUser.email}}
+                                        </small></div>
+
+
+                                </div>
+
+                                <div class="text-center text-sm-right">
+
+                                    <div *ngIf="selectedEvt.startDate" class="text-muted">
+                                        <small> Creation Date :
+                                        </small>
+                                    </div>
+                                    <div *ngIf="selectedEvt.startDate" class="text-muted">
+                                        <small>
+                                            {{selectedEvt.startDate | date:'medium'
+                                            }}</small>
+                                    </div>
+
+                                    <div class="text-muted"><small>Due Date
+                                        </small></div>
+                                    <div *ngIf="selectedEvt.endDate" class="text-muted"><small>
+                                            {{selectedEvt.endDate|date:'medium'
+                                            }}</small></div>
+                                    <div *ngIf="selectedEvt.dateCreation" class="text-muted"><small>(Last Updated Date) creation date
+                                        </small></div>
+                                    <div *ngIf="selectedEvt.dateCreation" class="text-muted"><small>
+                                            {{selectedEvt.dateCreation|date:'medium'
+                                            }}</small></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!-- 
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item">
+                            <i class="fas fa-folder-open"> Project Name :
+                                {{selectedEvt.projet.nameProjet}}</i>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-clipboard"> Sprint Name :
+                                {{selectedEvt.nomSprint}}</i>
+                        </li>
+
+
+
+                        <li class="list-group-item">
+                            <i class="fas fa-info-circle"> Status :
+                                {{selectedSprint.etatSprint.substring(5)}}
+                            </i>
+                        </li>
+                        
+                        <li class="list-group-item">
+                            <i class="fas fa-user-tie ">Chef : {{selectedSprint.chefAffecter.username}} </i>
+                             </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-users "> Participants : </i>             </li>
+
+                            <div class="col-lg-7" id="cluster_info">
+                                <dl class="">
+                                   <dd class="project-people">
+                                    <a href=""><img alt="image" class="img-circle" src="{{selectedSprint.sprintCreePar.profileImageUrl}}"></a>
+                                    <a href=""><img alt="image" class="img-circle" src="{{selectedSprint.chefAffecter.profileImageUrl}}"></a>
+                                    
+                                    </dd>
+                                </dl>
+                            </div>
+
+
+
+                    </ul>
+                     -->
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    id="new-evt-close">Close</button>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>

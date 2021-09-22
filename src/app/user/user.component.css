@@ -6,3 +6,10 @@
     margin-top:20px;
     background:#f8f8f8
 }
+.scroller {
+    width:1150px;
+    height: 450px;
+    overflow-y: scroll;
+    scrollbar-color: rebeccapurple green;
+    scrollbar-width: thin;
+  }
