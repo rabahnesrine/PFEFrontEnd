@@ -1,3 +1,17 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header entete">
+            <div class="row">
+                <div class="col-lg-2 "> <img class="sizeimg" src="../assets/log-barsha.png"></div>
+                <div class="col-lg-10">
+                    <h1>Barsha For Management Projects</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
 <br>
 <br>
 <div class="container">
@@ -15,57 +29,113 @@
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="username" placeholder="Username" ngModel #usernameInput="ngModel" required>
+                                <input type="text" class="form-control" name="username" placeholder="Username" ngModel
+                                    #usernameInput="ngModel" required>
                             </div>
 
-                            <span class="help-block" style="color:red;" *ngIf="usernameInput.invalid && usernameInput.touched">Please enter a username</span>
-                            <div class="input-group mb-3">
+                            <span class="help-block" style="color:red;"
+                                *ngIf="usernameInput.invalid && usernameInput.touched">Please enter a username</span>
+                            <!-- <div class="input-group mb-3">
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-envelope" ></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="email" placeholder="emailUser"
-                                ngModel #emailUserInput="ngModel" required>
+                                <input type="email" class="form-control" name="email" placeholder="emailUser" 
+                                ngModel #emailUserInput="ngModel" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$" >
                             </div>
-                            <span class="help-block" style="color:red;" *ngIf="emailUserInput.invalid && emailUserInput.touched">Please enter a Email.</span>
+                            <span class="help-block" style="color:red;" *ngIf="emailUserInput.invalid && emailUserInput.touched ">Please enter a Email.</span>
+                             <span class="help-block" style="color:red;" *ngIf="emailUserInput.errors?.pattern">Please provide a valid email address</span>
+                      -->
+
+
+                         <!--    <form [formGroup]="userEmails">
+
+
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                        </div>
+                                        <input
+                                            [class.is-invalid]="userEmails.get('emailUserInput').invalid && userEmails.get('emailUserInput').touched"
+                                            type="email" class="form-control" formControlName="emailUserInput" required
+                                            [(ngModel)]="emailT" />
+                                    </div>
+                                    <div *ngIf="(inputEmail.invalid && inputEmail.touched) || inputEmail.dirty">
+                                        <small *ngIf="inputEmail.errors?.required" class="text-danger">Please enter a
+                                            Email.</small>
+                                        <small *ngIf="inputEmail.errors?.pattern" class="text-danger">Please provide a
+                                            valid email address</small>
+                                    </div>
+                                </div>
+                            </form> -->
+
+                            <div class="form-group" [formGroup]="userEmails">
+                                <label for="email"> </label>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                    </div>
+                                <input [class.is-invalid] = "userEmails.get('emailUserInput').invalid && userEmails.get('emailUserInput').touched"
+                           type="email" class="form-control" formControlName="emailUserInput"  required [(ngModel)]="emailT" /> 
+                                </div>
+                             <div *ngIf="(inputEmail.invalid && inputEmail.touched) || inputEmail.dirty">
+                           <small *ngIf="inputEmail.errors?.required" class="text-danger">Please enter a Email.</small>
+                           <small *ngIf="inputEmail.errors?.pattern" class="text-danger">Please provide a valid email address</small>
+                         </div>
+                             </div>
+
+                            <div class="form-group" [hidden]="true">
+                                <label for="email">  </label>
+                                <input type="email" name="email" required [(ngModel)]="emailT" class="form-control">
+                            </div>
+ 
+
+
 
                             <div class="input-group mb-3">
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-phone"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="telephone" placeholder="telephone"
-                                ngModel #telephoneInput="ngModel" required>
+                                <input type="number" class="form-control" name="telephone" placeholder="telephone"
+                                    ngModel #telephoneInput="ngModel" required>
                             </div>
-                            <span class="help-block" style="color:red;" *ngIf="telephoneInput.invalid && telephoneInput.touched">Please enter a telephone number.</span>
-                         
+                            <span class="help-block" style="color:red;"
+                                *ngIf="telephoneInput.invalid && telephoneInput.touched">Please enter a telephone
+                                number.</span>
+
 
 
                             <div class="input-group mb-3">
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-id-card"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="professionUser" placeholder="professionUser"
-                                ngModel #professionInput="ngModel" required>
+                                <input type="text" class="form-control" name="professionUser"
+                                    placeholder="professionUser" ngModel #professionInput="ngModel" required>
                             </div>
-                            <span class="help-block" style="color:red;" *ngIf="professionInput.invalid && professionInput.touched">Please enter a password.</span>
+                            <span class="help-block" style="color:red;"
+                                *ngIf="professionInput.invalid && professionInput.touched">Please enter a
+                                password.</span>
 
-                           
+
                             <div class="d-flex justify-content-center mt-3 login_container">
-                                <button type="submit" [disabled]="registerForm.invalid || showLoading" name="button" class="btn btn-primary px-4">
+                                <button type="submit" [disabled]="registerForm.invalid || showLoading" name="button"
+                                    class="btn btn-primary px-4">
                                     <i *ngIf="showLoading" class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;
                                     <span *ngIf="showLoading">loading...</span>
-                                    <span *ngIf="!showLoading">Register</span>
+                                    <span *ngIf="!showLoading && !inputEmail.errors?.pattern">Register</span>
                                 </button>
                             </div>
                         </form>
                     </div>
-                    
+
                     <div class="mt-4">
 
                         <div class="d-flex justify-content-center links">
                             Already have an account?
                             <a routerLink="/login" class="ml-2" style="color:#2C3E50;"> Log In </a>
                         </div>
-                </div>
+                    </div>
 
 
                 </div>
@@ -73,3 +143,15 @@
         </div>
     </div>
 </div>
+
+
+  <!-- 
+      <div class="form-group" [formGroup]="userEmails">
+         <input [class.is-invalid] = "userEmails.get('emailUserInput').invalid && userEmails.get('emailUserInput').touched"
+	type="email" class="form-control" formControlName="emailUserInput" /> 
+ 
+      <div *ngIf="(inputEmail.invalid && inputEmail.touched) || inputEmail.dirty">
+    <small *ngIf="inputEmail.errors?.required" class="text-danger">Primary email is required</small>
+    <small *ngIf="inputEmail.errors?.pattern" class="text-danger">Please provide a valid email address</small>
+  </div>
+      </div> -->

@@ -2,7 +2,12 @@ body{
     margin-top:20px;
     background:#eee;
 }
+ 
 
+.entete{
+    color: #eee;
+  
+  }
 .container {
     margin-right: auto;
     margin-left: auto;
@@ -10,6 +15,13 @@ body{
     padding-left: 15px;
     width: 100%;
 }
+
+
+.sizeimg {
+    width: 100px;
+    height: 100px;
+   
+  }
 
 @media (min-width: 576px) {
     .container {

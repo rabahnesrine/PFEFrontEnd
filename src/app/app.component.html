@@ -1,33 +1,28 @@
 <nav class="navbar navbar-inverse" *ngIf="this.authServ.isLoggedIn()">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" routerLink="/firstWindows"  >Management Tasks   </a>
+      <a class="navbar-brand" routerLink="/firstWindows"  > <i class="fas fa-film"> Barsha For 
+        Management  Projects </i>  </a>
     </div>
    <!--  <ul class="nav navbar-nav">
       <li class="active"><a routerLink="/">Home</a></li>
     </ul> -->
     <ul class="nav navbar-nav">
-      <li ><a routerLink="/dashbord">Dashbord</a></li>
+      <li ><a routerLink="/dashbord"><i class="fas fa-chart-line"> Dashbord</i> </a></li>
     </ul>
-
-
-    
     <ul class="nav navbar-nav">
-      <li><a routerLink="/user/management" [hidden]="!isAdminOrScrumMaster">users</a></li>
+      <li><a routerLink="/user/management" [hidden]="!isAdminOrScrumMaster"> <i class="fas fa-users"> Users</i> </a></li>
     </ul>
-
     <ul class="nav navbar-nav" [hidden]="!isAdminOrScrumMasterOrProductOwner">
-      <li><a routerLink="/projet">Projet</a></li>
+      <li><a routerLink="/projet"> <i class="fas fa-folder"> Project</i></a></li>
     </ul>
-    <ul class="nav navbar-nav" [hidden]="!isMember">
-      <li> <a routerLink="/sprint">sprint</a></li>
+    <ul class="nav navbar-nav " [hidden]="!isMember">
+      <li> <a routerLink="/sprint">  <i class="fas fa-tasks"> Sprint</i></a></li>
     </ul>
     
     <ul class="nav navbar-nav"[hidden]="true">
       <li><a routerLink="/Calandrie">Calandrie</a></li>
     </ul> 
-    
-
   <ul class="nav navbar-nav" [hidden]="true">
         <li><a routerLink="/msg">chat</a></li>
       </ul> 
@@ -39,12 +34,12 @@
     <!--   <ul class="nav navbar-nav"><li><a routerLink="/event"><i class="fas fa-calendar-week"></i> calandrie</a></li>
       </ul> -->
       <ul class="nav navbar-nav nav navbar-right">
-        <li><a routerLink="/event"><i class="fas fa-calendar-week"></i> Events</a></li>
+        <li><a routerLink="/event"><i class="fas fa-calendar-week"> Events</i> </a></li>
 <!--         <li><a routerLink="/document"><i class="far fa-folder-open"></i> Files</a></li>
  -->
       </ul> 
       <ul class="nav navbar-nav nav navbar-right">
-        <li><a routerLink="/document"><i class="far fa-folder-open"></i> Files</a></li>
+        <li><a routerLink="/document"><i class="far fa-folder-open"> Files</i> </a></li>
 
       </ul> 
         <ul class="nav navbar-nav navbar-right">

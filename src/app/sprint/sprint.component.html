@@ -34,7 +34,7 @@
     <!--For Admin list Sprint-->
 
     <div class="row"  >
-        <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprints " >
+        <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprints " [hidden]="!isAdmin" >
             <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
                 <div class="text-center">
                 <h5 class="m-0" (click)="onSelectSprint(sprint)" >{{sprint.nomSprint}}</h5>
@@ -91,7 +91,7 @@
     </div>
     <!--For ScrumMaster list Sprint   au lieu de mySprints on va modifier par sprintsSmtest pour visualise tous les sprint de projet cree par Sm  -->
 <!--mySprints-->
-    <!-- <div class="row" [hidden]="!isScrumMasterOnly">
+    <div class="row" [hidden]="!isScrumMasterOnly">
         <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprintsSmtest " > 
             <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
                 <div class="text-center">
@@ -144,9 +144,9 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div> 
     <!--For chef list Sprint-->
-   <!--  <div class="row" [hidden]="!isChefOnly">
+    <div class="row" [hidden]="!isChefOnly">
         <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprintsChef " > 
             <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
                 <div class="text-center">
@@ -200,10 +200,10 @@
             </div>
         </div>
         
-    </div> -->
+    </div>
 
  <!--For member list Sprint-->
- <!-- <div class="row" >
+ <div class="row" >
     <div class="col-md-3 col-xl-3 " *ngFor="let sprint of   sprintsMember " > 
         <div class="card m-b-30 shadow-lg p-3 mb-5 bg-white rounded"  *ngIf="sprint">
             <div class="text-center">
@@ -260,7 +260,7 @@
 </div>
 
 
- -->
+
     <button [hidden]="true" type="button" id="openSprintEdit" data-toggle="modal" data-target="#editSprintModal">
     </button>
     <button [hidden]="true" type="button" id="openSprintInfo" data-toggle="modal" data-target="#viewSprintModal">

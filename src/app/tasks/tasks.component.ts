@@ -46,7 +46,7 @@ export class TasksComponent implements OnInit {
   public tasksToDo:Task[];
 
   public tasksArchived:Task[];
-
+public users:User[]=[];
 
 
 public editTask = new Task();
@@ -83,6 +83,7 @@ progress: { percentage: number } = { percentage: 0 };
   constructor( private router: Router, private taskServ:TaskService, private activateRoute: ActivatedRoute,private attachementService:AttachementService ,private authServ: AuthServService,private userServ: UserServService,private sprintServ: SprintService , private notificationService: NotificationService) { }
 
   ngOnInit(): void {
+    this.getUsers();
     this.getTasks(false);
     this.userActuel = this.authServ.getUserFromLocalCache();
 console.log("task cree par"+this.userActuel.username);
@@ -159,8 +160,10 @@ console.log(this.myTasks);
      if (!(this.tasksAdd.find(s=>s.nameTask==newTaskForm.nameTask))) {
       this.taskServ.saveTask(newTaskForm).subscribe((response: Task) => {
               this.clickButton('new-task-close');
+              this.clickButton('closeTaskInfo');
               this.getTasks(false); // false pour n'est pas affiche le message pop
               console.log("added fonction ")
+              newTaskForm=new Task();
               this.nameTask = '';
               this.dateFin = null;
               this.sendNotification(NotificationType.SUCCESS, `${response.nameTask} added successfully . `);
@@ -218,6 +221,8 @@ console.log(this.myTasks);
             console.log(response);
             this.getTasks(false);
             this.clickButton('edit-task-close');
+            this.clickButton('closeTaskEdit');
+
             this.sendNotification(NotificationType.SUCCESS, `${response.nameTask} updated successfully.`);
 
 
@@ -573,4 +578,21 @@ public get isAdminOrScrumMaster():boolean{
   }
 
 
+
+
+
+  
+
+public getUsers():void{
+  this.userServ.getUsers().subscribe(
+    (response:User[])=>{
+
+      console.log(response);
+      this.userServ.addUsersToLocalCache(response);
+      this.users=response.filter(u=>u.username!="AnonymeMember").filter(u=>u.username!="AnonymeChef").filter(u=>u.username!="AnonymeProductOwner");
+    
+    }
+  );
+  
+}
 }

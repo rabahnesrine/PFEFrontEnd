@@ -12,6 +12,7 @@ export class Event {
     archive:boolean;
     eventUser:User;
     dateCreation:Date;
+    dateModification:Date;
     startDate:Date;
     endDate:Date;
     invitedPersons :number[];
@@ -24,6 +25,7 @@ export class Event {
         this.lieu='';
         this.categorie='';
         this.dateCreation=null;
+        this.dateModification=null;
         this.startDate=null;
         this.endDate=null;
         this.etatEvent='';

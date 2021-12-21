@@ -1,1 +1,155 @@
-<p>first-windows works!</p>
+
+  
+    <div class="text-center">
+  <h1 > Barsha For Management Projects</h1>
+    
+  </div>
+ 
+
+<!-- add  Doc  -->
+
+
+<div class="modal draggable fade bd-example-modal-lg" size="5" id="addVedModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog	" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-center"><i class="fas fa-file-import"> New Document</i> </h4>
+        <button class="btn-close" type="button" id="openDocInfo" aria-label="Close" data-dismiss="modal"><span
+            aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="card w-100">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-file-alt"></i>
+
+
+
+              Document
+
+            </h5>
+
+            <form #fo="ngForm" (ngSubmit)="saveVedio()">
+
+
+              <div class="form-row">
+                <div class="form-group col-md-6"> nomVedio :
+                  <div class="form-label-group">
+                    <input placeholder="Nom du vedio" [(ngModel)]="vedio.nomVedio" #nomVedio="ngModel" type="text"
+                      name="nomVedio" class="form-control" required>
+
+                  </div>
+                </div>
+                <div class="form-group col-md-6"> authorisation :
+                
+
+
+
+
+                      <div class="form-group">
+                        <select name="authorisation" required  
+                        [(ngModel)]="vedio.authorisation"  #authorisation="ngModel" class="form-control">
+                            <option value="ROLE_MEMBER">MEMBER</option>
+                            <option value="ROLE_CHEF">CHEF
+                            </option>
+                            <option  value="ROLE_PRODUCT_OWNER">PRODUCT_OWNER
+                            </option>
+                            <option  value="ROLE_SCRUM_MASTER">SCRUM_MASTER
+                            </option>
+                            <option  value="ROLE_ADMIN">ADMIN
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                  </div>
+              </div>
+
+
+              <div class="form-group">
+                <div class="form-label-group"> Description :
+                  <textarea placeholder="Description" name="description" [(ngModel)]="vedio.description"
+                    #description="ngModel" class="form-control"> </textarea>
+
+                </div>
+              </div>
+              <div *ngIf="currentFileUpload" class="progress">
+                <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                  attr.aria-valuenow="{{progress.percentage}}" aria-valuemin="0" aria-valuemax="100"
+                  [ngStyle]="{width:progress.percentage+'%'}">
+                  {{progress.percentage}}%</div>
+              </div>
+
+              <div class="form-group" style="text-align:center">
+                <label>
+                  <input required name="file" [(ngModel)]="vedio.file" #file="ngModel" class="form-control" type="file"
+                    (change)="selectFile($event)">
+                </label>
+                <button [disabled]="!selectedFiles" class="btn btn-success" (click)="upload()">Upload</button>
+              </div>
+
+
+
+
+              <button type="submit" style="display: none;" id="new-doc-save"></button>
+
+
+            </form>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-doc-close">Close</button>
+        <button [disabled]="!uploadvalid" (click)="saveVedio()" type="submit" class="btn-md  btn btn-default"> Save
+        </button>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="content">
+
+  <div class="container">
+
+
+    <div class="row ">
+      <div class="scroller">
+      <div class="col-md-3 col-xl-3 ">
+        <div class="video " *ngFor="let v of allVedio">
+          <video class="size" controls (click)="toggleVideo($event)" #videoPlayer>
+            <source src="{{v.file}}" type="video/mp4" />
+            Browser not supported
+          </video>
+        </div>
+      </div></div>
+
+
+      <!--  <div class="col-lg-9">
+        <div class="video " *ngIf="this.selectedVideo" >
+          <video class="size" controls (click)="toggleVideo($event)" #videoPlayer>
+              <source src="{{this.selectedVideo.file}}" type="video/mp4" />
+              Browser not supported
+          </video>
+        </div>
+      </div> -->
+
+
+
+    </div>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addVedModal"  [hidden]="true">
+      <i class="fa fa-plus"></i>
+      add vedio </button>
+
+  </div>
+</div>

@@ -25,6 +25,8 @@ export class ProjetComponent implements OnInit {
   public projetsSMall:Projet [];
   public projetsPOwner:Projet [];
 
+  public allProjet:Projet[];
+
 
   public userActuel: User;
   public nameProjet: string = '';
@@ -60,10 +62,8 @@ public client:User;
 
   ngOnInit(): void {
     this.getProjets(false);
-
     this.userActuel = this.authServ.getUserFromLocalCache(); // recupere user actuel 
     console.log("create projet by" + this.authServ.currentUserlogged());
-
 
     this.clients=this.userServ.getUsersFromLocalCache().filter(u=>u.role=="ROLE_PRODUCT_OWNER");
 
@@ -79,6 +79,7 @@ public client:User;
       (response: Projet[]) => {
         console.log(response);
         this.projetServ.addProjetsToLocalCache(response);
+        this.allProjet=this.projetServ.getProjetsFromLocalCache();
         this.projets = response.filter(p=>p.creePar.role=="ROLE_ADMIN");
         this.projetsSMall=response.filter(p=>p.creePar.role=="ROLE_SCRUM_MASTER")
         this.projetsPOwner=response.filter(p=>p.client.role=="ROLE_PRODUCT_OWNER")
@@ -328,10 +329,10 @@ if (resultsMyP.length === 0 || !searchProjet) {
 
 
   public onDeleteProjet(id: number): void {
-    console.log(this.projets.find(p => p.idProjet == id)
+    console.log(this.allProjet.find(p => p.idProjet == id)
     );
 
-    this.selectProjetDelete = this.projets.find(p => p.idProjet == id);
+    this.selectProjetDelete = this.allProjet.find(p => p.idProjet == id);
     console.log(this.selectProjetDelete.creePar.id);
     console.log(this.userActuel.id)
 

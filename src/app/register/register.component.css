@@ -2,7 +2,15 @@ body{
     margin-top:20px;
     background:#eee;
 }
-
+.entete{
+    color: #eee;
+  
+  }
+  .sizeimg {
+    width: 100px;
+    height: 100px;
+   
+  }
 .container {
     margin-right: auto;
     margin-left: auto;

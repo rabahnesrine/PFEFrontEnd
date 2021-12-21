@@ -113,7 +113,7 @@ export class ProfileComponent implements OnInit,OnDestroy {
          (response:User)=>{
       console.log("response"+ response);
     this.authServ.addUserToLocalCache(response);
-      this.getUsers(false); // false pour n'est pas affiche le message pop
+   //   this.getUsers(false); // false pour n'est pas affiche le message pop
        this.fileName= null;
        this.profileImage= null;
        this.sendNotification(NotificationType.SUCCESS,`${response.username} updated successfully . `);

@@ -5,24 +5,46 @@
 
     <div class="row">
       <div class="col-lg-3">
-       
+
         <div class="mb-4">
           <div class="small mb-3">Archive</div>
-       
+
         </div>
 
-        
+
         <div class="mb-4">
           <ul class="nav flex-column nav-pills">
 
             <li class="nav-item">
-              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProjetModal">
-                <i class="fa fa-fw fa-plus mr-2"></i>Archived Events 
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#archiveEvtModal">
+                <i class="fas fa-archive"></i> Archived Events
               </button>
+
             </li>
 
           </ul>
         </div>
+
+        <div class="mb-4" [hidden]="!isAdmin">
+          <div class="small mb-3">All Events</div>
+
+        </div>
+
+
+        <div class="mb-4" [hidden]="!isAdmin">
+          <ul class="nav flex-column nav-pills">
+
+            <li class="nav-item">
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#allEvtModal">
+                <i class="fas fa-archive"></i> All Events
+              </button>
+
+            </li>
+
+          </ul>
+        </div>
+
+
 
 
 
@@ -36,114 +58,116 @@
 
       <div class="col-lg-9">
         <div class="d-flex flex-column flex-md-row mb-3 mb-md-0">
-            
-            <div role="toolbar" class="btn-toolbar">
-                <div role="group" class="mr-auto mr-md-2 btn-group">
 
-                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addEventModal">
-                    <i class="fa fa-plus"></i>
-                    New Event
-                  </button>
+          <div role="toolbar" class="btn-toolbar">
+            <div role="group" class="mr-auto mr-md-2 btn-group">
 
-                </div>
-            
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addEventModal">
+                <i class="fa fa-plus"></i>
+                New Event
+              </button>
+
             </div>
+
+          </div>
         </div>
 
 
         <div class="col-lg-6">
 
 
-        <div class="tab-content mt-3" id="myTabContent" [hidden]="!this.hiddenMyEvent">
-          <div id="myevt" class="tab-pane fade in active">
-            <div class=" mb-3 float-right">
-              <div class="btn-group mr-2">
-                         
-  
-                <!--debut test-->
-                <nav class="mr-auto d-flex align-items-center" aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                      <li class="active breadcrumb-item" aria-current="page"><a href="/"><i class="fas fa-calendar-week"></i></a></li>
-  
+          <div class="tab-content mt-3" id="myTabContent" [hidden]="!this.hiddenMyEvent">
+            <div id="myevt" class="tab-pane fade in active">
+              <div class=" mb-3 float-right">
+                <div class="btn-group mr-2">
+
+
+                  <!--debut test-->
+                  <nav class="mr-auto d-flex align-items-center" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="active breadcrumb-item" aria-current="page"><a href="/"><i
+                            class="fas fa-calendar-week"></i></a></li>
+
                       <li class="active breadcrumb-item" aria-current="page">My Events List</li>
 
-                  </ol>
-                  <div class="mb-4">
-                    <div class="input-group">
-                      <input placeholder="Search Events..." type="search" class="form-control " ngModel>
-          
-                    </div>
-                  </div>
-              </nav>
-              
-  
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                  <!-- Indicators -->
-                 <!--  <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                  </ol> -->
-  
-                  <!-- Wrapper for slides -->
-                  <div class="carousel-inner">
-                    <div class="item pointer" *ngFor="let evt of eventsByuserActuel; let i=index; ">
-                      <div id="myevents" class="event-list owl-carousel owl-loaded owl-drag" *ngIf="evt">
-                        <div class="owl-stage-outer">
-                          <div class="owl-stage">
-  
-                            <div class="owl-item cloned" style="width: 374.5px;">
-                              <div class="event-item featured">
-                                <div class="event-schedule">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-calendar event-icon">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                  </svg>
-                                  <span class="event-day">{{evt.startDate| date:"dd"}}</span>
-                                  <div class="event-month-time">
-                                    <span>{{evt.startDate| date:'mediumDate'|date:"MMM"}} {{evt.startDate|
-                                      date:'mediumDate'|date:"y"}}</span>
-                                    <span>{{evt.timeEvent}}</span>
-                                  </div>
+                    </ol>
 
-                               <div class="card-body text-right ">
+                  </nav>
 
-                        <ul class="float-right btn-group btn-group-sm">
-                                          <ol class="table-link  text-warning" (click)="onSelectEvt(evt)">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                          </ol>
-                                        <ol class="table-link  text-info" >
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                          </ol>
-                                        <ol class="table-link text-danger" >
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                          </ol>
+
+                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                      <li data-target="#myCarousel" data-slide-to="1"></li>
+                      <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                      <div class="item pointer" *ngFor="let evt of eventsByuserActuel; let i=index; ">
+                        <div id="myevents" class="event-list owl-carousel owl-loaded owl-drag" *ngIf="evt">
+                          <div class="owl-stage-outer">
+                            <div class="owl-stage">
+
+                              <div class="owl-item cloned" style="width: 374.5px;">
+                                <div class="event-item featured">
+                                  <div class="event-schedule">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round" class="feather feather-calendar event-icon">
+                                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    <span class="event-day">{{evt.startDate| date:"dd"}}</span>
+                                    <div class="event-month-time">
+                                      <span>{{evt.startDate| date:'mediumDate'|date:"MMM"}} {{evt.startDate|
+                                        date:'mediumDate'|date:"y"}}</span>
+                                      <span>{{evt.timeEvent}}</span>
+                                    </div>
+
+                                    <div class="card-body text-right ">
+
+                                      <ul class="float-right btn-group btn-group-sm">
+                                        <ol class="table-link  text-warning" (click)="onSelectEvt(evt)">
+                                          <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                          </span>
+                                        </ol>
+                                        <ol class="table-link  text-success" (click)="onArchiveEvt(evt)">
+                                          <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-box fa-stack-1x fa-inverse"></i>
+                                          </span>
+                                        </ol>
+                                        <ol class="table-link  text-info" (click)="onEditEvt(evt)">
+                                          <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
+                                          </span>
+                                        </ol>
+                                        <ol class="table-link text-danger" (click)="deleteEvt(evt)">
+                                          <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                                          </span>
+                                        </ol>
                                       </ul>
-                                </div>
-                                </div>
-                                <a href="#" class="event-title text-center">{{evt.subject}}</a>
-                                <p class="event-content">{{evt.categorie}}</p>
-                                <ul class="event-participants">
-                                  <li class="event-user" data-toggle="tooltip" data-placement="top"
-                                    data-skin-class="tooltip-base" data-html="true" title=""
-                                    data-original-title="<b>Keith J</b>">
-                                    <img class="event-user-pic"  src="{{evt.eventUser.profileImageUrl}}"
-                                      alt="Profile Pic" />
-                                  </li>
-                                 <!--  <li class="event-user bg-soft-primary" data-toggle="tooltip" data-placement="top"
+                                    </div>
+                                  </div>
+                                  <a href="#" class="event-title text-center">{{evt.subject}}</a>
+                                  <p class="event-content">{{evt.categorie}}</p>
+                                  <ul class="event-participants">
+                                    <li class="event-user" data-toggle="tooltip" data-placement="top"
+                                      data-skin-class="tooltip-base" data-html="true" title=""
+                                      data-original-title="<b>Keith J</b>">
+                                      <img class="event-user-pic" src="{{evt.eventUser.profileImageUrl}}"
+                                        alt="Profile Pic" />
+                                    </li>
+                                    <!--  <li class="event-user bg-soft-primary" data-toggle="tooltip" data-placement="top"
                                     data-skin-class="tooltip-base" data-html="true" title=""
                                     data-original-title="<b>Massi J</b>">
                                     <span class="event-user-inital text-primary">MS</span>
@@ -162,58 +186,66 @@
                                   <li class="event-user bg-soft-info" data-original-title="" title="">
                                     <span class="event-user-inital text-dark">+99</span>
                                   </li> -->
-                                </ul>
+                                  </ul>
+                                </div>
                               </div>
+
+
                             </div>
-  
-  
                           </div>
                         </div>
+
+
+
+
                       </div>
-  
-  
-  
-  
+
+
+
+
                     </div>
-  
-  
-  
-  
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
                   </div>
-  
-                  <!-- Left and right controls -->
-                  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                  <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                    <span class="sr-only">Next</span>
-                  </a>
+
+
+
+
+
+
+
+
+
+
+                  <!--fin test-->
+
+
+
+
+
                 </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-                <!--fin test-->
-  
-  
-                 
-  
-  
               </div>
             </div>
           </div>
+
+
         </div>
-        </div>
-  
-  
+
+
+
+
+
+
+
+
 
 
 
@@ -221,98 +253,101 @@
         <div class="col-lg-6">
 
 
-        <div class="tab-content mt-3" id="myTabContent" [hidden]="!this.hiddenEventInvite">
-          <div id="invite" class="tab-pane fade in active">
-            <div class=" mb-3 float-right">
-              <div class="btn-group mr-2">
-                         
-  
-                <!--debut test-->
-                <nav class="mr-auto d-flex align-items-center" aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                      <li class="active breadcrumb-item" aria-current="page"><a href="/"><i class="fas fa-calendar-week"></i></a></li>
-  
+          <div class="tab-content mt-3" id="myTabContent" [hidden]="!this.hiddenEventInvite">
+            <div id="invite" class="tab-pane fade in active">
+              <div class=" mb-3 float-right">
+                <div class="btn-group mr-2">
+
+
+                  <!--debut test-->
+                  <nav class="mr-auto d-flex align-items-center" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="active breadcrumb-item" aria-current="page"><a href="/"><i
+                            class="fas fa-calendar-week"></i></a></li>
+
                       <li class="active breadcrumb-item" aria-current="page">Invite To Events </li>
 
-                  </ol>
-                  <div class="mb-4">
-                    <div class="input-group">
-                      <input placeholder="Search Events..." type="search" class="form-control " ngModel>
-          
-                    </div>
-                  </div>
-              </nav>
-              
-  
-                <div id="myCarousel2" class="carousel slide" data-ride="carousel">
-                  <!-- Indicators -->
-                <!--   <ol class="carousel-indicators">
-                    <li data-target="#myCarousel2" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel2" data-slide-to="1"></li>
-                    <li data-target="#myCarousel2" data-slide-to="2"></li>
-                  </ol> -->
-  
-                  <!-- Wrapper for slides -->
-                  <div class="carousel-inner">
-                    <div class="item pointer" *ngFor="let evt of events; let j=index; ">
-                      <div id="events" class="event-list owl-carousel owl-loaded owl-drag" *ngIf="evt">
-                        <div class="owl-stage-outer">
-                          <div class="owl-stage">
-  
-                            <div class="owl-item cloned" style="width: 374.5px;">
-                              <div class="event-item featured">
-                                <div class="event-schedule">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-calendar event-icon">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                  </svg>
-                                  <span class="event-day">{{evt.startDate| date:"dd"}}</span>
-                                  <div class="event-month-time">
-                                    <span>{{evt.startDate| date:'mediumDate'|date:"MMM"}} {{evt.startDate|
-                                      date:'mediumDate'|date:"y"}}</span>
-                                    <span>{{evt.timeEvent}}</span>
-                                  </div>
-                                  <div class="card-body text-right ">
+                    </ol>
 
-                        <ul class="float-right btn-group btn-group-sm">
-                                          <ol class="table-link  text-warning"  (click)="onSelectEvt(evt)">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                          </ol>
-                                        <ol class="table-link  text-info" >
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                          </ol>
-                                        <ol class="table-link text-danger" >
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                          </ol>
+                  </nav>
+
+
+                  <div id="myCarousel2" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                      <li data-target="#myCarousel2" data-slide-to="0" class="active"></li>
+                      <li data-target="#myCarousel2" data-slide-to="1"></li>
+                      <li data-target="#myCarousel2" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                      <div class="item pointer" *ngFor="let evt of events; let j=index; ">
+                        <div id="events" class="event-list owl-carousel owl-loaded owl-drag" *ngIf="evt">
+                          <div class="owl-stage-outer">
+                            <div class="owl-stage">
+
+                              <div class="owl-item cloned" style="width: 374.5px;">
+                                <div class="event-item featured">
+                                  <div class="event-schedule">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round" class="feather feather-calendar event-icon">
+                                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    <span class="event-day">{{evt.startDate| date:"dd"}}</span>
+                                    <div class="event-month-time">
+                                      <span>{{evt.startDate| date:'mediumDate'|date:"MMM"}} {{evt.startDate|
+                                        date:'mediumDate'|date:"y"}}</span>
+                                      <span>{{evt.timeEvent}}</span>
+                                    </div>
+                                    <div class="card-body text-right ">
+
+                                      <ul class="float-right btn-group btn-group-sm">
+                                        <ol class="table-link  text-warning" (click)="onSelectEvt(evt)">
+                                          <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                          </span>
+                                        </ol>
+                                        <ol class="table-link  text-success" (click)="onArchiveEvt(evt)"
+                                          [hidden]="!isAdmin">
+                                          <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-box fa-stack-1x fa-inverse"></i>
+                                          </span>
+                                        </ol>
+                                        <ol class="table-link  text-info" (click)="onEditEvt(evt)" [hidden]="!isAdmin">
+                                          <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
+                                          </span>
+                                        </ol>
+                                        <ol class="table-link text-danger" (click)="deleteEvt(evt)" [hidden]="!isAdmin">
+                                          <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                                          </span>
+                                        </ol>
                                       </ul>
-                                </div>
-                                </div>
-                                <a href="#" class="event-title text-center">{{evt.subject}}</a> 
-                                <p class="event-content"> {{evt.categorie}} </p>   
+                                    </div>
+                                  </div>
+                                  <a href="#" class="event-title text-center">{{evt.subject}}</a>
+                                  <p class="event-content"> {{evt.categorie}} </p>
 
-                                
 
-                                <ul class="event-participants">
-                                  <li class="event-user" data-toggle="tooltip" data-placement="top"
-                                    data-skin-class="tooltip-base" data-html="true" title=""
-                                    data-original-title="<b>Keith J</b>">
-                                    <img class="event-user-pic" src="{{evt.eventUser.profileImageUrl}}"
-                                      alt="Profile Pic" />
-                                  </li> 
-                                 <!--  <li class="event-user bg-soft-primary" data-toggle="tooltip" data-placement="top"
+
+                                  <ul class="event-participants">
+                                    <li class="event-user" data-toggle="tooltip" data-placement="top"
+                                      data-skin-class="tooltip-base" data-html="true" title=""
+                                      data-original-title="<b>Keith J</b>">
+                                      <img class="event-user-pic" src="{{evt.eventUser.profileImageUrl}}"
+                                        alt="Profile Pic" />
+                                    </li>
+                                    <!--  <li class="event-user bg-soft-primary" data-toggle="tooltip" data-placement="top"
                                     data-skin-class="tooltip-base" data-html="true" title=""
                                     data-original-title="<b>Massi J</b>">
                                     <span class="event-user-inital text-primary">MS</span>
@@ -331,74 +366,341 @@
                                   <li class="event-user bg-soft-info" data-original-title="" title="">
                                     <span class="event-user-inital text-dark">+99</span>
                                   </li> -->
-                                </ul>
+                                  </ul>
+                                </div>
                               </div>
+
+
                             </div>
-  
-  
                           </div>
                         </div>
+
+
+
+
                       </div>
-  
-  
-  
-  
+
+
+
+
                     </div>
-  
-  
-  
-  
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel2" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel2" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
                   </div>
-  
-                  <!-- Left and right controls -->
-                  <a class="left carousel-control" href="#myCarousel2" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                  <a class="right carousel-control" href="#myCarousel2" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                    <span class="sr-only">Next</span>
-                  </a>
+
+
+
+
+
+
+
+
+
+
+                  <!--fin test-->
+
+
+
                 </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-                <!--fin test-->
-  
-  
-                 
-              </div>
-  
+
               </div>
             </div>
           </div>
         </div>
-  
-  
-  
 
-  
+
+
+
+
       </div>
     </div>
-      </div>
+  </div>
 
 
 
 
-     
+
 
 
   <button [hidden]="true" type="button" id="openEventInfo" data-toggle="modal" data-target="#viewEvtModal">
   </button>
-  <button [hidden]="true" type="button" id="openDocEdit" data-toggle="modal" data-target="#editDocModal">
+  <button [hidden]="true" type="button" id="openEventEdit" data-toggle="modal" data-target="#editEvtModal">
   </button>
+
+
+
+
+
+  <!-- edit Evt -->
+
+  <div class="modal fade bd-example-modal-lg" id="editEvtModal" tabindex="-1" role="dialog" aria-labelledby=""
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" *ngIf="editEvt">
+
+          <h4 class="modal-title text-center"><i class="fas fa-edit"> Edit: {{editEvt.subject}} </i> </h4>
+
+          <button class="btn-close" type="button" id="closeEventEdit" aria-label="Close" data-dismiss="modal"><span
+              aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card w-100">
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="fas fa-file-alt"></i>
+
+
+
+                Event
+              </h5>
+              <form #editEvtForm="ngForm">
+                <div class="form-group" *ngIf="editEvt">
+                  <label for="subject"> subject</label>
+                  <input type="text" name="subject" required [(ngModel)]="editEvt.subject" class="form-control">
+                </div>
+
+
+                <div class="form-row" *ngIf="editEvt">
+                  <div class="form-group col-md-6"><label for="startDate"> Start Date : </label>
+                    <div class="form-label-group">
+                      <input type="date" name="startDate" [(ngModel)]="editEvt.startDate" class="form-control" required>
+
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6"><label for="endDate">End Date :</label>
+                    <div class="form-label-group">
+                      <input type="date" name="endDate" [(ngModel)]="editEvt.endDate" class="form-control" required>
+
+                    </div>
+                  </div>
+
+                </div>
+
+
+                <div class="form-row" *ngIf="editEvt">
+
+                  <div class="form-group col-md-6"> <label for="lieu">Place :</label>
+                    <div class="form-label-group">
+                      <input type="text" name="lieu" placeholder="Place" class="form-control" [(ngModel)]="editEvt.lieu"
+                        required>
+
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-6"> <label for="timeEvent">Time :</label>
+                    <div class="form-label-group">
+                      <input type="time" name="timeEvent" [(ngModel)]="editEvt.timeEvent" class="form-control" required>
+
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+                <div class="form-group" *ngIf="editEvt"> <label for="categorie">Categorie :</label>
+
+                  <select class="form-control" id="inputGroupSelect01" name="categorie" [(ngModel)]="editEvt.categorie"
+                    required>
+                    <option value="Sprint Planning Meeting " [hidden]="!isAdminOrScrumMasterOrProductOwner">Sprint
+                      Planning Meeting </option>
+                    <option value="Daily SCRUM" [hidden]="!isAdminOrScrumMasterOrProductOwner">Daily SCRUM </option>
+                    <option value="Sprint Review Meeting" [hidden]="!isAdminOrScrumMasterOrProductOwner">Sprint Review
+                      Meeting</option>
+                    <option value="Backlog Refinement Meeting" [hidden]="!isAdminOrScrumMasterOrProductOwner">Backlog
+                      Refinement Meeting </option>
+                    <option value="Sports Challenge ">Sports Challenge </option>
+                    <option value="Incentive Trip">Incentive Trip</option>
+                    <option value="Team learning">Team learning</option>
+                    <option value="Seminar">Seminar </option>
+                    <option value="Marketing">Marketing </option>
+                    <option value="Congress">Congress</option>
+                    <option value="Others...">Others... </option>
+                  </select>
+                </div>
+                <div class="form-group" *ngIf="editEvt">
+                  <div class="form-label-group"> <label for="description">Description :</label>
+                    <textarea name="description" placeholder="Description" [(ngModel)]="editEvt.description"
+                      class="form-control"> </textarea>
+
+                  </div>
+                </div>
+
+
+
+                <button type="submit" style="display: none;" id="new-evt-save"></button>
+
+
+
+
+
+
+
+
+
+              </form>
+
+
+              <div class="form-group" *ngIf="editEvt">
+                <label for="username"> Add Member to Event </label><br>
+
+
+                <span class="badge rounded-pill bg-warning" *ngFor="let u of userNameListEdit" style="margin-right: 10px;">
+
+                  {{u}}
+                  <span style="margin-left: 3px;color: red; cursor: pointer;" (click)="removeUserFromList2(u)">X</span>
+                </span>
+                <input type="text" name="username" autocomplete="off" placeholder="Search..." ngModel
+                  #searchTrainer="ngModel" (input)="searchUser2(searchTrainer.value)" style="color: rgb(14, 12, 10);"
+                  required ngModel class="form-control">
+              </div>
+              <div class=" scroller " id="searchBox2" hidden="true">
+
+                <div *ngFor="let t of searchedUsers2">
+
+                  <div *ngIf="existUserName2(t.username)">
+                    <input type="checkbox" id="checkUsername2{{t.username}}" (click)="addUserToList2(t.username)" checked>
+                    {{t.username}}
+                  </div>
+                  <div *ngIf="!existUserName2(t.username)">
+                    <input type="checkbox" id="checkUsername2{{t.username}}" (click)="addUserToList2(t.username)">
+                    {{t.username}}
+                  </div>
+                </div>
+              </div> 
+
+
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="edit-evt-close">Close</button>
+
+          <button (click)="onUpdateEvt()" type="submit" class="btn-md  btn btn-default"> Save changes
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  <!-- all list evt  -->
+
+
+  <div class="modal draggable fade bd-example-modal-lg" size="5" id="allEvtModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title text-center"><i class="fas fa-tasks"> All Events</i> </h4>
+          <button class="btn-close" type="button" id="openEventInfo" aria-label="Close" data-dismiss="modal"><span
+              aria-hidden="true"></span>
+          </button>
+        </div>
+
+
+        <div class="modal-body" [hidden]="!isAdmin">
+
+          <div class="mb-3 Card_custom-card--border_5wJKy card">
+            <div class="table-responsive-xl">
+              <table class="mb-0 table table-hover">
+                <thead>
+                  <tr>
+                    <th class="align-middle bt-0">#</th>
+                    <th class="align-middle bt-0">Event Subject</th>
+
+                    <th class="align-middle bt-0 text-right">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody class="pointer" *ngFor="let evt of allEvents; let i=index; ">
+                  <tr *ngIf="evt">
+                    <td (click)="onSelectevt(evt)">#{{i+1}} </td>
+                    <td (click)="onSelectevt(evt)"> {{evt.subject}} </td>
+
+
+                    <td class="align-middle text-right">
+
+                      <div class="text-right">
+
+                        <div class="float-right text-right btn-group btn-group-sm">
+                          <a class="table-link  text-warning" (click)="onSelectEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                          <a class="table-link  text-success" (click)="onArchiveEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fa fa-box fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                          <a class="table-link  text-info" (click)="onEditEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                          <a class="table-link text-danger" (click)="deleteEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+
+                    </td>
+
+
+
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-task-close">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
 
 
 
@@ -412,7 +714,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title text-center"><i class="fas fa-file-import"> New Event</i> </h4>
-          <button class="btn-close" type="button" id="openEventInfo" aria-label="Close" data-dismiss="modal"><span
+          <button class="btn-close" type="button" id="closeEventAdd" aria-label="Close" data-dismiss="modal"><span
               aria-hidden="true"></span>
           </button>
         </div>
@@ -490,10 +792,13 @@
 
                   <select class="form-control" id="inputGroupSelect01" name="categorie" [(ngModel)]="event.categorie"
                     #categorie="ngModel" required>
-                    <option value="Sprint Planning Meeting ">Sprint Planning Meeting </option>
-                    <option value="Daily SCRUM">Daily SCRUM </option>
-                    <option value="Sprint Review Meeting">Sprint Review Meeting</option>
-                    <option value="Backlog Refinement Meeting">Backlog Refinement Meeting </option>
+                    <option value="Sprint Planning Meeting " [hidden]="!isAdminOrScrumMasterOrProductOwner">Sprint
+                      Planning Meeting </option>
+                    <option value="Daily SCRUM" [hidden]="!isAdminOrScrumMasterOrProductOwner">Daily SCRUM </option>
+                    <option value="Sprint Review Meeting" [hidden]="!isAdminOrScrumMasterOrProductOwner">Sprint Review
+                      Meeting</option>
+                    <option value="Backlog Refinement Meeting" [hidden]="!isAdminOrScrumMasterOrProductOwner">Backlog
+                      Refinement Meeting </option>
                     <option value="Sports Challenge ">Sports Challenge </option>
                     <option value="Incentive Trip">Incentive Trip</option>
                     <option value="Team learning">Team learning</option>
@@ -519,6 +824,10 @@
 
 
               </form>
+
+
+
+
 
               <!--   <div class="form-group">
                                 <label for="username"> Member Invited </label><br>
@@ -578,7 +887,7 @@
           <!--  <button [disabled]="!uploadvalid" (click)="saveNewDoc()" type="submit" class="btn-md  btn btn-default">
                     Save
                 </button>
- --> <button [disabled]="!fo.form.valid" type="submit" (click)="saveNewEvt()"
+ --> <button [disabled]="!fo.form.valid" type="submit" (click)="saveEvent()"
             class="btn-md  btn btn-default">Save</button>
 
 
@@ -588,149 +897,344 @@
   </div>
 
 
-      
-<!-- detail Event  -->
 
 
-<div class="modal fade bd-example-modal-lg" id="viewEvtModal" tabindex="-1" role="dialog" aria-labelledby=""
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
+
+  <!-- archive list evt  -->
+
+
+  <div class="modal draggable fade bd-example-modal-lg" size="5" id="archiveEvtModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog	" role="document">
+      <div class="modal-content">
         <div class="modal-header">
-            <h4 *ngIf="selectedEvt" class="modal-title text-center" id="exampleModalLongTitle">
-                <i class="fas fa-money-check"> Event : {{selectedEvt.subject}} </i>
-            </h4>
-            <button class="btn-close" type="button" id="openSprintInfo" aria-label="Close"
-                data-dismiss="modal"><span aria-hidden="true"></span>
-            </button>
+          <h4 class="modal-title text-center"><i class="fas fa-tasks"> Archived Events</i> </h4>
+          <button class="btn-close" type="button" id="openEventInfo" aria-label="Close" data-dismiss="modal"><span
+              aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body" [hidden]="isAdmin">
+
+          <div class="mb-3 Card_custom-card--border_5wJKy card">
+            <div class="table-responsive-xl">
+              <table class="mb-0 table table-hover">
+                <thead>
+                  <tr>
+                    <th class="align-middle bt-0">#</th>
+                    <th class="align-middle bt-0">Event Subject</th>
+
+                    <th class="align-middle bt-0 text-right">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody class="pointer" *ngFor="let evt of myArchiveEvent; let i=index; ">
+                  <tr *ngIf="evt">
+                    <td>#{{i+1}} </td>
+                    <td> {{evt.subject}} </td>
+
+
+                    <td class="align-middle text-right">
+
+
+
+
+
+                      <div class="text-right">
+
+                        <div class="float-right text-right btn-group btn-group-sm">
+                          <a class="table-link  text-warning" (click)="onSelectEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                          <a class="table-link  text-info" (click)="onRestoreEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fas fa-box-open fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                          <a class="table-link text-danger" (click)="deleteEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+
+                    </td>
+
+
+
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="modal-body" [hidden]="!isAdmin">
+
+          <div class="mb-3 Card_custom-card--border_5wJKy card">
+            <div class="table-responsive-xl">
+              <table class="mb-0 table table-hover">
+                <thead>
+                  <tr>
+                    <th class="align-middle bt-0">#</th>
+                    <th class="align-middle bt-0">Event Subject</th>
+
+                    <th class="align-middle bt-0 text-right">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody class="pointer" *ngFor="let evt of allArchiveEvent; let i=index; ">
+                  <tr *ngIf="evt">
+                    <td (click)="onSelectevt(evt)">#{{i+1}} </td>
+                    <td (click)="onSelectevt(evt)"> {{evt.subject}} </td>
+
+
+                    <td class="align-middle text-right">
+
+
+
+
+
+                      <div class="text-right">
+
+                        <div class="float-right text-right btn-group btn-group-sm">
+                          <a class="table-link  text-warning" (click)="onSelectEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                          <a class="table-link  text-info" (click)="onRestoreEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fas fa-box-open fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                          <a class="table-link text-danger" (click)="deleteEvt(evt)">
+                            <span class="fa-stack">
+                              <i class="fa fa-square fa-stack-2x"></i>
+                              <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+
+                    </td>
+
+
+
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-task-close">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- detail Event  -->
+
+
+  <div class="modal fade bd-example-modal-lg" id="viewEvtModal" tabindex="-1" role="dialog" aria-labelledby=""
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 *ngIf="selectedEvt" class="modal-title text-center" id="exampleModalLongTitle">
+            <i class="fas fa-money-check"> Event : {{selectedEvt.subject}} </i>
+          </h4>
+          <button class="btn-close" type="button" id="openSprintInfo" aria-label="Close" data-dismiss="modal"><span
+              aria-hidden="true"></span>
+          </button>
         </div>
         <div class="modal-body" *ngIf="selectedEvt!==undefined">
-            <div>
+          <div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 col-sm-auto ">
-                                <div class="mx-auto" style="width: 60px;">
-                                    <div class="d-flex justify-content-center align-items-center rounded">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 col-sm-auto ">
+                    <div class="mx-auto" style="width: 60px;">
+                      <div class="d-flex justify-content-center align-items-center rounded"
+                        *ngIf="selectedEvt.eventUser">
 
-                                        <img class="rounded" height="60" width="60"class="rounded-circle shadow p-1 bg-white"
-                                            src="{{selectedEvt.eventUser.profileImageUrl}}"
-                                            alt="{{selectedEvt.eventUser.username}}">
+                        <img class="rounded" height="60" width="60" class="rounded-circle shadow p-1 bg-white"
+                          src="{{selectedEvt.eventUser.profileImageUrl}}" alt="{{selectedEvt.eventUser.username}}">
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col d-flex flex-column flex-sm-row justify-content-between ">
-                                <div class="text-left text-sm-left  mb-sm-0">
-
-                                    <h5 class="pt-sm-2 pb-1 mb-0 text-nowrap"><i class="fas fa-user-shield">
-                                            Created
-                                            by:
-                                            {{selectedEvt.eventUser.username}}</i>
-                                    </h5>
-                                   
-                                    <div class="">
-                                        <i
-                                            class="fa fa-shield-alt float-right">
-                                            {{selectedEvt.eventUser.role.substring(5)}}</i>
-
-                                    </div>
-
-
-                                    <div class="text-muted"><small>
-                                            <div class=""> Contact: </div>
-                                            {{selectedEvt.eventUser.email}}
-                                        </small></div>
-
-
-                                </div>
-
-                                <div class="text-center text-sm-right">
-
-                                    <div *ngIf="selectedEvt.startDate" class="text-muted">
-                                        <small> Creation Date :
-                                        </small>
-                                    </div>
-                                    <div *ngIf="selectedEvt.startDate" class="text-muted">
-                                        <small>
-                                            {{selectedEvt.startDate | date:'medium'
-                                            }}</small>
-                                    </div>
-
-                                    <div class="text-muted"><small>Due Date
-                                        </small></div>
-                                    <div *ngIf="selectedEvt.endDate" class="text-muted"><small>
-                                            {{selectedEvt.endDate|date:'medium'
-                                            }}</small></div>
-                                    <div *ngIf="selectedEvt.dateCreation" class="text-muted"><small>(Last Updated Date) creation date
-                                        </small></div>
-                                    <div *ngIf="selectedEvt.dateCreation" class="text-muted"><small>
-                                            {{selectedEvt.dateCreation|date:'medium'
-                                            }}</small></div>
-                                </div>
-                            </div>
-                        </div>
+                      </div>
                     </div>
-<!-- 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"></li>
-                        <li class="list-group-item">
-                            <i class="fas fa-folder-open"> Project Name :
-                                {{selectedEvt.projet.nameProjet}}</i>
-                        </li>
-                        <li class="list-group-item">
-                            <i class="fas fa-clipboard"> Sprint Name :
-                                {{selectedEvt.nomSprint}}</i>
-                        </li>
+                  </div>
+                  <div class="col d-flex flex-column flex-sm-row justify-content-between ">
+                    <div class="text-left text-sm-left  mb-sm-0">
+
+                      <h5 class="pt-sm-2 pb-1 mb-0 text-nowrap"><i class="fas fa-user-shield">
+                          Created
+                          by:
+                          {{selectedEvt.eventUser.username}}</i>
+                      </h5>
+
+                      <div class="">
+                        <i class="fa fa-shield-alt float-right">
+                          {{selectedEvt.eventUser.role.substring(5)}}</i>
+
+                      </div>
 
 
+                      <div class="text-muted"><small>
+                          <div class=""> Contact: </div>
+                          {{selectedEvt.eventUser.email}}
+                        </small></div>
 
-                        <li class="list-group-item">
-                            <i class="fas fa-info-circle"> Status :
-                                {{selectedSprint.etatSprint.substring(5)}}
-                            </i>
-                        </li>
-                        
-                        <li class="list-group-item">
-                            <i class="fas fa-user-tie ">Chef : {{selectedSprint.chefAffecter.username}} </i>
-                             </li>
-                        <li class="list-group-item">
-                            <i class="fas fa-users "> Participants : </i>             </li>
 
-                            <div class="col-lg-7" id="cluster_info">
+                    </div>
+
+                    <div class="text-center text-sm-right">
+
+                      <div class="text-muted"><small>Creation Date
+                        </small></div>
+                      <div *ngIf="selectedEvt.dateCreation" class="text-muted"><small>
+                          {{selectedEvt.dateCreation|date:'medium'
+                          }}</small></div>
+
+
+                      <div *ngIf="selectedEvt.dateModification" class="text-muted"><small>Last Updated Date
+                        </small></div>
+                      <div *ngIf="selectedEvt.dateModification" class="text-muted"><small>
+                          {{selectedEvt.dateModification|date:'medium'
+                          }}</small></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"></li>
+
+                <li class="list-group-item">
+                  <i class="fas fa-calendar-alt"> Start Date :
+                    {{selectedEvt.startDate}}</i> &nbsp; &nbsp; <i class="fas fa-calendar-alt"> Due Date :
+                    {{selectedEvt.endDate}}</i>
+                </li>
+
+                <li class="list-group-item">
+                  <i class="fas fa-clock"> Event Time :
+                    {{selectedEvt.timeEvent}}</i> &nbsp; &nbsp; <i class="fas fa-map-marked-alt"> Event Place :
+                    {{selectedEvt.lieu}}</i>
+                </li>
+
+                <li class="list-group-item">
+                  <i class="fas fa-clipboard"> Subject :
+                    {{selectedEvt.subject}}</i>
+                </li>
+                <li class="list-group-item">
+                  <i class="fas fa-folder-open"> Categorie :
+                    {{selectedEvt.categorie}}</i>
+                </li>
+                <li class="list-group-item">
+                  <i class="fas fa-info-circle"> description :
+                    {{selectedEvt.description}}
+                  </i>
+                </li>
+
+                <li class="list-group-item">
+                  <i class="fas fa-users "> Participants : </i>
+                </li>
+                <div class=" scroller ">
+                  <!-- 
+                             <div class="col-lg-7" id="cluster_info">
                                 <dl class="">
-                                   <dd class="project-people">
-                                    <a href=""><img alt="image" class="img-circle" src="{{selectedSprint.sprintCreePar.profileImageUrl}}"></a>
-                                    <a href=""><img alt="image" class="img-circle" src="{{selectedSprint.chefAffecter.profileImageUrl}}"></a>
-                                    
+                                   <dd class="project-people" *ngFor="let u of userOfEventSelected">
+                                    <a href=""><img alt="image" class="img-circle" src="{{u.profileImageUrl}}">  </a> <strong>{{u.username}}</strong>
                                     </dd>
                                 </dl>
-                            </div>
+                            </div>   -->
 
 
+                  <div class="form-group">
 
-                    </ul>
-                     -->
+                    <span class="badge rounded-pill bg-warning  project-people" *ngFor="let u of userOfEventSelected"
+                      style="margin-right: 10px;">
+
+                      {{u.username}}
+                      <span style="margin-left: 3px;"><img alt="image" class="img-circle" src="{{u.profileImageUrl}}">
+                      </span>
+                    </span>
+                  </div>
                 </div>
 
 
-            </div>
-            <div class="modal-footer">
 
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                    id="new-evt-close">Close</button>
+              </ul>
+
             </div>
+
+
+          </div>
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-evt-close">Close</button>
+          </div>
         </div>
+
+
+      </div>
 
 
     </div>
 
 
-</div>
-
-
-</div>
+  </div>
 
 
 

@@ -2,6 +2,17 @@ body{
     margin-top:20px;
     background:#DCDCDC;
 }
+
+
+
+.scroller {
+    width: 250px;
+    height: 50%;
+    overflow-y: scroll;
+    scrollbar-color: rebeccapurple green;
+    scrollbar-width: thin;
+  }
+
 .thumb-sm {
     height: 36px;
     width: 36px;

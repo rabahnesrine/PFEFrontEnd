@@ -1,11 +1,13 @@
 import { HttpErrorResponse} from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { Subscription } from 'rxjs';
 import { NotificationType } from '../enum/notification-type.enum';
 import { User } from '../models/User';
 import { AuthServService } from '../Services/auth-serv.service';
+import { Validators } from '@angular/forms';
 
 
 @Component({
@@ -18,7 +20,17 @@ export class RegisterComponent implements OnInit , OnDestroy {
 public showLoading :boolean ;
 private subscriptions: Subscription[]=[];
 
+emailT:string;
+userEmails = new FormGroup({
+  emailUserInput: new FormControl('',[
+  	Validators.required,
+  	Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")])
+  });
 
+  get inputEmail(){
+    return this.userEmails.get('emailUserInput')
+    } 
+  
   constructor(private router:Router,private authServ:AuthServService,private notificationService:NotifierService) { }
  
 

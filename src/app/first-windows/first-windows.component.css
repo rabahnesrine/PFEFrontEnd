@@ -1,0 +1,18 @@
+.size {
+    width: 1000px;
+    height: 550px;
+    
+  }
+
+  .sizeitems{
+    width: 250px;
+    height: 250px;
+  }
+ 
+  .scroller {
+    width: 1050px;
+    height: 550px;
+    overflow-y: scroll;
+    scrollbar-color: rebeccapurple green;
+    scrollbar-width: thin;
+  }

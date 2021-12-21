@@ -31,7 +31,7 @@ export class SprintComponent implements OnInit {
   public sprints: Sprint[]=[];//for admin all
   public mySprints:Sprint[];//for scrum master
   public sprintsChef:Sprint[];//for chef 
-  
+  public users:User[]=[];
 
   public sprintsSmtest:Sprint[];//sprint Sm de son projet meme si admin cree des sprint et les affecte a un projet Sm 
 
@@ -58,6 +58,8 @@ export class SprintComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.getUsers();
+    
  this.getSprints(false);
     this.userActuel = this.authServ.getUserFromLocalCache();
     console.log("sprint cree par "+this.userActuel.username);
@@ -101,9 +103,16 @@ this.getSprintMember()
 
         this.getMySprints()
 
-        if (showNotification) {
+        if (showNotification && this.isAdmin) {
           this.sendNotification(NotificationType.SUCCESS, `${response.length} sprint(s) loaded successfully . `);
         }
+        if (showNotification && this.isScrumMasterOnly) {
+          this.sendNotification(NotificationType.SUCCESS, `${this.sprintsSmtest.length} sprint(s) loaded successfully . `);
+        }
+        if (showNotification && this.isChefOnly) {
+          this.sendNotification(NotificationType.SUCCESS, `${this.sprintsChef.length} sprint(s) loaded successfully . `);
+        }
+       
       }, (errorResponse: HttpErrorResponse) => {
         console.log(errorResponse);
         this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
@@ -153,13 +162,13 @@ console.log("resp")
 
   public getMySprints(): void {
     this.refreshSprint = true;
-   /*  this.mySprints = this.sprints.filter(p => p.sprintCreePar.id==this.userActuel.id);
+    this.mySprints = this.sprints.filter(p => p.sprintCreePar.id==this.userActuel.id);
     //console.log("sprintbyprojetSm")
     this.sprintsSmtest=this.sprints.filter(s=>s.projet.creePar.id==this.userActuel.id)
     //console.log(this.sprintsSmtest);
     this.sprintsChef= this.sprints.filter(sprint=>sprint.chefAffecter.id==this.userActuel.id);
   // console.log(this.projets.find(p => p.creePar.username=="med"));
-//console.log(this.mySprints); */
+//console.log(this.mySprints); 
 
 
 if(this.userActuel.role=="ROLE_ADMIN"){
@@ -184,7 +193,8 @@ if(this.userActuel.role=="ROLE_ADMIN"){
             this.nomSprint = '';
             this.dateFin = null;
             this.sendNotification(NotificationType.SUCCESS, `${response.nomSprint} added successfully . `);
-    
+            this.clickButton('new-sprint-close');
+
           },
             (errorResponse: HttpErrorResponse) => {
               console.log(errorResponse);
@@ -391,5 +401,20 @@ public get isAdminOrScrumMaster():boolean{
   }
 
 
+
+  public getUsers():void{
+    this.userServ.getUsers().subscribe(
+      (response:User[])=>{
+  
+        console.log(response);
+        this.userServ.addUsersToLocalCache(response);
+        this.chefs=this.userServ.getUsersFromLocalCache().filter(u=>u.role=="ROLE_CHEF");
+
+        this.users=response.filter(u=>u.username!="AnonymeMember").filter(u=>u.username!="AnonymeChef").filter(u=>u.username!="AnonymeProductOwner");
+      
+      }
+    );
+    
+  }
 
 }

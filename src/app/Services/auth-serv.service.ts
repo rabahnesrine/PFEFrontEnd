@@ -41,6 +41,10 @@ localStorage.removeItem('token');
 localStorage.removeItem('users');
 localStorage.removeItem('projets');
 localStorage.removeItem('sprints');
+localStorage.removeItem('tasks');
+localStorage.removeItem('msgs');
+localStorage.removeItem('liste Msg');
+
 
 
 }
